@@ -1,0 +1,42 @@
+name: Deploy stable App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install pnpm
+      run: npm install pnpm -g
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Build project
+      run: pnpm run build
+
+    - name: Deploy to GitHub Pages
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git clone https://github.com/2061360308/Markdown.git
+        cd Markdown
+        rm -rf *
+        cp -r ../build/* .
+        git add .
+        git commit -m 'Deploy from main project'
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
