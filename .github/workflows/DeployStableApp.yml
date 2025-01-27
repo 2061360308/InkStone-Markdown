@@ -29,11 +29,11 @@ jobs:
 
     - name: Deploy to GitHub Pages
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/2061360308/Markdown.git
+        git clone https://x-access-token:${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}@github.com/2061360308/Markdown.git
         cd Markdown
         rm -rf *
         cp -r ../dist/* .
