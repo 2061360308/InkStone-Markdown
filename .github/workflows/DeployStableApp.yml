@@ -33,4 +33,4 @@ jobs:
         github_token: ${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}
         publish_dir: ./dist
         publish_branch: main
-        destination_repo: 2061360308/Markdown
+        external_repository: 2061360308/Markdown
