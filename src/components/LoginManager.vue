@@ -25,7 +25,7 @@ const branchList = ref<{ label: string; value: string }[]>([]);
 
 const repoName = computed(() => settingsStore.settings["基本配置"].repoName);
 
-const updataBranchList = async (repo: string) => {
+const updateBranchList = async (repo: string) => {
   api.repo = repo;
   branchList.value = [];
   let branches = await api.getRepoBranches();
@@ -39,7 +39,7 @@ const updataBranchList = async (repo: string) => {
 
 watch(repoName, async (newVal) => {
   if (newVal) {
-    await updataBranchList(newVal || "");
+    await updateBranchList(newVal || "");
   }
 });
 
@@ -95,7 +95,7 @@ onMounted(async () => {
         repoList.value.push({ label: repo.name, value: repo.name });
       });
       if (repoName.value) {
-        updataBranchList(repoName.value);
+        updateBranchList(repoName.value);
       }
       loading.value = false;
       return;

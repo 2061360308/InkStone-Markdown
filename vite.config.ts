@@ -21,6 +21,7 @@ export default defineConfig({
       manifest: {
         name: "InkStone",
         short_name: "InkStone",
+        description: "最好的Markdown编辑器，不止是编辑器！",
         theme_color: "#dde3e9",
         background_color: "#dde3e9",
         display: "standalone",
@@ -28,25 +29,29 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "img/icons/android-chrome-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
+            "src": "/pwa-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
           },
           {
-            src: "img/icons/android-chrome-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
+            "src": "/pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
           },
           {
-            src: "img/icons/icon-144x144.png",
-            sizes: "144x144",
-            type: "image/png",
+            "src": "/pwa-maskable-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
           },
           {
-            src: "img/icons/icon-256x256.png",
-            sizes: "256x256",
-            type: "image/png",
-          },
+            "src": "/pwa-maskable-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+          }
         ],
         file_handlers: [
           {
@@ -59,12 +64,8 @@ export default defineConfig({
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 将限制增加到 5 MiB
-      },
-      injectManifest: {
-        // 自定义 Service Worker 文件路径
-        swSrc: "src/pwa/service-worker.js",
-        swDest: "service-worker.js",
-      },
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2,ttf,eot,otf}'],
+      }
     }),
     vueDevTools(),
     AutoImport({
