@@ -28,15 +28,15 @@ jobs:
       run: pnpm run build
 
     - name: Deploy to GitHub Pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git clone https://github.com/2061360308/Markdown.git
-        cd Markdown
+        git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/<your-username>/<your-pages-repo>.git
+        cd <your-pages-repo>
         rm -rf *
         cp -r ../dist/* .
         git add .
         git commit -m 'Deploy from main project'
         git push origin main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
