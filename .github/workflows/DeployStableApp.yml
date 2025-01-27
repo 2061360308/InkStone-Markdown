@@ -34,7 +34,7 @@ jobs:
         git clone https://github.com/2061360308/Markdown.git
         cd Markdown
         rm -rf *
-        cp -r ../build/* .
+        cp -r ../dist/* .
         git add .
         git commit -m 'Deploy from main project'
         git push origin main
