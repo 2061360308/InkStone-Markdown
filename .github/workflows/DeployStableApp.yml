@@ -27,16 +27,10 @@ jobs:
     - name: Build project
       run: pnpm run build
 
-    - name: Deploy to GitHub Pages
-      env:
-        GITHUB_TOKEN: ${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git clone https://x-access-token:${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}@github.com/2061360308/Markdown.git
-        cd Markdown
-        rm -rf *
-        cp -r ../dist/* .
-        git add .
-        git commit -m 'Deploy from main project'
-        git push origin main
+    - name: Deploy to target repository
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}
+        publish_dir: ./dist
+        publish_branch: main
+        destination_repo: 2061360308/Markdown
