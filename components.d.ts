@@ -50,6 +50,7 @@ declare module 'vue' {
     SearchManager: typeof import('./src/components/SearchManager.vue')['default']
     SettingsPanel: typeof import('./src/components/SettingsPanel.vue')['default']
     StatusBar: typeof import('./src/components/StatusBar.vue')['default']
+    TitleBar: typeof import('./src/components/TitleBar.vue')['default']
     WorkSpace: typeof import('./src/components/WorkSpace.vue')['default']
   }
   export interface ComponentCustomProperties {

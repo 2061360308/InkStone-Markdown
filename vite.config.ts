@@ -27,6 +27,7 @@ export default defineConfig({
         display: "standalone",
         scope: "/",
         start_url: "/",
+        display_override: ["window-controls-overlay"],
         icons: [
           {
             "src": "/pwa-192x192.png",

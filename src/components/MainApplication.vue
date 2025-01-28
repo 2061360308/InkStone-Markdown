@@ -9,6 +9,7 @@ import SearchManager from "./SearchManager.vue";
 import DiffManager from "./DiffManager.vue";
 import EditingManager from "./EditingManager.vue";
 import AboutApp from "./AboutApp.vue";
+import TitleBar from "./TitleBar.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import api from "@/utils/api";
 import { useTabsStore, useSettingsStore } from "@/stores";
@@ -22,6 +23,36 @@ const router = useRouter();
 const leftPaneSize = ref(20);
 const activeMenu = ref("files");
 const aboutDialogVisible = ref(false);
+
+const isOverlayVisible = ref(false);
+
+const debounce = (
+  func: { (e: any): void; (arg0: any): void },
+  wait: number | undefined
+) => {
+  let timeout: string | number | NodeJS.Timeout | undefined;
+  return function executedFunction(...args: [any]) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+if ("windowControlsOverlay" in navigator) {
+  (navigator as any).windowControlsOverlay.addEventListener(
+    "geometrychange",
+    debounce((e: { titlebarAreaRect: any }) => {
+      // Detect if the Window Controls Overlay is visible.
+      isOverlayVisible.value = (navigator as any).windowControlsOverlay.visible;
+
+      // Get the size and position of the title bar area.
+      // const titleBarRect = e.titlebarAreaRect;
+    }, 200)
+  );
+}
 
 const pingGitHub = async (): Promise<boolean> => {
   try {
@@ -37,9 +68,12 @@ const pingGitHub = async (): Promise<boolean> => {
 onMounted(async () => {
   if (!api.ready) {
     // 判断是否是跳过登录的情况(已经启用离线模式或之前没有登录过，没有loginMethod标识)
-    if (!localStorage.getItem("jumpLogin") && localStorage.getItem("loginMethod")) {
+    if (
+      !localStorage.getItem("jumpLogin") &&
+      localStorage.getItem("loginMethod")
+    ) {
       // 这里检查是否能够正常访问Github【只检查api.github.com】
-      if ((await pingGitHub())) {
+      if (await pingGitHub()) {
         router.push({ name: "login" });
       } else {
         ElNotification({
@@ -138,7 +172,16 @@ if (
 </script>
 
 <template>
-  <div class="main">
+  <TitleBar v-if="isOverlayVisible" />
+  <div
+    class="main"
+    :style="{
+      top: isOverlayVisible ? 'env(titlebar-area-height, 33px)' : 0,
+      height: isOverlayVisible
+        ? 'calc(100vh - env(titlebar-area-height, 33px))'
+        : '100vh',
+    }"
+  >
     <el-menu
       class="slider-menu-bar"
       :default-active="activeMenu"
@@ -212,9 +255,10 @@ if (
 
 <style scoped>
 .main {
+  position: fixed;
+  left: 0;
   display: flex;
   width: 100%;
-  height: 100vh;
 }
 
 .splitpanes {
