@@ -3,42 +3,56 @@
 @import "element-plus/dist/index.css";
 @import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
 
-*:not(.vditor):not(.vditor *) {
+/* 除编辑器外其余元素禁用选择 */
+*:not(.vditor):not(.vditor *):not(.codemirror-editor):not(.codemirror-editor *) {
   user-select: none;
 }
 
-/* #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-  width: 100vw;
-  height: 100vh;
-} */
-
-/* a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+.no-login-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: var(--el-color-primary-light-3);
+  color: var(--el-color-white);
+  border-radius: 5px;
+  white-space: nowrap;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.no-login-tip .el-button {
+  margin-left: 10px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */
+/* 设置滚动条宽高颜色 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #f5f5f5;
+}
+
+/* 设置滚动条轨道的样式 */
+::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+/* 设置滚动条的滑块样式 */
+::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+}
+
+/* 设置滚动条滑块的样式（鼠标悬停时） */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+/* 设置滚动条滑块的样式（鼠标按下时） */
+::-webkit-scrollbar-thumb:active {
+  background-color: #aaa;
+}
+
+/* 设置滑块的圆角 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}

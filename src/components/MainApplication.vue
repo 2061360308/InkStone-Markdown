@@ -1,24 +1,98 @@
 <script setup lang="ts">
 import { Splitpanes, Pane } from "splitpanes";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 import FileTree from "./FileTree.vue";
 import WorkSpace from "./WorkSpace.vue";
+import SearchManager from "./SearchManager.vue";
 import DiffManager from "./DiffManager.vue";
 import EditingManager from "./EditingManager.vue";
+import AboutApp from "./AboutApp.vue";
+import TitleBar from "./TitleBar.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import api from "@/utils/api";
-import { useTabsStore } from "@/stores";
+import { useTabsStore, useSettingsStore } from "@/stores";
+import imagehosting from "@/utils/imagehosting";
+import { ElNotification } from "element-plus";
 
 const tabsStore = useTabsStore();
+const settingsStore = useSettingsStore();
+const router = useRouter();
 
 const leftPaneSize = ref(20);
 const activeMenu = ref("files");
+const aboutDialogVisible = ref(false);
+
+const isOverlayVisible = ref(false);
+
+const debounce = (
+  func: { (e: any): void; (arg0: any): void },
+  wait: number | undefined
+) => {
+  let timeout: string | number | NodeJS.Timeout | undefined;
+  return function executedFunction(...args: [any]) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+if ("windowControlsOverlay" in navigator) {
+  (navigator as any).windowControlsOverlay.addEventListener(
+    "geometrychange",
+    debounce((e: { titlebarAreaRect: any }) => {
+      // Detect if the Window Controls Overlay is visible.
+      isOverlayVisible.value = (navigator as any).windowControlsOverlay.visible;
+
+      // Get the size and position of the title bar area.
+      // const titleBarRect = e.titlebarAreaRect;
+    }, 200)
+  );
+}
+
+const pingGitHub = async (): Promise<boolean> => {
+  try {
+    const response = await fetch("https://api.github.com/");
+    console.log("GitHub response:", response);
+    return response.ok;
+  } catch (error) {
+    console.error("Error pinging GitHub:", error);
+    return false;
+  }
+};
 
 onMounted(async () => {
   if (!api.ready) {
-    // router.push({ name: "login" });
-    // 加载远程配置
+    // 判断是否是跳过登录的情况(已经启用离线模式或之前没有登录过，没有loginMethod标识)
+    if (
+      !localStorage.getItem("jumpLogin") &&
+      localStorage.getItem("loginMethod")
+    ) {
+      // 这里检查是否能够正常访问Github【只检查api.github.com】
+      if (await pingGitHub()) {
+        router.push({ name: "login" });
+      } else {
+        ElNotification({
+          title: "Info",
+          message: "当前无法访问Github，已自动为您启用离线模式。",
+          type: "info",
+        });
+        localStorage.setItem("jumpLogin", "true");
+      }
+    }
+  } else {
+    // 尝试初始化 图床配置
+    imagehosting.init(
+      settingsStore.settings["图床配置"].bucket,
+      settingsStore.settings["图床配置"].endpoint,
+      settingsStore.settings["图床配置"].region,
+      settingsStore.settings["图床配置"].accessKeyId,
+      settingsStore.settings["图床配置"].secretAccessKey
+    );
   }
 });
 
@@ -62,15 +136,52 @@ const handleMenuSelect = (index: string) => {
     case Menu.Changes:
       activeMenu.value = Menu.Changes;
       break;
+    case Menu.About:
+      aboutDialogVisible.value = true;
+      break;
     case Menu.Settings:
-      tabsStore.addTab(tabsStore.TabType.SettingsPanel, "gear", {title: "设置"}); // 打开设置面板页
+      tabsStore.addTab(
+        tabsStore.TabType.SettingsPanel,
+        "gear",
+        { title: "设置" },
+        "setting"
+      ); // 打开设置面板页
       break;
   }
 };
+
+interface LaunchParams {
+  files: FileSystemFileHandle[];
+}
+
+if (
+  "launchQueue" in window &&
+  "files" in (window as any).LaunchParams.prototype
+) {
+  const launchQueue = (window as any).launchQueue;
+  launchQueue.setConsumer(async (launchParams: { files: string | any[] }) => {
+    // Nothing to do when the queue is empty.
+    if (!launchParams.files.length) {
+      return;
+    }
+    for (const fileHandle of launchParams.files) {
+      tabsStore.openNativeFile(fileHandle);
+    }
+  });
+}
 </script>
 
 <template>
-  <div class="main">
+  <TitleBar v-if="isOverlayVisible" />
+  <div
+    class="main"
+    :style="{
+      top: isOverlayVisible ? 'env(titlebar-area-height, 33px)' : 0,
+      height: isOverlayVisible
+        ? 'calc(100vh - env(titlebar-area-height, 33px))'
+        : '100vh',
+    }"
+  >
     <el-menu
       class="slider-menu-bar"
       :default-active="activeMenu"
@@ -115,12 +226,14 @@ const handleMenuSelect = (index: string) => {
       >
         <FileTree v-if="activeMenu == Menu.Files" />
         <EditingManager v-else-if="activeMenu == Menu.Editing" />
+        <SearchManager v-else-if="activeMenu == Menu.Search" />
         <DiffManager v-else-if="activeMenu == Menu.Changes" />
       </pane>
       <pane :size="100 - leftPaneSize">
         <WorkSpace />
       </pane>
     </splitpanes>
+    <AboutApp v-model:show="aboutDialogVisible" />
   </div>
 </template>
 
@@ -142,9 +255,10 @@ const handleMenuSelect = (index: string) => {
 
 <style scoped>
 .main {
+  position: fixed;
+  left: 0;
   display: flex;
   width: 100%;
-  height: 100vh;
 }
 
 .splitpanes {

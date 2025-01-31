@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from "vue-router
 
 import MainApplication from "./components/MainApplication.vue";
 import LoginManager from "./components/LoginManager.vue";
+import { routerMode } from "./config";
 
 // 动态获取 base 配置
 const base = import.meta.env.BASE_URL;
@@ -12,11 +13,9 @@ const routes = [
   { path: `${base}login`, component: LoginManager, name: 'login' },
 ];
 
-export const RouterMode = 'history';
-
 const router = createRouter({
   // history: createWebHistory(),
-  history: RouterMode === 'history' ? createWebHistory(base) : createWebHashHistory(base),
+  history: routerMode === 'history' ? createWebHistory(base) : createWebHashHistory(base),
   routes,
 });
 

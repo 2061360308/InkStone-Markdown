@@ -2,37 +2,49 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { SlVueTreeNext } from "sl-vue-tree-next";
 import "sl-vue-tree-next/sl-vue-tree-next-dark.css";
-import { ref, onMounted, nextTick } from "vue";
-import { ElSelect, ElOption, ElMessage, ElMessageBox } from "element-plus";
+import { ref, onMounted, nextTick, Ref } from "vue";
+import {
+  ElSelect,
+  ElOption,
+  ElMessage,
+  ElMessageBox,
+  ElNotification,
+} from "element-plus";
 
-import { EventBusType, EventBus } from "@/eventBus";
 import {
   ContextMenu,
   ContextMenuGroup,
   ContextMenuSeparator,
   ContextMenuItem,
 } from "@imengyu/vue3-context-menu";
-import { format } from "date-fns";
 
 import fs from "@/utils/fs";
 import api from "@/utils/api";
 
 import { useSettingsStore, useTabsStore, useGlobalStore } from "@/stores";
+import { computed } from "vue";
 
 const tabsStore = useTabsStore();
 const settingsStore = useSettingsStore();
 const globalStore = useGlobalStore();
 
+const repoName = computed(() => settingsStore.settings["基本配置"].repoName);
+
+const localTreeRepoName: Ref<string> = ref(repoName.value); // 本地文件树要显示的仓库名
+const localTreeRepoNames: Ref<string[]> = ref([]); // 本地文件树的仓库名列表
+
 const loading = ref(false);
 
-let current_clicked_node: any = null;
+let current_clicked_node: Record<string, any> = {};
 
 const dialogCreateFileVisible = ref(false); // 创建文件的对话框
 
 const createFileValue = ref({
   fileName: "",
-  type: "file",
+  post: false, // 是否是文章
+  draft: false, // 是否是草稿文章
   fileFolder: "",
+  repoName: "",
 });
 
 const menuVisible = ref(false);
@@ -42,56 +54,127 @@ const optionsComponent = ref({
   y: 200,
 });
 
-const selectTreeType = ref("mixed");
+const selectTreeType = ref("mixed"); // 当前选择展示的文件树类型
+
+// 文件树类型
 const treeTypes = ref([
   { label: "混合显示文件树", value: "mixed" },
   { label: "本地缓存文件树(扁平)", value: "local" },
   { label: "远程Github文件树(只读)", value: "remote" },
 ]);
 
-let fileTree = ref<any[]>([]);
+let fileTree = ref<any[]>([]); // 文件树
 
-// 转换 GitHub API 返回的文件目录树为所需格式
-const transformRemoteTree = (tree: any) => {
-  const result: any[] = [];
-  const pathMap: { [key: string]: any } = {};
+interface treeItemObject {
+  title: string;
+  isLeaf: boolean;
+  isExpanded: boolean;
+  data: {
+    path: string;
+    position?: "remote" | "local";
+  };
+  children?: treeItemObject[];
+}
 
-  tree.forEach(
-    (item: { path: string; type: string; mode: any; size: any; sha: any }) => {
-      const parts = item.path.split("/");
-      let currentLevel = result;
+// 格式化远程文件树返回内容
+const formatRemteTree = (
+  tree: Array<{
+    mode: string;
+    path: string;
+    sha: string;
+    type: string;
+    url: string;
+  }>
+): Array<treeItemObject> => {
+  let result: Array<treeItemObject> = [];
 
-      parts.forEach((part: any, index: number) => {
-        const currentPath = parts.slice(0, index + 1).join("/");
-        const existingPath = pathMap[currentPath];
+  tree.forEach((item) => {
+    let newItem: treeItemObject = {
+      title: item.path.substring(item.path.lastIndexOf("/") + 1),
+      isLeaf: item.type === "blob",
+      isExpanded: false,
+      data: {
+        path: item.path,
+      },
+    };
 
-        if (existingPath) {
-          currentLevel = existingPath.children;
-        } else {
-          const newItem = {
-            title: part,
-            isLeaf: item.type === "blob",
-            isExpanded: false,
-            data: {
-              path: item.path,
-              mode: item.mode,
-              type: item.type,
-              size: item.size,
-              sha: item.sha,
-            },
-            children: [],
-          };
-
-          currentLevel.push(newItem);
-          pathMap[currentPath] = newItem;
-
-          if (item.type === "tree") {
-            currentLevel = newItem.children;
-          }
-        }
-      });
+    if (newItem.isLeaf) {
+      newItem.data.position = "remote";
     }
-  );
+    result.push(newItem);
+  });
+
+  return result;
+};
+
+const formatLocalTree = (tree: Array<string>): Array<treeItemObject> => {
+  let result: Array<treeItemObject> = [];
+
+  tree.forEach((item) => {
+    let parts = item.split("/");
+    for (let i = 0; i < parts.length; i++) {
+      let path = parts.slice(0, i + 1).join("/");
+      let node = result.find((node) => node.data.path === path);
+      if (!node) {
+        let newItem: treeItemObject = {
+          title: parts[i],
+          isLeaf: i === parts.length - 1,
+          isExpanded: false,
+          data: {
+            path: path,
+          },
+        };
+        if (newItem.isLeaf) {
+          newItem.data.position = "local";
+        }
+        result.push(newItem);
+      }
+    }
+  });
+
+  return result;
+};
+
+const mixedTree = (
+  remote: Array<treeItemObject>,
+  local: Array<treeItemObject>
+): Array<treeItemObject> => {
+  let result: Array<treeItemObject> = [];
+  remote.forEach((item) => {
+    let node = local.find((node) => node.data.path === item.data.path);
+    if (!node) {
+      result.push(item);
+    }
+  });
+  local.forEach((item) => {
+    result.push(item);
+  });
+  return result;
+};
+
+const transformTree = (tree: Array<treeItemObject>) => {
+  const pathMap: { [key: string]: treeItemObject } = {};
+
+  tree.forEach((item) => {
+    pathMap[item.data.path] = { ...item, children: [] };
+  });
+
+  const result: Array<treeItemObject> = [];
+
+  tree.forEach((item) => {
+    const parentPath = item.data.path.substring(
+      0,
+      item.data.path.lastIndexOf("/")
+    );
+    if (parentPath && pathMap[parentPath]) {
+      if (!pathMap[parentPath].children) {
+        pathMap[parentPath].children = [];
+      }
+      pathMap[parentPath].children.push(pathMap[item.data.path]);
+    } else {
+      result.push(pathMap[item.data.path]);
+    }
+  });
 
   // 排序函数，将文件夹放在前面，并按字母顺序排序
   const sortItems = (items: any[]) => {
@@ -120,79 +203,8 @@ const transformRemoteTree = (tree: any) => {
   return result;
 };
 
-const transformLocalTree = (tree: any[]) => {
-  const result: any[] = [];
-
-  tree.forEach((item: any) => {
-    result.push({
-      title: item,
-      isLeaf: true,
-      isExpanded: false,
-      data: {
-        path: item,
-      },
-      children: [],
-    });
-  });
-  return result;
-};
-
-const mixTree = (local: any[], remote: any[]) => {
-  const pathMap = {};
-
-  remote.forEach(
-    (item: { data: { path: string | number; posititon: string } }) => {
-      pathMap[item.data.path] = item;
-      item.data.posititon = "remote";
-    }
-  );
-
-  local.forEach(
-    (item: {
-      data: { path: string | number; posititon: string };
-      title: any;
-      isLeaf: any;
-      children: any;
-    }) => {
-      if (pathMap[item.data.path]) {
-        // 如果本地和远程同时有一个项目则按本地的算
-        const remoteItem = pathMap[item.data.path];
-        remoteItem.title = item.title;
-        remoteItem.isLeaf = item.isLeaf;
-        remoteItem.data = item.data;
-        remoteItem.children = mixTree(remoteItem.children, item.children);
-      } else {
-        pathMap[item.data.path] = item;
-        item.data.posititon = "local";
-        remote.push(item);
-      }
-    }
-  );
-
-  const sortItems = (items: any[]) => {
-    items.sort(
-      (a: { isLeaf: any; title: string }, b: { isLeaf: any; title: any }) => {
-        if (a.isLeaf === b.isLeaf) {
-          return a.title.localeCompare(b.title);
-        }
-        return a.isLeaf ? 1 : -1;
-      }
-    );
-
-    items.forEach((item: { isLeaf: any; children: string | any[] }) => {
-      if (!item.isLeaf && item.children.length > 0) {
-        sortItems(item.children);
-      }
-    });
-  };
-
-  sortItems(remote);
-
-  return remote;
-};
-
 // 更新目录树
-const updateTree = async () => {
+const updateTree = async (noCache: boolean = false) => {
   loading.value = true;
   if (selectTreeType.value === "remote") {
     if (!api.ready) {
@@ -204,38 +216,67 @@ const updateTree = async () => {
       });
       return;
     }
-    api.getRepoTree().then((res) => {
-      let tree = transformRemoteTree(res.tree);
-      fileTree.value = tree;
+    api.getRepoTree(noCache).then((res) => {
+      let remoteTree = formatRemteTree(
+        res.tree.map((item) => ({
+          mode: item.mode || "",
+          path: item.path || "",
+          sha: item.sha || "",
+          type: item.type || "",
+          url: item.url || "",
+        }))
+      );
+      fileTree.value = transformTree(remoteTree);
       loading.value = false;
     });
   } else if (selectTreeType.value === "local") {
-    fs.list().then(async (res) => {
-      let tree = transformLocalTree(res);
-      fileTree.value = tree;
+    localTreeRepoNames.value = await fs.listAllRepoNames();
+    if (!api.ready) {
+      // 离线模式下，如果默认空间inkstone.local不存在，则额外添加
+      if (!localTreeRepoNames.value.includes("inkstone.local")) {
+        localTreeRepoNames.value.push("inkstone.local");
+      }
+    }
+
+    fs.list(localTreeRepoName.value).then(async (res) => {
+      let loaclTree = formatLocalTree(res);
+      fileTree.value = transformTree(loaclTree);
       loading.value = false;
     });
   } else {
-    let remote_tree: any[] = [];
+    let remoteTree: Array<treeItemObject> = [];
+    let loaclTree: Array<treeItemObject> = [];
     if (api.ready) {
       // 没有登录时不请求远程文件树
-      let remote = await api.getRepoTree();
-      remote_tree = transformRemoteTree(remote.tree);
+      let remote = await api.getRepoTree(noCache);
+      remoteTree = formatRemteTree(
+        remote.tree.map((item) => ({
+          mode: item.mode || "",
+          path: item.path || "",
+          sha: item.sha || "",
+          type: item.type || "",
+          url: item.url || "",
+        }))
+      );
     }
 
-    let local = await fs.list();
-    let local_tree = transformLocalTree(local);
-    let mixed_tree = await mixTree(local_tree, remote_tree);
-    fileTree.value = mixed_tree;
+    let local = await fs.list(repoName.value);
+    loaclTree = formatLocalTree(local);
+
+    const mixed: Array<treeItemObject> = mixedTree(remoteTree, loaclTree);
+    fileTree.value = transformTree(mixed);
+
     loading.value = false;
-    ElMessage({
-      type: "success",
-      message: "文件树已更新",
-    });
   }
 };
 
 onMounted(() => {
+  if (!api.ready) {
+    // 如果是离线模式下，直接显示本地文件树
+    selectTreeType.value = "local";
+    treeTypes.value = [{ label: "本地缓存文件树(扁平)", value: "local" }];
+    updateTree();
+  }
   updateTree();
 });
 
@@ -251,39 +292,27 @@ const nodeSelected = (selectedNodes: string | any[]) => {
   if (node.isLeaf) {
     let path = node.data.path;
     if (selectTreeType.value === "remote") {
-      console.log("remote只读");
+      tabsStore.openRemoteFile(path);
     } else if (selectTreeType.value === "local") {
-      tabsStore.openFile(path);
+      tabsStore.openFile(path, localTreeRepoName.value);
     } else {
-      if (node.data.posititon === "remote") {
+      if (node.data.position === "remote") {
         loading.value = true;
         // 从远程仓库下载文件
         api.getFileContent(path).then((res) => {
           let content = res.decodedContent;
-          fs.write(path, content).then((res) => {
-            tabsStore.openFile(path); // 打开文件
+          fs.write(path, content, repoName.value).then((res) => {
+            tabsStore.openFile(path, repoName.value); // 打开文件
             loading.value = false;
             updateTree();
           });
         });
       } else {
         // 本地文件，打开
-        tabsStore.openFile(path);
+        tabsStore.openFile(path, repoName.value);
       }
     }
   }
-};
-
-const openFile = (path: string) => {
-  // 获取后缀名
-  let suffix = path.substring(path.lastIndexOf(".") + 1);
-  let eventBus: EventBus;
-  if (suffix === "md") {
-    eventBus = new EventBus(EventBusType.OpenMdFile);
-  } else {
-    eventBus = new EventBus(EventBusType.OpenMdFile);
-  }
-  eventBus.emit(path);
 };
 
 // 节点拖拽事件处理函数
@@ -302,12 +331,11 @@ const showContextMenu = (
   event: { preventDefault: () => void; clientX: any; clientY: any }
 ) => {
   // 只在混合模式下允许创建，删除，重命名等操作
-  if (selectTreeType.value !== "mixed") {
+  if (selectTreeType.value === "remote") {
     return;
   }
 
   current_clicked_node = node;
-  console.log("showContextMenu", node);
   event.preventDefault();
   optionsComponent.value = {
     x: event.clientX,
@@ -317,8 +345,21 @@ const showContextMenu = (
 };
 
 const titleBarCreateClick = () => {
-  current_clicked_node = null;
-  showCreateFileDialog({ target: { dataset: { filetype: "file" } } });
+  current_clicked_node = {
+    type: "tree",
+    data: {
+      path: "",
+    },
+  };
+  showCreateFileDialog(false, false);
+};
+
+const titleBarUpdateClick = async () => {
+  await updateTree(true); // 强制刷新
+  ElMessage({
+    type: "success",
+    message: "文件树已更新",
+  });
 };
 
 // 删除文件
@@ -326,31 +367,57 @@ const deleteFile = (e: any) => {
   // Todo
   if (
     current_clicked_node &&
-    current_clicked_node?.data?.posititon === "remote"
+    current_clicked_node?.data?.position === "remote"
   ) {
-    ElMessageBox.confirm("将立即执行git提交，确定删除远程文件吗？", "Warning", {
-      confirmButtonText: "删除",
-      cancelButtonText: "取消",
-      type: "warning",
-    })
+    ElMessageBox.confirm(
+      `将立即执行git提交，确定删除远程文件吗？`,
+      `Warning - 删除远程${current_clicked_node.title}文件`,
+      {
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        type: "warning",
+      }
+    )
       .then(() => {
         let message = "Delete : " + (current_clicked_node?.data?.path ?? "");
         let files = [
           { path: current_clicked_node?.data?.path ?? "", content: null },
         ];
         loading.value = true;
-        api.commitChanges(files, message).then((res) => {
-          console.log("deleteFile", res);
-          ElMessage({
-            type: "success",
-            message: "文件已删除! 若未更新请稍后刷新页面",
+        api
+          .commitChanges(files, message)
+          .then((res) => {
+            ElMessage({
+              type: "success",
+              message: "文件已删除! 若未更新请稍后刷新页面",
+            });
+            loading.value = false;
+            updateTree(true);
+          })
+          .catch((error) => {
+            console.error("deleteFile", error);
+            if (error.message.includes("Update is not a fast forward")) {
+              ElNotification({
+                title: "Error",
+                message:
+                  "删除失败，稍后再试。\n 错误原因：由于远程仓库内容更新有延时，请不要频繁操作",
+                type: "error",
+              });
+            } else {
+              ElNotification({
+                title: "Error",
+                message: "删除失败，稍后再试。未知错误：" + error.message,
+                type: "error",
+              });
+            }
+
+            loading.value = false;
+            updateTree(true);
+            return;
           });
-          loading.value = false;
-          updateTree();
-        });
       })
       .catch((e) => {
-        console.log("deleteFile", e);
+        console.error("deleteFile", e);
         ElMessage({
           type: "info",
           message: "已取消删除",
@@ -368,17 +435,30 @@ const deleteFile = (e: any) => {
       }
     )
       .then(() => {
-        fs.delete(current_clicked_node.data.path).then((res) => {
-          console.log("deleteFile", res);
+        let _repoName;
+        if (selectTreeType.value === "mixed") {
+          _repoName = repoName.value;
+        } else if (selectTreeType.value === "local") {
+          _repoName = localTreeRepoName.value;
+        } else {
+          throw new Error("不支持的操作");
+        }
+
+        fs.delete(current_clicked_node.data.path, _repoName).then((res) => {
           ElMessage({
             type: "success",
             message: "文件已删除!",
           });
+
+          // 查看这个文件是否在打开的文件中，如果是，则关闭
+          tabsStore.tabs = tabsStore.tabs.filter(
+            (item) => item.data.path !== current_clicked_node.data.path
+          );
           updateTree();
         });
       })
       .catch((e) => {
-        console.log("deleteFile", e);
+        console.error("deleteFile", e);
         ElMessage({
           type: "info",
           message: "已取消删除",
@@ -387,12 +467,13 @@ const deleteFile = (e: any) => {
   }
 };
 
-const showCreateFileDialog = (e: { target: any }) => {
+const showCreateFileDialog = (
+  post: boolean = false,
+  draft: boolean = false
+) => {
   let create_folder;
 
-  if (current_clicked_node === null) {
-    create_folder = "";
-  } else if (current_clicked_node.data.type === "tree") {
+  if (current_clicked_node.data.type === "tree") {
     create_folder = current_clicked_node.data.path;
   } else {
     create_folder = current_clicked_node.data.path.substring(
@@ -401,17 +482,22 @@ const showCreateFileDialog = (e: { target: any }) => {
     );
   }
 
-  let target = e.target;
-
-  // 向上遍历 DOM 树，直到找到具有 data-filetype 属性的父元素
-  while (target && !target.dataset.filetype) {
-    target = target.parentElement;
+  // 根据当前选择的文件树类型，决定选用的仓库名
+  let _repoName;
+  if (selectTreeType.value === "mixed") {
+    _repoName = repoName.value;
+  } else if (selectTreeType.value === "local") {
+    _repoName = localTreeRepoName.value;
+  } else {
+    throw new Error("不支持的操作");
   }
 
   createFileValue.value = {
     fileName: "",
     fileFolder: create_folder ? create_folder : "",
-    type: target.dataset.filetype,
+    draft: draft,
+    post: post,
+    repoName: _repoName,
   };
 
   menuVisible.value = false;
@@ -434,12 +520,10 @@ const createFile = () => {
     return;
   }
 
-  let type = createFileValue.value.type;
-  if (type !== "file" && !path.endsWith(".md")) {
+  // 如果是文章，且没有后缀名，则添加后缀名
+  if (createFileValue.value.post && !path.endsWith(".md")) {
     path = path + ".md";
   }
-
-  console.log("createFile", path);
 
   // 检查文件是否存在
   let node = fileTree.value.find((item) => item.data.path === path);
@@ -450,31 +534,25 @@ const createFile = () => {
 
   let content = "";
 
-  if (createFileValue.value.type !== "file") {
-    let draft = "false";
-    if (createFileValue.value.type === "draft") {
-      draft = "true";
-    }
+  // 如果是文章，添加 front matter
+  if (createFileValue.value.post) {
+    // 获取文件名
     let fileNameWithExtension = path.substring(path.lastIndexOf("/") + 1);
     // 去掉文件后缀
     let fileName = fileNameWithExtension.substring(
       0,
       fileNameWithExtension.lastIndexOf(".")
     );
-    console.log("fileName", fileName);
-    const formattedDate = format(
-      new Date(),
-      settingsStore.settings["编辑器配置"].dateTimeFormat
-    );
-    content = `---\ntitle: ${fileName}\ndata: ${formattedDate}\ndraft: false\n---`;
+    content = `---\n${settingsStore.getfrontMatter(
+      fileName,
+      createFileValue.value.draft
+    )}\n---`;
   }
 
-  fs.write(path, content).then((res) => {
-    console.log("createFile", res);
+  fs.write(path, content, createFileValue.value.repoName).then((res) => {
     updateTree();
+    tabsStore.openFile(path, createFileValue.value.repoName);
   });
-
-  openFile(path);
 
   dialogCreateFileVisible.value = false;
 };
@@ -490,29 +568,50 @@ const createFile = () => {
             <font-awesome-icon :icon="['fas', 'file']" size="lg" />
           </template>
         </el-button>
-        <el-button circle @click="updateTree">
+        <el-button circle @click="titleBarUpdateClick">
           <template #icon>
             <font-awesome-icon :icon="['fas', 'arrows-rotate']" size="lg" />
           </template>
         </el-button>
       </div>
     </div>
-    <el-select
-      class="select-tree-type"
-      v-model="selectTreeType"
-      collapse-tags
-      placeholder="Select"
-      popper-class="custom-header"
-      :max-collapse-tags="2"
-      @change="updateTree"
-    >
-      <el-option
-        v-for="item in treeTypes"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
-    </el-select>
+    <div class="selects">
+      <el-select
+        class="select-tree-type"
+        v-model="selectTreeType"
+        collapse-tags
+        placeholder="Select"
+        popper-class="custom-header"
+        :max-collapse-tags="2"
+        @change="updateTree"
+      >
+        <el-option
+          v-for="item in treeTypes"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+
+      <el-select
+        class="select-local-tree-repo"
+        v-model="localTreeRepoName"
+        collapse-tags
+        placeholder="Select"
+        popper-class="custom-header"
+        :max-collapse-tags="2"
+        @change="updateTree"
+        v-if="selectTreeType === 'local'"
+      >
+        <el-option
+          v-for="item in localTreeRepoNames"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
+    </div>
+
     <div class="no-login-tip" v-if="!api.ready">
       登录后可使用完整功能
       <el-button type="primary" size="small" round @click="globalStore.goLogin"
@@ -563,27 +662,17 @@ const createFile = () => {
           </span>
         </template>
 
-        <template #content="{ node }">
-          <span class="item-icon">
-            <font-awesome-icon v-if="node.isLeaf" :icon="['fa', 'fa-file']" />
-            <font-awesome-icon v-else :icon="['fa', 'fa-folder']" />
-          </span>
-          {{ node.title }}
-        </template>
-
         <template #sidebar="{ node }">
           <el-tooltip
             class="box-item"
             effect="dark"
             content="Github上的远程（未下载）"
             placement="right-start"
-            v-if="node.data.posititon === 'remote'"
+            v-if="node.data.position === 'remote'"
           >
             <font-awesome-icon :icon="['fab', 'github']" />
           </el-tooltip>
         </template>
-
-        <!-- <template #draginfo="draginfo"> {{ selectedNodesTitle }} </template> -->
       </sl-vue-tree-next>
       <el-empty v-else description="点击右上角创建文件" />
     </div>
@@ -593,7 +682,7 @@ const createFile = () => {
           label="新建文章"
           :clickClose="true"
           data-filetype="post"
-          @click="showCreateFileDialog"
+          @click="showCreateFileDialog(true, false)"
         >
           <template #icon>
             <font-awesome-icon :icon="['fas', 'square-pen']" />
@@ -603,7 +692,7 @@ const createFile = () => {
           label="新建草稿"
           :clickClose="true"
           data-filetype="draft"
-          @click="showCreateFileDialog"
+          @click="showCreateFileDialog(true, true)"
         >
           <template #icon>
             <font-awesome-icon :icon="['fas', 'pen-ruler']" />
@@ -616,7 +705,7 @@ const createFile = () => {
           label="文件"
           :clickClose="true"
           data-filetype="file"
-          @click="showCreateFileDialog"
+          @click="showCreateFileDialog(false, false)"
         >
           <template #icon>
             <font-awesome-icon :icon="['fas', 'file']" />
@@ -628,6 +717,7 @@ const createFile = () => {
         label="重命名"
         :clickClose="false"
         @click="showItem = !showItem"
+        v-if="current_clicked_node.isLeaf === true"
       >
         <template #icon>
           <font-awesome-icon :icon="['fas', 'i-cursor']" />
@@ -637,11 +727,17 @@ const createFile = () => {
         label="复制"
         :clickClose="false"
         @click="showItem = !showItem"
+        v-if="current_clicked_node.isLeaf === true"
       >
         <template #icon>
           <font-awesome-icon :icon="['fas', 'copy']" /> </template
       ></context-menu-item>
-      <context-menu-item label="删除" :clickClose="false" @click="deleteFile">
+      <context-menu-item
+        label="删除"
+        :clickClose="false"
+        @click="deleteFile"
+        v-if="current_clicked_node.isLeaf === true"
+      >
         <template #icon>
           <font-awesome-icon
             :icon="['fas', 'trash']"
@@ -670,7 +766,7 @@ const createFile = () => {
   </el-dialog>
 </template>
 
-<style>
+<style scoped>
 .file-tree-box {
   height: 100%;
 }
@@ -698,31 +794,27 @@ const createFile = () => {
   align-items: center;
 }
 
-.select-tree-type {
+/* .select-tree-type {
   width: 100%;
-}
+} */
 
-.no-login-tip {
+.selects {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin: 10px;
-  padding: 10px 20px;
-  background-color: var(--el-color-primary-light-3);
-  color: var(--el-color-white);
-  border-radius: 5px;
-  white-space: nowrap;
 }
 
-.no-login-tip .el-button {
-  margin-left: 10px;
+.selects .select-local-tree-repo {
+  width: 150px;
 }
 
 .file-tree-inner-box {
   overflow: auto;
   white-space: nowrap;
 }
+</style>
 
+<style>
 .sl-vue-tree-next {
   min-height: 100%;
   min-width: 100%;
@@ -741,9 +833,9 @@ const createFile = () => {
   color: var(--el-color-white);
 }
 
-.sl-vue-tree-next-selected .item-icon svg {
-  color: var(--el-color-white) !important;
-}
+/* .sl-vue-tree-next-selected .item-icon svg {
+  color: var(--el-color-white);
+} */
 
 .sl-vue-tree-next-node-item:hover,
 .sl-vue-tree-next-node-item.sl-vue-tree-next-cursor-hover {
@@ -767,7 +859,6 @@ const createFile = () => {
   position: absolute;
   background-color: #fff;
   width: 100px;
-  /*height: 106px;*/
   font-size: 12px;
   color: #444040;
   border-radius: 4px;

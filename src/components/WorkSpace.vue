@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { ElTabs, ElTabPane, TabPaneName } from "element-plus";
-import MdEditor from "./MdEditor.vue";
+import MdEditor from "./editor/MdEditor.vue";
+import ReadOnly from "./editor/ReadOnly.vue";
 import SettingsPanel from "./SettingsPanel.vue";
 import { useTabsStore } from "@/stores";
 
 const tabsStore = useTabsStore();
+
+const truncateTitle = (title: any) => {
+  const maxLength = 10; // 设置最大字符长度
+  if (title.length > maxLength) {
+    return title.substring(0, maxLength) + "...";
+  }
+  return title;
+};
 </script>
 
 <template>
@@ -20,21 +29,34 @@ const tabsStore = useTabsStore();
       <el-tab-pane
         v-for="item in tabsStore.tabs"
         :key="item.id"
-        :label="item.data.title"
         :name="item.id"
         class="tab-pane"
       >
         <template #label>
-          <font-awesome-icon
-            :icon="['fas', item.icon]"
-            style="padding-right: 2px"
-          />
-          {{ item.data.title }}
+          <span :class="{ 'panel-tab': true, native: item.data.native, remote: item.data.remote }">
+            <font-awesome-icon
+              :icon="['fas', item.icon]"
+              style="padding-right: 2px"
+            />
+            <el-tooltip
+              :class="{ 'panel-tab': true, native: item.data.native }"
+              effect="dark"
+              :content="item.data.title"
+              placement="bottom-start"
+              >{{ truncateTitle(item.data.title) }}</el-tooltip
+            >
+          </span>
         </template>
         <MdEditor
           :editor="item.id"
           :path="item.data.path"
+          :repo="item.data.repo"
+          :native="item.data.native || false"
           v-if="item.type === tabsStore.TabType.MdFile"
+        />
+        <ReadOnly
+          :path="item.data.path"
+          v-else-if="item.type === tabsStore.TabType.RemoteFile"
         />
         <SettingsPanel
           v-else-if="item.type === tabsStore.TabType.SettingsPanel"
@@ -61,6 +83,14 @@ const tabsStore = useTabsStore();
 .workspace {
   width: 100%;
   height: 100vh;
+}
+
+.panel-tab.native {
+  color: var(--el-color-success);
+}
+
+.panel-tab.remote {
+  color: var(--el-color-warning);
 }
 
 .el-tabs {

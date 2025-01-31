@@ -8,6 +8,7 @@ import vueDevTools from "vite-plugin-vue-devtools";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import { version } from "./package.json";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -20,39 +21,52 @@ export default defineConfig({
       manifest: {
         name: "InkStone",
         short_name: "InkStone",
+        description: "最好的Markdown编辑器，不止是编辑器！",
         theme_color: "#dde3e9",
         background_color: "#dde3e9",
         display: "standalone",
         scope: "/",
         start_url: "/",
+        display_override: ["window-controls-overlay"],
         icons: [
           {
-            src: "img/icons/android-chrome-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
+            "src": "/pwa-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
           },
           {
-            src: "img/icons/android-chrome-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
+            "src": "/pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
           },
           {
-            src: 'img/icons/icon-144x144.png',
-            sizes: '144x144',
-            type: 'image/png'
+            "src": "/pwa-maskable-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
           },
           {
-            src: 'img/icons/icon-256x256.png',
-            sizes: '256x256',
-            type: 'image/png'
+            "src": "/pwa-maskable-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+          }
+        ],
+        file_handlers: [
+          {
+            action: "/",
+            accept: {
+              "text/markdown": [".md"],
+            },
           },
         ],
       },
-      injectManifest: {
-        // 自定义 Service Worker 文件路径
-        swSrc: 'src/pwa/service-worker.js',
-        swDest: 'service-worker.js',
-      },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 将限制增加到 5 MiB
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2,ttf,eot,otf}'],
+      }
     }),
     vueDevTools(),
     AutoImport({
@@ -62,6 +76,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+  },
   resolve: {
     extensions: [".js", ".vue", ".json", ".ts"],
     alias: {

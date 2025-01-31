@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus";
+import { ElButton, ElInput, ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import CryptoJS from "crypto-js";
 import api from "@/utils/api";
 import fs from "@/utils/fs";
-import { useGlobalStore } from "@/stores";
+import { useGlobalStore, useSettingsStore } from "@/stores";
+import { computed } from "vue";
 
 const globalStore = useGlobalStore();
+const settingsStore = useSettingsStore();
 
 const loading = ref(false);
 const isRotating = ref(false);
 const messageInput = ref("");
+const repoName = computed(() => settingsStore.settings["基本配置"].repoName);
 
 enum FileAction {
   CREATE = "create",
   UPDATE = "update",
 }
-type File = [string, FileAction];
-type DiffFiles = File[];
+type DiffFiles = Array<[name: string, action: FileAction]>;
 
 type remoteTree = {
   sha: string;
@@ -35,7 +37,6 @@ type remoteTree = {
 };
 
 const diff_files = ref<DiffFiles>([]);
-
 onMounted(() => {
   if (api.ready) {
     refreshDiffData();
@@ -60,7 +61,7 @@ const calculateFileSha = async (filePath: string): Promise<string> => {
     }
     return totalLength;
   };
-  const fileContent = await fs.get(filePath);
+  const fileContent = await fs.get(filePath, repoName.value);
   const size = new TextEncoder().encode(fileContent).length;
   const header = `blob ${size}\0`;
   const store = header + fileContent;
@@ -79,11 +80,11 @@ const refreshDiffData = async () => {
       remoteItems[item.path] = item.sha;
     }
   });
-  let localItems: string[] = await fs.list();
+  let localItems: string[] = await fs.list(repoName.value);
   for (const item of localItems) {
     if (remoteItems[item]) {
       let sha = await calculateFileSha(item);
-      console.log(sha, remoteItems[item]);
+
       if (sha !== remoteItems[item]) {
         files.push([item, FileAction.UPDATE]);
       }
@@ -119,7 +120,6 @@ const gender_commit_message = () => {
   };
 
   diff_files.value.forEach(([filePath, action]) => {
-    console.log(filePath, action);
     if (action === FileAction.CREATE) {
       changes.create.push(filePath);
     } else if (action === FileAction.UPDATE) {
@@ -183,7 +183,7 @@ const undo = (file: string | null = null) => {
   )
     .then(() => {
       undoFiles.forEach((f) => {
-        fs.delete(f);
+        fs.delete(f, repoName.value);
       });
       refreshDiffData();
       ElMessage({
@@ -192,7 +192,7 @@ const undo = (file: string | null = null) => {
       });
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       ElMessage({
         type: "info",
         message: "Delete canceled",
@@ -212,23 +212,39 @@ const commit = async () => {
 
   loading.value = true;
 
-  const files = [];
+  const files: Array<{ path: string; content: string }> = [];
   for (const file of diff_files.value) {
     const filePath = file[0];
-    const fileContent = await fs.get(filePath);
+    const fileContent = await fs.get(filePath, repoName.value);
     files.push({ path: filePath, content: fileContent });
   }
 
-  console.log(files);
+  api
+    .commitChanges(files, message)
+    .then(async (result) => {
+      ElMessage({
+        type: "success",
+        message: "Commit success",
+      });
 
-  api.commitChanges(files, message).then(() => {
-    ElMessage({
-      type: "success",
-      message: "Commit success",
+      for (const path of files) {
+        await fs.delete(path.path, repoName.value);
+      }
+
+      refreshDiffData();
+
+      // 更新本地的sha
+      loading.value = false;
+    })
+    .catch((error) => {
+      console.error(error);
+      ElNotification({
+        title: "Error",
+        message: "提交失败，发生错误！",
+        type: "error",
+      });
+      loading.value = false;
     });
-    refreshDiffData();
-    loading.value = false;
-  });
 };
 </script>
 
@@ -328,6 +344,7 @@ const commit = async () => {
         >登录</el-button
       >
     </div>
+    <el-empty description="离线模式无法提交文件" v-if="!api.ready" />
   </div>
 </template>
 

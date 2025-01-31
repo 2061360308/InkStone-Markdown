@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { CheckboxValueType, ElLoading } from "element-plus";
-import { ElMessageBox, ElMessage, ElInput } from "element-plus";
+import { CheckboxValueType } from "element-plus";
+import { ElMessage, ElInput } from "element-plus";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import api from "@/utils/api";
 import { encryptToken, decryptToken } from "@/utils/encryptToken";
+import { githubAppClientId, githubAppName } from "@/config";
+import { useSettingsStore } from "@/stores";
 
+const settingsStore = useSettingsStore();
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false); // whether to show loading
@@ -16,9 +19,29 @@ const chooseRepo = ref(false); // whether to choose repo
 const remember = ref<boolean>(false); // whether to remember the token
 // the token that user input, just for token login
 const inputToken = ref<string>("");
-const repo = ref<string>(""); // the repo name that user want to use
 // the list of repos that user has access to
 const repoList = ref<{ label: string; value: string }[]>([]);
+const branchList = ref<{ label: string; value: string }[]>([]);
+
+const repoName = computed(() => settingsStore.settings["基本配置"].repoName);
+
+const updateBranchList = async (repo: string) => {
+  api.repo = repo;
+  branchList.value = [];
+  let branches = await api.getRepoBranches();
+
+  if (!branches) return;
+
+  branches.forEach((branch) => {
+    branchList.value.push({ label: branch.name, value: branch.name });
+  });
+};
+
+watch(repoName, async (newVal) => {
+  if (newVal) {
+    await updateBranchList(newVal || "");
+  }
+});
 
 let access_token;
 
@@ -31,48 +54,49 @@ onMounted(async () => {
   loginMethod.value = loginMethodValue || "github";
 
   // 获取查询参数, access_token 和 repo
-  repo.value =
-    (route.query.repo as string | null) || localStorage.getItem("repo") || "";
   access_token =
     route.query.access_token ||
     decryptToken(localStorage.getItem("access_token") || "") ||
     "";
 
   // 记录repo
-  if (repo.value) {
-    localStorage.setItem("repo", repo.value);
+  if (route.query.repo) {
+    settingsStore.settings["基本配置"].repoName = route.query.repo as string;
   }
 
   // 如果存在 access_token,进行验证
   if (access_token) {
-    loading.value = true;  // 清除查询参数
+    loading.value = true; // 清除查询参数
     router.replace({ query: {} });
-    let { tokenValid, repoValid, hasPushAccess, installedApp } = await api.init(
-      repo.value,
-      access_token as string
-    );
-
-    console.log("tokenValid", tokenValid);
-    console.log("repoValid", repoValid);
-    console.log("hasPushAccess", hasPushAccess);
-    console.log("installedApp", installedApp);
+    let { tokenValid, repoValid, hasPushAccess, branchValid, installedApp } =
+      await api.init(
+        settingsStore.settings["基本配置"].repoName,
+        access_token as string,
+        settingsStore.settings["基本配置"].repoBranch
+      );
 
     if (tokenValid) {
       // Todo 暂时忽略remember选项
-      localStorage.setItem("access_token", encryptToken(access_token as string));
+      localStorage.setItem(
+        "access_token",
+        encryptToken(access_token as string)
+      );
     }
 
     if (!tokenValid) {
       ElMessage.error("Token无效，请重新登录");
       loading.value = false;
       return;
-    } else if (!repoValid) {
-      ElMessage.error("仓库不存在或无权限");
+    } else if (!repoValid || !branchValid) {
+      ElMessage.error("仓库/分支不存在或无权限");
       chooseRepo.value = true;
-      let repos = await api.getRepoNames(access_token as string);
+      let repos = await api.getRepoNames();
       repos.forEach((repo) => {
         repoList.value.push({ label: repo.name, value: repo.name });
       });
+      if (repoName.value) {
+        updateBranchList(repoName.value);
+      }
       loading.value = false;
       return;
     } else if (!hasPushAccess) {
@@ -82,9 +106,14 @@ onMounted(async () => {
     } else if (!installedApp) {
       ElMessage.error("请先安装应用");
       // 重定向到安装应用页面
-      window.location.href = "https://github.com/apps/InkStoneEditor/installations/new";
+      window.location.href = `https://github.com/apps/${githubAppName}/installations/new`;
       return;
     }
+
+    // 登录成功
+
+    // 同步远程设置
+    await settingsStore.syncRemoteSettings();
 
     loading.value = false;
     router.push({ name: "main" });
@@ -98,7 +127,6 @@ const changeRemember = (e: CheckboxValueType) => {
 
 const loginByToken = () => {
   localStorage.setItem("loginMethod", loginMethod.value);
-  console.log("loginByToken");
   if (!inputToken.value) {
     ElMessage.error("请输入Token");
     return;
@@ -113,7 +141,9 @@ const loginByToken = () => {
 const loginByGithub = async () => {
   localStorage.setItem("loginMethod", loginMethod.value);
   // 获取当前查询参数
-  let params = new URLSearchParams(Object.entries(route.query).map(([key, value]) => [key, value as string]));
+  let params = new URLSearchParams(
+    Object.entries(route.query).map(([key, value]) => [key, value as string])
+  );
   // 检查是否已经存在 time 参数
   if (params.has("time")) {
     // 更新 time 参数的值
@@ -127,21 +157,22 @@ const loginByGithub = async () => {
   await nextTick();
 
   const currentUrl = window.location.href;
-  console.log("loginByGithub");
-  let client_id = "Iv23liKlkmkQ3Tc1M679";
-  let url = `https://github.com/login/oauth/authorize?client_id=${client_id}&state=${encodeURIComponent(
+  let url = `https://github.com/login/oauth/authorize?client_id=${githubAppClientId}&state=${encodeURIComponent(
     currentUrl
   )}`;
+
   window.location.replace(url);
   loading.value = true;
 };
 
 const setRepoLogin = () => {
-  localStorage.setItem("repo", repo.value);
   window.location.reload();
 };
 
 const jumpLogin = () => {
+  localStorage.setItem("jumpLogin", "true"); // 添加跳过登录标记
+  // 更改设置中当前仓库为 inkstone.local 以便后续存储文件
+  settingsStore.settings["基本配置"].repoName = "inkstone.local";
   router.replace({ name: "main" });
 };
 </script>
@@ -152,7 +183,7 @@ const jumpLogin = () => {
       <div class="left">
         <el-image
           style="height: 300px"
-          src="https://tse2-mm.cn.bing.net/th/id/OIP-C.XIWbKIsH6fzn5xpDq0AV4QHaKz?w=182&h=265&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+          src="/img/login_cover.jpg"
           fit="cover"
           class="cover-image"
         />
@@ -249,13 +280,27 @@ const jumpLogin = () => {
         </div>
         <div>
           <el-select
-            v-model="repo"
+            v-model="settingsStore.settings['基本配置'].repoName"
             placeholder="请选择将要使用的仓库"
             size="large"
             style="width: 240px"
           >
             <el-option
               v-for="item in repoList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+
+          <el-select
+            v-model="settingsStore.settings['基本配置'].repoBranch"
+            placeholder="请选择将要使用的分支"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in branchList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
