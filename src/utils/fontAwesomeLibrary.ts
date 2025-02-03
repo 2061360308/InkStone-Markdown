@@ -3,7 +3,7 @@
 // 这是一个用于导入应用程序中使用的图标的文件。
 // 按图标名称排序
 
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
   faAlignLeft,
@@ -47,12 +47,14 @@ import {
   faSquarePen,
   faSquareXmark,
   faStar,
+  faThumbtack,
+  faThumbtackSlash,
   faTrash,
   faU,
   faWonSign,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons'
 
-import { faGithub, faTumblr } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faTumblr } from '@fortawesome/free-brands-svg-icons'
 
 export const initFontAwesomeIcons = () => {
   library.add(
@@ -98,11 +100,13 @@ export const initFontAwesomeIcons = () => {
     faSquarePen,
     faSquareXmark,
     faStar,
+    faThumbtack,
+    faThumbtackSlash,
     faTrash,
     faTumblr,
     faU,
-    faWonSign
-  );
-};
+    faWonSign,
+  )
+}
 
-export default initFontAwesomeIcons;
+export default initFontAwesomeIcons

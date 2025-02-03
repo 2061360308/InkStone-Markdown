@@ -1,7 +1,21 @@
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
+import { useContexStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { Splitpanes, Pane } from 'splitpanes'
+import { PanelIconPosition } from '@/panels/base'
+import panelsManager from '@/panels'
+import SidebarPanel from '@/components/SidebarPanel.vue'
+const contexStore = useContexStore()
+
+const { sidebarState } = storeToRefs(contexStore)
 
 const titleBarVisible = ref(false)
+
+/**
+ *    标题栏
+ */
 
 // 防止标题栏覆盖检测函数频繁触发
 const debounce = <F extends (...args: unknown[]) => unknown>(func: F, wait: number) => {
@@ -48,46 +62,113 @@ if ('windowControlsOverlay' in navigator) {
   )
 }
 
-const notificationVisible = ref(true)
+/**
+ *    左侧边栏
+ */
 
-// Menu enum
-enum Menu {
-  Null = '',
-  Files = 'files',
-  Editing = 'editing',
-  Search = 'search',
-  Changes = 'changes',
-  About = 'about',
-  Settings = 'settings',
+const notificationVisible: Ref<boolean> = ref(contexStore.notification.data.length > 0)
+
+const activeMenu = ref('')
+const topMenuItems = computed(() =>
+  panelsManager
+    .getAllPanels()
+    .filter((panel) => panel.position === PanelIconPosition.top)
+    .sort((a, b) => a.index - b.index),
+)
+
+const bottomMenuItems = computed(() =>
+  panelsManager
+    .getAllPanels()
+    .filter((panel) => panel.position === PanelIconPosition.bottom)
+    .sort((a, b) => a.index - b.index),
+)
+
+const closeSideBarPanel = () => {
+  /**
+   * 直接关闭侧边栏，会导致主面板闪烁
+   * 这里设计动画先将侧边栏尺寸缓慢减小至 0，然后关闭侧边栏
+   * 最后恢复原始尺寸记录，以便下次打开侧边栏时恢复原始尺寸
+   */
+  const duration = 30 // 动画持续时间，单位为毫秒
+  const startSize = sidebarState.value.size
+  const startTime = performance.now()
+
+  const animate = (currentTime: number) => {
+    const elapsedTime = currentTime - startTime
+    const progress = Math.min(elapsedTime / duration, 1)
+    contexStore.sidebarState.size = startSize * (1 - progress)
+
+    if (progress < 1) {
+      requestAnimationFrame(animate)
+    } else {
+      contexStore.sidebarState.size = 0
+
+      // 恢复原始尺寸
+      // 虽然快速点击会导致置零的情况，这里不做考虑
+      setTimeout(() => {
+        sidebarState.value.opened = false
+        contexStore.sidebarState.size = startSize
+      }, 300)
+    }
+  }
+
+  requestAnimationFrame(animate)
 }
 
-const activeMenu = ref<Menu>(Menu.Files)
+const unpinSideBarPanel = () => {
+  const duration = 30 // 动画持续时间，单位为毫秒
+  const startSize = sidebarState.value.size
+  const startTime = performance.now()
+
+  const animate = (currentTime: number) => {
+    const elapsedTime = currentTime - startTime
+    const progress = Math.min(elapsedTime / duration, 1)
+    contexStore.sidebarState.size = startSize * (1 - progress)
+
+    if (progress < 1) {
+      requestAnimationFrame(animate)
+    } else {
+      contexStore.sidebarState.size = 0
+
+      // 恢复原始尺寸
+      // 虽然快速点击会导致置零的情况，这里不做考虑
+      setTimeout(() => {
+        sidebarState.value.fixed = false
+        contexStore.sidebarState.size = startSize
+      }, 300)
+    }
+  }
+
+  requestAnimationFrame(animate)
+}
 
 const handleMenuSelect = (index: string) => {
   // Set the active menu
-  switch (index) {
-    case Menu.Files:
-      activeMenu.value = Menu.Files
-      break
-    case Menu.Editing:
-      activeMenu.value = Menu.Editing
-      break
-    case Menu.Search:
-      activeMenu.value = Menu.Search
-      break
-    case Menu.Changes:
-      activeMenu.value = Menu.Changes
-      break
-    case Menu.About:
-      // aboutDialogVisible.value = true;
-      break
-    case Menu.Settings:
-      break
+  if (sidebarPanelFixed.value) {
+    console.log('index::', index, activeMenu.value, index === activeMenu.value)
+    if (index === activeMenu.value) {
+      activeMenu.value = ''
+      closeSideBarPanel()
+    } else {
+      contexStore.sidebarState.opened = true
+      activeMenu.value = index
+    }
+    console.log('sidebarPanelFixed', contexStore.sidebarState.opened)
+  }
+  panelsManager.activePanel(index)
+}
+
+const handelPinButton = () => {
+  if (sidebarPanelFixed.value) {
+    unpinSideBarPanel()
+  } else {
+    contexStore.sidebarState.fixed = true
   }
 }
 
-const sidebarPanelVisible: Ref<boolean> = ref(false)
-const sidebarPanelFixed: Ref<boolean> = ref(false)
+const sidebarPanelVisible = computed(() => sidebarState.value.opened)
+const sidebarPanelFixed = computed(() => sidebarState.value.fixed)
+const sidebarPanelSize = computed(() => sidebarState.value.size)
 const sidebarDrawerVisible: Ref<boolean> = ref(false)
 
 let menuBarEnter: boolean = false
@@ -113,7 +194,7 @@ const sidebarMenuMouseLeave = () => {
 <template>
   <div class="main-application">
     <div class="title-bar" v-if="titleBarVisible"></div>
-    <div class="notification"></div>
+    <div class="notification" v-if="notificationVisible"></div>
     <div class="main-container">
       <el-menu
         class="sidebar-menu"
@@ -124,37 +205,36 @@ const sidebarMenuMouseLeave = () => {
         @mouseleave="menuBarEnter = false"
       >
         <div class="items-top">
-          <el-menu-item :index="Menu.Files">
-            <font-awesome-icon :icon="['fas', 'file']" size="2xl" />
-          </el-menu-item>
-          <el-menu-item :index="Menu.Editing">
-            <font-awesome-icon :icon="['fas', 'inbox']" size="2xl" />
-          </el-menu-item>
-          <el-menu-item :index="Menu.Search">
-            <font-awesome-icon :icon="['fas', 'magnifying-glass']" size="2xl" />
-          </el-menu-item>
-          <el-menu-item :index="Menu.Changes">
-            <font-awesome-icon :icon="['fas', 'code-branch']" size="2xl" />
+          <el-menu-item v-for="item in topMenuItems" :index="item.id" :key="item.id">
+            <font-awesome-icon :icon="['fas', item.icon]" size="2xl" />
           </el-menu-item>
         </div>
         <div class="items-bottom">
-          <el-menu-item :index="Menu.About">
-            <font-awesome-icon :icon="['fas', 'circle-question']" size="2xl" />
-          </el-menu-item>
-          <el-menu-item :index="Menu.Settings">
-            <font-awesome-icon :icon="['fas', 'gear']" size="2xl" />
+          <el-menu-item v-for="item in bottomMenuItems" :index="item.id" :key="item.id">
+            <font-awesome-icon :icon="['fas', item.icon]" size="2xl" />
           </el-menu-item>
         </div>
       </el-menu>
       <el-drawer
         :modal-class="titleBarVisible ? 'sidebar-drawer-hastitlebar' : 'sidebar-drawer'"
         v-model="sidebarDrawerVisible"
-        title="I am the title"
         direction="ltr"
+        :with-header="false"
         :size="350"
         :modal="false"
         @mouseleave="sidebarMenuMouseLeave"
-      ></el-drawer>
+        v-if="!sidebarPanelFixed"
+      >
+        <SidebarPanel @update:pin="handelPinButton" />
+      </el-drawer>
+      <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
+        <pane v-if="sidebarPanelFixed && sidebarPanelVisible" :size="sidebarPanelSize">
+          <SidebarPanel @update:pin="handelPinButton" />
+        </pane>
+        <pane :size="100 - sidebarPanelSize">
+          <div style="background-color: aquamarine; height: 100%; width: 100%">你好</div>
+        </pane>
+      </splitpanes>
     </div>
   </div>
 </template>
@@ -165,7 +245,6 @@ const sidebarMenuMouseLeave = () => {
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background-color: #f5f5f5;
 
   .title-bar {
     background-color: antiquewhite;
@@ -174,6 +253,7 @@ const sidebarMenuMouseLeave = () => {
 
   .main-container {
     height: 100%;
+    display: flex;
   }
 }
 
@@ -185,6 +265,12 @@ const sidebarMenuMouseLeave = () => {
   justify-items: center;
   flex-direction: column;
 }
+
+.splitpanes {
+  // width: calc(100% - 54px);
+  width: 100%;
+  height: 100%;
+}
 </style>
 
 <style lang="scss">
@@ -195,16 +281,25 @@ const sidebarMenuMouseLeave = () => {
   .el-drawer.ltr {
     border-radius: 0 10px 10px 0;
     box-shadow: none;
+
+    .el-drawer__body {
+      padding: 0;
+    }
   }
 }
 
 .sidebar-drawer-hastitlebar {
   top: env(titlebar-area-height, 33px) !important;
   left: $sidebar-menu-w !important;
+  padding: 0;
 
   .el-drawer.ltr {
     border-radius: 0 10px 10px 0;
     box-shadow: none;
+
+    .el-drawer__body {
+      padding: 0;
+    }
   }
 }
 </style>

@@ -7,10 +7,30 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AboutPanel: typeof import('./src/components/AboutPanel.vue')['default']
+    DifferencesPanel: typeof import('./src/components/DifferencesPanel.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElCollapse: typeof import('element-plus/es')['ElCollapse']
+    ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTree: typeof import('element-plus/es')['ElTree']
+    FilePanel: typeof import('./src/components/FilePanel.vue')['default']
+    OutlinePanel: typeof import('./src/components/OutlinePanel.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchPanel: typeof import('./src/components/SearchPanel.vue')['default']
+    SettingsPanel: typeof import('./src/components/SettingsPanel.vue')['default']
+    SidebarPanel: typeof import('./src/components/SidebarPanel.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
