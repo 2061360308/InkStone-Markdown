@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, defineEmits } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import CryptoJS from 'crypto-js'
 import api from '@/utils/api'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineExpose, ref, Ref, onMounted } from 'vue'
+import { defineExpose, ref, Ref, onMounted, defineEmits } from 'vue'
 import api from '@/utils/api'
 import { computed } from 'vue'
 import fs from '@/utils/fs'
