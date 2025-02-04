@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 import LaunchView from './views/LaunchView.vue'
+import LoginView from './views/LoginView.vue'
 import MainAppView from './views/MainAppView.vue'
 import { routerMode } from './config'
 
@@ -11,7 +12,7 @@ const routes = [
   // { path: `${base}`, redirect: `${base}main` },
   { path: `${base}`, component: LaunchView, name: 'launch' },
   { path: `${base}main`, component: MainAppView, name: 'main' },
-  // { path: `${base}login`, component: LoginManager, name: 'login' },
+  { path: `${base}login`, component: LoginView, name: 'login' },
 ]
 
 const router = createRouter({

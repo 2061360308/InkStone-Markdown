@@ -9,6 +9,15 @@ export class SearchPanel implements Panel {
   position = PanelIconPosition.top
   index = 2
 
+  actions = [
+    {
+      icon: 'arrows-rotate',
+      name: '刷新',
+      tooltip: '刷新',
+      method: 'refresh',
+    },
+  ]
+
   async component(): Promise<Component> {
     const m = await import('@/components/SearchPanel.vue')
     return m.default as Component

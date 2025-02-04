@@ -9,6 +9,15 @@ export class OutlinePanel implements Panel {
   position = PanelIconPosition.top
   index = 1
 
+  actions = [
+    {
+      icon: 'arrows-rotate',
+      name: '刷新',
+      tooltip: '刷新',
+      method: 'refresh',
+    },
+  ]
+
   async component(): Promise<Component> {
     const m = await import('@/components/OutlinePanel.vue')
     return m.default as Component

@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue'
-import { useContexStore } from '@/stores'
+import { Ref, ref, onMounted } from 'vue'
+import { useContexStore, useSettingsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import { PanelIconPosition } from '@/panels/base'
 import panelsManager from '@/panels'
 import SidebarPanel from '@/components/SidebarPanel.vue'
+import { decryptToken } from '@/utils/encryptToken'
+import { validateLogin } from '@/utils/validateLogin'
+import api from '@/utils/api'
+
 const contexStore = useContexStore()
+const settingsStore = useSettingsStore()
 
 const { sidebarState } = storeToRefs(contexStore)
 
@@ -68,7 +73,7 @@ if ('windowControlsOverlay' in navigator) {
 
 const notificationVisible: Ref<boolean> = ref(contexStore.notification.data.length > 0)
 
-const activeMenu = ref('')
+const activeMenu = ref(contexStore.sidebarState.current)
 const topMenuItems = computed(() =>
   panelsManager
     .getAllPanels()
@@ -189,6 +194,50 @@ const sidebarMenuMouseLeave = () => {
     }
   }, 200)
 }
+
+/**
+ *   验证本地token信息
+ */
+
+const validate = async () => {
+  if (api.ready) {
+    contexStore.sidebarState.ready = true
+    console.log('API已经准备好了，无需进行验证')
+    return
+  }
+
+  const start_time = Date.now()
+
+  const access_token = decryptToken(localStorage.getItem('access_token') || '')
+
+  // 如果存在 access_token,进行验证
+  if (access_token) {
+    const { tokenValid, repoValid, hasPushAccess, branchValid, installedApp } = await validateLogin(
+      access_token,
+      settingsStore.settings['基本配置'].repoName,
+      settingsStore.settings['基本配置'].repoBranch,
+    )
+    if (tokenValid && repoValid && hasPushAccess && branchValid) {
+      // 判断登录方式，如果是通过GithubApp自动登录的，需要验证是否安装应用
+      const loginMethodValue = localStorage.getItem('loginMethod')
+      if (loginMethodValue === 'github' && !installedApp) {
+        localStorage.removeItem('access_token')
+      }
+    } else {
+      // 验证失败，清除本地token
+      localStorage.removeItem('access_token')
+    }
+  }
+
+  console.log('验证完成, 耗时：', Date.now() - start_time)
+
+  // 置sidebarPanel的ready为true，让其开始挂载面板组件
+  contexStore.sidebarState.ready = true
+}
+
+onMounted(() => {
+  validate()
+})
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, Ref } from 'vue'
 import { localFile, remoteFile, nativeFile } from '@/utils/files'
+import api from '@/utils/api'
 
 export const useContexStore = defineStore('contex', () => {
   // 打开的文件
@@ -18,13 +19,14 @@ export const useContexStore = defineStore('contex', () => {
     fixed: true,
     opened: true,
     size: 20,
-    current: '',
+    current: 'files',
     ready: false,
   })
 
   const notification: Ref<{ hash: string; data: Array<string> }> = ref({ hash: '', data: [] })
 
   return {
+    api,
     openedFiles,
     routerParams,
     sidebarState,

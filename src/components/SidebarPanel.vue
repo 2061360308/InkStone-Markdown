@@ -4,6 +4,7 @@ import { useContexStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import panelsManager from '@/panels'
+import { watch } from 'vue'
 
 const emits = defineEmits(['update:pin'])
 
@@ -33,6 +34,14 @@ const component = computed(() => {
   return null
 })
 
+watch(
+  () => sidebarState.value.current,
+  () => {
+    // 切换面板需要重置loading
+    loading.value = false
+  },
+)
+
 const ContentComponentRef = ref<ComponentPublicInstance | null>(null)
 
 const handleActionButton = (method: string): void => {
@@ -43,13 +52,15 @@ const handleActionButton = (method: string): void => {
   }
 }
 
-
-
 const pinButtonClicked = () => {
   emits('update:pin')
 }
 
 const loading = ref(false)
+
+const changeLoading = (value: boolean) => {
+  loading.value = value
+}
 
 /**
  *   完成验证
@@ -58,10 +69,6 @@ const loading = ref(false)
  */
 
 const ready = computed(() => sidebarState.value.ready)
-
-setTimeout(() => {
-  sidebarState.value.ready = true
-}, 3000)
 </script>
 
 <template>
@@ -97,7 +104,12 @@ setTimeout(() => {
     </div>
 
     <div class="content">
-      <component v-if="ready" :is="component" ref="ContentComponentRef" />
+      <component
+        v-if="ready"
+        @change:loading="changeLoading"
+        :is="component"
+        ref="ContentComponentRef"
+      />
       <div v-else style="height: 100%">
         <el-skeleton :rows="5" animated />
       </div>

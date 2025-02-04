@@ -18,5 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "./components.d.ts", "src/views/MainAppViewvue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "./components.d.ts",
+    "./auto-imports.d.ts",
+    "src/views/MainAppViewvue"
+  ]
 }
