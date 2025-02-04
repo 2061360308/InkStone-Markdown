@@ -9,14 +9,27 @@ import { watch } from 'vue'
 
 const settingsStore = useSettingsStore()
 
+const emit = defineEmits(['change:loading', 'change:tipLoad'])
 const loading = ref(false)
-
-const emit = defineEmits(['change:loading'])
+const tipLoad = computed(() => !api.ready)
 
 watch(
   () => loading.value,
   (value) => {
     emit('change:loading', value)
+  },
+  {
+    immediate: true,
+  },
+)
+
+watch(
+  () => tipLoad.value,
+  (value) => {
+    emit('change:tipLoad', value)
+  },
+  {
+    immediate: true,
   },
 )
 
@@ -210,6 +223,9 @@ const updateTreeData = async (noCache: boolean = false) => {
 
 onMounted(async () => {
   updateTreeData()
+  if (!api.ready) {
+    activeTreeMode.value = 'local'
+  }
 })
 
 // 暴露给外部的方法,在定义面板时定义
@@ -228,7 +244,7 @@ defineExpose({
 </script>
 <template>
   <el-collapse v-model="activeTreeMode" accordion class="file-tree-box">
-    <el-collapse-item name="mixed">
+    <el-collapse-item name="mixed" v-if="!tipLoad">
       <template #title> 混合文件树 </template>
       <div class="content">
         <FileTree :dataSource="mixedTree" :defaultProps="defaultProps" />
@@ -240,7 +256,7 @@ defineExpose({
         <FileTree :dataSource="localTree" :defaultProps="defaultProps" />
       </div>
     </el-collapse-item>
-    <el-collapse-item name="remote">
+    <el-collapse-item name="remote" v-if="!tipLoad">
       <template #title> 远程仓库文件（只读） </template>
       <div class="content">
         <FileTree :dataSource="remoteTree" :defaultProps="defaultProps" />

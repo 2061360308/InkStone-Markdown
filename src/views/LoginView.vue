@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CheckboxValueType } from 'element-plus'
-import { ElMessage, ElInput } from 'element-plus'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -125,7 +123,7 @@ onMounted(async () => {
   }
 })
 
-const changeRemember = (e: CheckboxValueType) => {
+const changeRemember = (e: unknown) => {
   localStorage.setItem('remember', (e as boolean).toString())
 }
 

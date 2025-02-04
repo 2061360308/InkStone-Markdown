@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import CryptoJS from 'crypto-js'
 import api from '@/utils/api'
@@ -9,7 +9,30 @@ import { computed } from 'vue'
 
 const settingsStore = useSettingsStore()
 
+const emit = defineEmits(['change:loading', 'change:tipLoad'])
 const loading = ref(false)
+const tipLoad = computed(() => !api.ready)
+
+watch(
+  () => loading.value,
+  (value) => {
+    emit('change:loading', value)
+  },
+  {
+    immediate: true,
+  },
+)
+
+watch(
+  () => tipLoad.value,
+  (value) => {
+    emit('change:tipLoad', value)
+  },
+  {
+    immediate: true,
+  },
+)
+
 const isRotating = ref(false)
 const messageInput = ref('')
 const repoName = computed(() => settingsStore.settings['基本配置'].repoName)
@@ -226,65 +249,73 @@ const commit = async () => {
 </script>
 <template>
   <div class="differences-panel">
-    <div class="commit-box">
-      <el-input
-        v-model="messageInput"
-        :autosize="{ minRows: 2, maxRows: 4 }"
-        type="textarea"
-        placeholder="commit message"
-        clearable
-      />
-      <el-button type="primary" :disabled="diff_files.length <= 0" @click="commit">提交</el-button>
-    </div>
-    <div class="operation-box">
-      <div class="title">更改列表</div>
-      <div>
-        <el-tooltip class="box-item" effect="dark" content="刷新数据" placement="bottom"
-          ><el-button link size="small" @click="refreshClicked">
-            <font-awesome-icon
-              style="margin-right: 15px"
-              :icon="['fas', 'arrows-rotate']"
-              size="lg"
-              :class="{ 'rotate-animation': isRotating }"
-            /> </el-button
-        ></el-tooltip>
-        <el-tooltip class="box-item" effect="dark" content="放弃所有更改" placement="bottom"
-          ><el-button link size="small" @click="undo()"
-            ><font-awesome-icon
-              class="undo_all"
-              :icon="['fas', 'rotate-left']"
-              size="lg" /></el-button
-        ></el-tooltip>
+    <el-empty description="离线模式无法提交文件" v-if="tipLoad" />
+    <div v-else>
+      <div class="commit-box">
+        <el-input
+          v-model="messageInput"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          type="textarea"
+          placeholder="commit message"
+          clearable
+        />
+        <el-button type="primary" :disabled="diff_files.length <= 0" @click="commit"
+          >提交</el-button
+        >
       </div>
-    </div>
-    <div class="diff-box">
-      <div class="diff-item" v-for="file in diff_files" :key="file[0]">
-        <div class="file-info">
-          <span class="file-name">{{ file[0].split('/').pop() }}</span>
-          <el-tooltip class="box-item" effect="dark" :content="file[0]" placement="right"
-            ><span class="file-path">{{
-              file[0].split('/').slice(0, -1).join('/')
-            }}</span></el-tooltip
-          >
-        </div>
-        <div class="others">
-          <el-tooltip class="box-item" effect="dark" content="放弃更改" placement="bottom"
-            ><el-button link size="small" @click="undo(file[0])">
-              <font-awesome-icon class="undo" :icon="['fas', 'rotate-left']" size="lg" /></el-button
+      <div class="operation-box">
+        <div class="title">更改列表</div>
+        <div>
+          <el-tooltip class="box-item" effect="dark" content="刷新数据" placement="bottom"
+            ><el-button link size="small" @click="refreshClicked">
+              <font-awesome-icon
+                style="margin-right: 15px"
+                :icon="['fas', 'arrows-rotate']"
+                size="lg"
+                :class="{ 'rotate-animation': isRotating }"
+              /> </el-button
           ></el-tooltip>
+          <el-tooltip class="box-item" effect="dark" content="放弃所有更改" placement="bottom"
+            ><el-button link size="small" @click="undo()"
+              ><font-awesome-icon
+                class="undo_all"
+                :icon="['fas', 'rotate-left']"
+                size="lg" /></el-button
+          ></el-tooltip>
+        </div>
+      </div>
+      <div class="diff-box">
+        <div class="diff-item" v-for="file in diff_files" :key="file[0]">
+          <div class="file-info">
+            <span class="file-name">{{ file[0].split('/').pop() }}</span>
+            <el-tooltip class="box-item" effect="dark" :content="file[0]" placement="right"
+              ><span class="file-path">{{
+                file[0].split('/').slice(0, -1).join('/')
+              }}</span></el-tooltip
+            >
+          </div>
+          <div class="others">
+            <el-tooltip class="box-item" effect="dark" content="放弃更改" placement="bottom"
+              ><el-button link size="small" @click="undo(file[0])">
+                <font-awesome-icon
+                  class="undo"
+                  :icon="['fas', 'rotate-left']"
+                  size="lg" /></el-button
+            ></el-tooltip>
 
-          <font-awesome-icon
-            v-if="file[1] === FileAction.UPDATE"
-            :icon="['fas', 'u']"
-            :size="'xs'"
-            style="color: var(--el-color-primary)"
-          />
-          <font-awesome-icon
-            v-if="file[1] === FileAction.CREATE"
-            :icon="['fas', 'n']"
-            :size="'xs'"
-            style="color: var(--el-color-success)"
-          />
+            <font-awesome-icon
+              v-if="file[1] === FileAction.UPDATE"
+              :icon="['fas', 'u']"
+              :size="'xs'"
+              style="color: var(--el-color-primary)"
+            />
+            <font-awesome-icon
+              v-if="file[1] === FileAction.CREATE"
+              :icon="['fas', 'n']"
+              :size="'xs'"
+              style="color: var(--el-color-success)"
+            />
+          </div>
         </div>
       </div>
     </div>

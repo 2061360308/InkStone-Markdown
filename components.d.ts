@@ -10,7 +10,6 @@ declare module 'vue' {
     AboutPanel: typeof import('./src/components/AboutPanel.vue')['default']
     DifferencesPanel: typeof import('./src/components/DifferencesPanel.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    'ElButton<fontAwesomeIcon': typeof import('element-plus/es')['ElButton<fontAwesomeIcon']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']

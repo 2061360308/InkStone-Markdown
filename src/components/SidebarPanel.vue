@@ -5,7 +5,9 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import panelsManager from '@/panels'
 import { watch } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const emits = defineEmits(['update:pin'])
 
 const contexStore = useContexStore()
@@ -37,8 +39,9 @@ const component = computed(() => {
 watch(
   () => sidebarState.value.current,
   () => {
-    // 切换面板需要重置loading
+    // 切换面板需要重置loading和tipLoad状态
     loading.value = false
+    tipLoad.value = false
   },
 )
 
@@ -56,10 +59,24 @@ const pinButtonClicked = () => {
   emits('update:pin')
 }
 
-const loading = ref(false)
+/**
+ *  给组件提供的控制面板的状态
+ */
+
+const loading = ref(false) // 加载状态
+const tipLoad = ref(false) // 登录提示
 
 const changeLoading = (value: boolean) => {
   loading.value = value
+}
+
+const changeTipLoad = (value: boolean) => {
+  tipLoad.value = value
+}
+
+const goLogin = async () => {
+  localStorage.removeItem('jumpLogin') // 清除跳过登录标记
+  router.replace({ name: 'login' })
 }
 
 /**
@@ -103,10 +120,16 @@ const ready = computed(() => sidebarState.value.ready)
       </div>
     </div>
 
-    <div class="content">
+    <div class="no-login-tip" v-if="tipLoad">
+      登录后可使用完整功能
+      <el-button type="primary" size="small" round @click="goLogin">登录</el-button>
+    </div>
+
+    <div :class="[tipLoad ? 'tip-load' : '', 'content']">
       <component
         v-if="ready"
         @change:loading="changeLoading"
+        @change:tipLoad="changeTipLoad"
         :is="component"
         ref="ContentComponentRef"
       />
@@ -122,12 +145,17 @@ const ready = computed(() => sidebarState.value.ready)
   width: 100%;
   height: 100%;
   min-width: 300px;
+  overflow-y: hidden;
 
   .content {
     width: 100%;
     height: calc(100% - 40px);
     padding: 10px;
     overflow: auto;
+  }
+
+  .content.tip-load {
+    height: calc(100% - 100px);
   }
 }
 

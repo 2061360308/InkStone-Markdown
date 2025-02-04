@@ -6,4 +6,5 @@ declare module '*.vue' {
 }
 
 declare module 'splitpanes'
+declare module '@imengyu/vue3-context-menu'
 declare const __APP_VERSION__: string

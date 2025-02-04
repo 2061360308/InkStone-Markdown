@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref, ref, onMounted } from 'vue'
-import { useContexStore, useSettingsStore } from '@/stores'
+import { useContexStore, useSettingsStore, useTabsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
@@ -10,6 +10,12 @@ import SidebarPanel from '@/components/SidebarPanel.vue'
 import { decryptToken } from '@/utils/encryptToken'
 import { validateLogin } from '@/utils/validateLogin'
 import api from '@/utils/api'
+import {
+  ContextMenu,
+  ContextMenuGroup,
+  ContextMenuSeparator,
+  ContextMenuItem,
+} from '@imengyu/vue3-context-menu'
 
 const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
@@ -63,8 +69,26 @@ if ('windowControlsOverlay' in navigator) {
       //   `the title bar width is ${titleBarRect.width}px`
       // );
       titleBarVisible.value = overlay.visible
+      console.log('titleBarVisible', titleBarVisible.value)
     }, 200),
   )
+}
+
+const menuVisible = ref(false)
+const optionsComponent = ref({
+  x: 500,
+  y: 200,
+})
+
+const onFileMenu = (event: { preventDefault: () => void; clientX: number; clientY: number }) => {
+  console.log('onFileMenu', event)
+  event.preventDefault()
+
+  optionsComponent.value = {
+    x: event.clientX,
+    y: event.clientY,
+  }
+  menuVisible.value = !menuVisible.value
 }
 
 /**
@@ -196,6 +220,20 @@ const sidebarMenuMouseLeave = () => {
 }
 
 /**
+ *   主工作区
+ */
+
+const tabsStore = useTabsStore()
+
+const truncateTitle = (title: string) => {
+  const maxLength = 10 // 设置最大字符长度
+  if (title.length > maxLength) {
+    return title.substring(0, maxLength) + '...'
+  }
+  return title
+}
+
+/**
  *   验证本地token信息
  */
 
@@ -242,9 +280,52 @@ onMounted(() => {
 
 <template>
   <div class="main-application">
-    <div class="title-bar" v-if="titleBarVisible"></div>
+    <div class="title-bar" v-if="titleBarVisible">
+      <div class="logo">
+        <el-image src="/favicon.ico" alt="logo" class="logo-img" />
+      </div>
+      <span class="title">砚台 Inkstone</span>
+      <div class="bar-menu" @click="onFileMenu">文件</div>
+      <div class="opened-file-tip">这是打开的文件</div>
+      <context-menu v-model:show="menuVisible" :options="optionsComponent">
+        <context-menu-group label="新建" icon="fas fa-plus">
+          <context-menu-item label="新建文章" :clickClose="true" data-filetype="post">
+            <template #icon>
+              <font-awesome-icon :icon="['fas', 'square-pen']" />
+            </template>
+          </context-menu-item>
+          <context-menu-item label="新建草稿" :clickClose="true" data-filetype="draft">
+            <template #icon>
+              <font-awesome-icon :icon="['fas', 'pen-ruler']" />
+            </template>
+          </context-menu-item>
+
+          <ContextMenuSeparator />
+
+          <context-menu-item label="文件" :clickClose="true" data-filetype="file">
+            <template #icon>
+              <font-awesome-icon :icon="['fas', 'file']" />
+            </template>
+          </context-menu-item>
+        </context-menu-group>
+
+        <context-menu-item label="重命名" :clickClose="false">
+          <template #icon>
+            <font-awesome-icon :icon="['fas', 'i-cursor']" />
+          </template>
+        </context-menu-item>
+        <context-menu-item label="复制" :clickClose="false">
+          <template #icon> <font-awesome-icon :icon="['fas', 'copy']" /> </template
+        ></context-menu-item>
+        <context-menu-item label="删除" :clickClose="false">
+          <template #icon>
+            <font-awesome-icon :icon="['fas', 'trash']" style="color: var(--el-color-danger)" />
+          </template>
+        </context-menu-item>
+      </context-menu>
+    </div>
     <div class="notification" v-if="notificationVisible"></div>
-    <div class="main-container">
+    <div :class="[titleBarVisible ? 'has-titlebar' : '', 'main-container']">
       <el-menu
         class="sidebar-menu"
         :default-active="activeMenu"
@@ -278,10 +359,52 @@ onMounted(() => {
       </el-drawer>
       <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
         <pane v-if="sidebarPanelFixed && sidebarPanelVisible" :size="sidebarPanelSize">
-          <SidebarPanel @update:pin="handelPinButton" />
+          <SidebarPanel @update:pin="handelPinButton" style="width: 100%; height: 100%" />
         </pane>
         <pane :size="100 - sidebarPanelSize">
-          <div style="background-color: aquamarine; height: 100%; width: 100%">你好</div>
+          <div class="workspace">
+            <el-tabs
+              v-model="tabsStore.activeTabId"
+              type="card"
+              closable
+              @tab-remove="tabsStore.removeTab"
+              class="el-tabs"
+              v-if="tabsStore.tabs.length > 0"
+            >
+              <el-tab-pane
+                v-for="item in tabsStore.tabs"
+                :key="item.id"
+                :name="item.id"
+                class="tab-pane"
+              >
+                <template #label>
+                  <span
+                    :class="{
+                      'panel-tab': true,
+                      native: item.data.native,
+                      remote: item.data.remote,
+                    }"
+                  >
+                    <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" />
+                    <el-tooltip
+                      :class="{ 'panel-tab': true, native: item.data.native }"
+                      effect="dark"
+                      :content="item.data.title"
+                      placement="bottom-start"
+                      >{{ truncateTitle(item.data.title) }}</el-tooltip
+                    >
+                  </span>
+                </template>
+              </el-tab-pane>
+            </el-tabs>
+            <div class="empty-box" v-else>
+              <el-empty image="cover.png" :image-size="550">
+                <template #description>
+                  <span>请在左侧文件管理器中选择文件打开</span>
+                </template>
+              </el-empty>
+            </div>
+          </div>
         </pane>
       </splitpanes>
     </div>
@@ -292,17 +415,58 @@ onMounted(() => {
 .main-application {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
   .title-bar {
-    background-color: antiquewhite;
+    padding: 0 10px;
     height: env(titlebar-area-height, 33px);
+    width: calc(env(titlebar-area-width, 100%));
+    -webkit-app-region: drag;
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+    align-items: center;
+    white-space: nowrap;
+    background-color: #dde3e9;
+
+    .logo-img {
+      width: env(titlebar-area-height, 33px);
+      height: env(titlebar-area-height, 33px);
+      border-radius: 50%;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .bar-menu {
+      padding: 4px 6px;
+      border-radius: 4px;
+      -webkit-app-region: no-drag;
+    }
+
+    .bar-menu:hover {
+      background-color: var(--el-color-primary-light-8);
+    }
+
+    .opened-file-tip {
+      font-size: 14px;
+      color: #666;
+      z-index: 1;
+      margin: auto;
+    }
   }
 
   .main-container {
+    width: calc(100% - 50px);
     height: 100%;
     display: flex;
+  }
+
+  .main-container.has-titlebar {
+    height: calc(100% - env(titlebar-area-height, 33px));
   }
 }
 
@@ -333,6 +497,7 @@ onMounted(() => {
 
     .el-drawer__body {
       padding: 0;
+      overflow-y: hidden;
     }
   }
 }
@@ -349,6 +514,31 @@ onMounted(() => {
     .el-drawer__body {
       padding: 0;
     }
+  }
+}
+
+.workspace {
+  width: 100%;
+  height: 100%;
+
+  .panel-tab.native {
+    color: var(--el-color-success);
+  }
+
+  .panel-tab.remote {
+    color: var(--el-color-warning);
+  }
+
+  .el-tabs {
+    height: 100%;
+  }
+
+  .empty-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
