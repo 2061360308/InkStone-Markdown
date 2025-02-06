@@ -1,5 +1,6 @@
 @use './base.scss';
 @use 'splitpanes/dist/splitpanes.css';
+@use 'element-plus/theme-chalk/dark/css-vars.css';
 
 .splitpanes__splitter {
   width: 1px;

@@ -211,14 +211,6 @@ const updateTreeData = async (noCache: boolean = false) => {
   setTimeout(() => {
     loading.value = false
   }, 500)
-  // console.log(
-  //   'update tree data',
-  //   remoteData.value,
-  //   localData.value,
-  //   remoteTree.value,
-  //   localTree.value,
-  //   mixedTree.value,
-  // )
 }
 
 onMounted(async () => {
@@ -243,42 +235,108 @@ defineExpose({
 })
 </script>
 <template>
-  <el-collapse v-model="activeTreeMode" accordion class="file-tree-box">
-    <el-collapse-item name="mixed" v-if="!tipLoad">
-      <template #title> 混合文件树 </template>
+  <div :class="{ tipLoad: tipLoad, 'file-tree-box': true }">
+    <div :class="{ current: activeTreeMode === 'mixed', item: true }">
+      <div class="title" @click="activeTreeMode = 'mixed'">
+        混合文件树
+        <div class="icon">
+          <font-awesome-icon class="icon-left" :icon="['fas', 'chevron-right']" />
+          <font-awesome-icon class="icon-down" :icon="['fas', 'chevron-down']" />
+        </div>
+      </div>
       <div class="content">
         <FileTree :dataSource="mixedTree" :defaultProps="defaultProps" />
       </div>
-    </el-collapse-item>
-    <el-collapse-item name="local">
-      <template #title> 本地缓存文件 </template>
+    </div>
+    <div :class="{ current: activeTreeMode === 'local', item: true }">
+      <div class="title" @click="activeTreeMode = 'local'">
+        本地缓存文件
+        <div class="icon">
+          <font-awesome-icon class="icon-left" :icon="['fas', 'chevron-right']" />
+          <font-awesome-icon class="icon-down" :icon="['fas', 'chevron-down']" />
+        </div>
+      </div>
       <div class="content">
         <FileTree :dataSource="localTree" :defaultProps="defaultProps" />
       </div>
-    </el-collapse-item>
-    <el-collapse-item name="remote" v-if="!tipLoad">
-      <template #title> 远程仓库文件（只读） </template>
+    </div>
+    <div :class="{ current: activeTreeMode === 'remote', item: true }">
+      <div class="title" @click="activeTreeMode = 'remote'">
+        远程仓库文件（只读）
+        <div class="icon">
+          <font-awesome-icon class="icon-left" :icon="['fas', 'chevron-right']" />
+          <font-awesome-icon class="icon-down" :icon="['fas', 'chevron-down']" />
+        </div>
+      </div>
       <div class="content">
         <FileTree :dataSource="remoteTree" :defaultProps="defaultProps" />
       </div>
-    </el-collapse-item>
-    <el-collapse-item name="4">
-      <template #title> 最近打开（本机文件） </template>
+    </div>
+    <div :class="{ current: activeTreeMode === 'native', item: true }">
+      <div class="title" @click="activeTreeMode = 'native'">
+        最近打开（本机文件）
+        <div class="icon">
+          <font-awesome-icon class="icon-left" :icon="['fas', 'chevron-right']" />
+          <font-awesome-icon class="icon-down" :icon="['fas', 'chevron-down']" />
+        </div>
+      </div>
       <div class="content"></div>
-    </el-collapse-item>
-  </el-collapse>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .file-tree-box {
   width: 100%;
   height: 100%;
-}
 
-.content {
-  width: 100%;
-  height: calc(100vh - 270px);
-  overflow-x: visible;
-  overflow-y: auto;
+  .item {
+    .title {
+      font-size: 14px;
+      // font-weight: bold;
+      padding: 5px 10px;
+      width: 100%;
+      height: 40px;
+      border-top: 1px solid var(--el-border-color);
+      border-bottom: 1px solid var(--el-border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .icon {
+        font-size: 12px;
+        .icon-left {
+          display: block;
+        }
+        .icon-down {
+          display: none;
+        }
+      }
+    }
+    .content {
+      display: none;
+    }
+  }
+
+  .item.current {
+    width: 100%;
+    height: calc(100% - 40px * 3);
+
+    .title {
+      .icon-left {
+        display: none;
+      }
+      .icon-down {
+        display: block;
+      }
+    }
+    .content {
+      display: block;
+      width: 100%;
+      height: calc(100% - 40px);
+      padding: 10px;
+      overflow: auto;
+    }
+  }
 }
 </style>

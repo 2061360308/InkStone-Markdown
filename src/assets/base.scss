@@ -4,7 +4,17 @@
   box-sizing: border-box;
 }
 
-#app{
+#app {
   width: 100vw;
   height: 100vh;
+}
+
+:root {
+  --app-titlebar-color: #dde3e9;
+  --app-cover-image: url('cover.png');
+}
+
+html.dark {
+  --app-titlebar-color: #2c2c2c; /* 暗色模式值 */
+  --app-cover-image: url('cover_light.png');
 }

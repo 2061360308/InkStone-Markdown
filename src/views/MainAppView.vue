@@ -16,6 +16,7 @@ import {
   ContextMenuSeparator,
   ContextMenuItem,
 } from '@imengyu/vue3-context-menu'
+import { useDark } from '@vueuse/core'
 
 const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
@@ -27,21 +28,6 @@ const titleBarVisible = ref(false)
 /**
  *    标题栏
  */
-
-// 防止标题栏覆盖检测函数频繁触发
-const debounce = <F extends (...args: unknown[]) => unknown>(func: F, wait: number) => {
-  let timeout: ReturnType<typeof setTimeout> | null = null
-  return function executedFunction(...args: Parameters<F>) {
-    const later = () => {
-      timeout = null
-      func(...args)
-    }
-    if (timeout !== null) {
-      clearTimeout(timeout)
-    }
-    timeout = setTimeout(later, wait)
-  }
-}
 
 // 扩展 Navigator 类型声明
 declare global {
@@ -55,23 +41,67 @@ declare global {
   }
 }
 
-if ('windowControlsOverlay' in navigator) {
-  const overlay = navigator.windowControlsOverlay
-  overlay?.addEventListener(
-    'geometrychange',
-    debounce(() => {
-      // 从 overlay 对象而非事件参数中获取数据
-      // const isOverlayVisible = overlay.visible;
-      // const titleBarRect = overlay.titlebarAreaRect;
+const titleBarCheck = () => {
+  // 防止标题栏覆盖检测函数频繁触发
+  const debounce = <F extends (...args: unknown[]) => unknown>(func: F, wait: number) => {
+    let timeout: ReturnType<typeof setTimeout> | null = null
+    return function executedFunction(...args: Parameters<F>) {
+      const later = () => {
+        timeout = null
+        func(...args)
+      }
+      if (timeout !== null) {
+        clearTimeout(timeout)
+      }
+      timeout = setTimeout(later, wait)
+    }
+  }
 
-      // console.log(
-      //   `The overlay is ${isOverlayVisible ? 'visible' : 'hidden'},` +
-      //   `the title bar width is ${titleBarRect.width}px`
-      // );
-      titleBarVisible.value = overlay.visible
-      console.log('titleBarVisible', titleBarVisible.value)
-    }, 200),
-  )
+  if ('windowControlsOverlay' in navigator) {
+    const overlay = navigator.windowControlsOverlay
+    titleBarVisible.value = overlay?.visible || false // 立即同步一次
+    overlay?.addEventListener(
+      'geometrychange',
+      debounce(() => {
+        // 从 overlay 对象而非事件参数中获取数据
+        // const isOverlayVisible = overlay.visible;
+        // const titleBarRect = overlay.titlebarAreaRect;
+
+        // console.log(
+        //   `The overlay is ${isOverlayVisible ? 'visible' : 'hidden'},` +
+        //   `the title bar width is ${titleBarRect.width}px`
+        // );
+        titleBarVisible.value = overlay.visible
+      }, 200),
+    )
+
+    const themeColorName = '--app-titlebar-color'
+    const pollCSSVariable = (name: string, interval: number, callback: (value: string) => void) => {
+      const getCSSVariable = (name: string) => {
+        const rootStyles = getComputedStyle(document.documentElement)
+        return rootStyles.getPropertyValue(name).trim()
+      }
+
+      let previousValue = getCSSVariable(name)
+      callback(previousValue)
+      setInterval(() => {
+        const currentValue = getCSSVariable(name)
+        if (currentValue !== previousValue) {
+          callback(currentValue)
+          previousValue = currentValue
+        }
+      }, interval)
+    }
+
+    const themeColorMetaTag = document.querySelector('meta[name="theme-color"]')
+    pollCSSVariable(themeColorName, 2000, (value) => {
+      console.log('CSS Variable --app-titlebar-color changed to', value)
+      ;(themeColorMetaTag as HTMLElement).setAttribute('content', value)
+    })
+  } else {
+    console.warn('navigator.windowControlsOverlay is not supported')
+    titleBarVisible.value = false
+  }
 }
 
 const menuVisible = ref(false)
@@ -98,6 +128,7 @@ const onFileMenu = (event: { preventDefault: () => void; clientX: number; client
 const notificationVisible: Ref<boolean> = ref(contexStore.notification.data.length > 0)
 
 const activeMenu = ref(contexStore.sidebarState.current)
+
 const topMenuItems = computed(() =>
   panelsManager
     .getAllPanels()
@@ -173,8 +204,7 @@ const unpinSideBarPanel = () => {
 
 const handleMenuSelect = (index: string) => {
   // Set the active menu
-  if (sidebarPanelFixed.value) {
-    console.log('index::', index, activeMenu.value, index === activeMenu.value)
+  if (sidebarPanelFixed.value && !panelsManager.getPanel(index)?.noselect) {
     if (index === activeMenu.value) {
       activeMenu.value = ''
       closeSideBarPanel()
@@ -182,7 +212,6 @@ const handleMenuSelect = (index: string) => {
       contexStore.sidebarState.opened = true
       activeMenu.value = index
     }
-    console.log('sidebarPanelFixed', contexStore.sidebarState.opened)
   }
   panelsManager.activePanel(index)
 }
@@ -274,8 +303,11 @@ const validate = async () => {
 }
 
 onMounted(() => {
+  titleBarCheck()
   validate()
 })
+
+const isDark = useDark()
 </script>
 
 <template>
@@ -326,25 +358,48 @@ onMounted(() => {
     </div>
     <div class="notification" v-if="notificationVisible"></div>
     <div :class="[titleBarVisible ? 'has-titlebar' : '', 'main-container']">
-      <el-menu
+      <div
         class="sidebar-menu"
-        :default-active="activeMenu"
-        :collapse="true"
-        @select="handleMenuSelect"
         @mouseenter="sidebarMenuMouseEnter"
         @mouseleave="menuBarEnter = false"
       >
-        <div class="items-top">
-          <el-menu-item v-for="item in topMenuItems" :index="item.id" :key="item.id">
+        <div class="items-top items-box">
+          <div
+            v-for="item in topMenuItems"
+            :index="item.id"
+            :key="item.id"
+            :class="{ active: item.id === activeMenu, item: true, noselect: item.noselect }"
+            @click="handleMenuSelect(item.id)"
+          >
             <font-awesome-icon :icon="['fas', item.icon]" size="2xl" />
-          </el-menu-item>
+          </div>
         </div>
-        <div class="items-bottom">
-          <el-menu-item v-for="item in bottomMenuItems" :index="item.id" :key="item.id">
+        <div class="items-bottom items-box">
+          <div class="item noselect">
+            <el-switch
+              v-model="isDark"
+              style="--el-switch-on-color: var(--el-fill-color)"
+              class="theme-switch"
+            >
+              <template #active-action>
+                <font-awesome-icon :icon="['fas', 'moon']" />
+              </template>
+              <template #inactive-action>
+                <font-awesome-icon :icon="['fas', 'sun']" />
+              </template>
+            </el-switch>
+          </div>
+          <div
+            v-for="item in bottomMenuItems"
+            :index="item.id"
+            :key="item.id"
+            :class="{ active: item.id === activeMenu, item: true, noselect: item.noselect }"
+            @click="handleMenuSelect(item.id)"
+          >
             <font-awesome-icon :icon="['fas', item.icon]" size="2xl" />
-          </el-menu-item>
+          </div>
         </div>
-      </el-menu>
+      </div>
       <el-drawer
         :modal-class="titleBarVisible ? 'sidebar-drawer-hastitlebar' : 'sidebar-drawer'"
         v-model="sidebarDrawerVisible"
@@ -398,11 +453,13 @@ onMounted(() => {
               </el-tab-pane>
             </el-tabs>
             <div class="empty-box" v-else>
-              <el-empty image="cover.png" :image-size="550">
+              <div class="cover-image"></div>
+              <div class="tip-content"><span>请在左侧文件管理器中选择文件打开</span></div>
+              <!-- <el-empty image="cover.png" :image-size="550">
                 <template #description>
-                  <span>请在左侧文件管理器中选择文件打开</span>
+
                 </template>
-              </el-empty>
+              </el-empty> -->
             </div>
           </div>
         </pane>
@@ -421,14 +478,14 @@ onMounted(() => {
   .title-bar {
     padding: 0 10px;
     height: env(titlebar-area-height, 33px);
-    width: calc(env(titlebar-area-width, 100%));
+    width: env(titlebar-area-width, 100%);
     -webkit-app-region: drag;
     display: flex;
     gap: 10px;
     justify-content: left;
     align-items: center;
     white-space: nowrap;
-    background-color: #dde3e9;
+    background-color: var(--app-titlebar-color);
 
     .logo-img {
       width: env(titlebar-area-height, 33px);
@@ -453,7 +510,7 @@ onMounted(() => {
 
     .opened-file-tip {
       font-size: 14px;
-      color: #666;
+      color: var(--el-text-color-secondary);
       z-index: 1;
       margin: auto;
     }
@@ -477,6 +534,32 @@ onMounted(() => {
   justify-content: space-between;
   justify-items: center;
   flex-direction: column;
+  border-right: 1px solid var(--el-border-color);
+
+  .items-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .item {
+    width: $sidebar-menu-w;
+    height: $sidebar-menu-w;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover:not(.noselect) {
+      background-color: var(--el-color-primary-light-8);
+    }
+  }
+
+  .item.active {
+    color: var(--el-color-primary);
+  }
 }
 
 .splitpanes {
@@ -537,8 +620,19 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .cover-image {
+      width: 80%;
+      
+      height: 40%;
+      background-image: var(--app-cover-image);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
   }
 }
 </style>

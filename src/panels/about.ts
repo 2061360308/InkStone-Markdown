@@ -5,11 +5,13 @@ const show = ref(true)
 let component: null | Component = null
 
 export class AboutPanel implements Panel {
+  actions?: { icon: string; name: string; tooltip: string; method: string }[] | undefined
   id = 'about'
   name = '关于'
   icon = 'circle-question'
   position = PanelIconPosition.bottom
   index = 0
+  noselect = true
 
   async component(): Promise<Component> {
     const m = await import('../components/AboutPanel.vue')

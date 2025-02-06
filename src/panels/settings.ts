@@ -7,6 +7,7 @@ export class SettingsPanel implements Panel {
   icon = 'gear'
   position = PanelIconPosition.bottom
   index = 1
+  noselect = true
 
   async component(): Promise<Component> {
     const m = await import('@/components/SettingsPanel.vue')

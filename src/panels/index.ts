@@ -31,9 +31,16 @@ class PanelsManager {
     icon: string
     position: PanelIconPosition
     index: number
+    noselect: boolean
   }> {
     return this.panels.map((panel: Panel) => {
-      return { id: panel.id, icon: panel.icon, position: panel.position, index: panel.index }
+      return {
+        id: panel.id,
+        icon: panel.icon,
+        position: panel.position,
+        index: panel.index,
+        noselect: panel.noselect || false,
+      }
     })
   }
 

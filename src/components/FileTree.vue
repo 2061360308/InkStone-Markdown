@@ -58,7 +58,11 @@ console.log(readonly)
       :default-expanded-keys="expendedKeys"
     >
       <template #default="{ node, data }">
-        <span class="node-item" @click="nodeClick(node, data)" @contextmenu="nodeContextmenu(node, data)">
+        <span
+          class="node-item"
+          @click="nodeClick(node, data)"
+          @contextmenu="nodeContextmenu(node, data)"
+        >
           <FontAwesomeIcon
             v-if="node.isLeaf && node.label.endsWith('.md')"
             :icon="['fas', 'square-pen']"
@@ -75,6 +79,11 @@ console.log(readonly)
 </template>
 
 <style scoped lang="scss">
+.file-tree {
+  width: 100%;
+  height: 100%;
+}
+
 .node-item {
   display: flex;
   justify-content: center;

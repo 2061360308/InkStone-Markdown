@@ -11,6 +11,7 @@ export interface Panel {
   icon: string
   position: PanelIconPosition
   index: number
+  noselect?: boolean // 是否可以选中
   actions?: Array<{
     icon: string
     name: string
