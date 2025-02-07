@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { ref, Ref } from 'vue'
-import { localFile, remoteFile, nativeFile } from '@/utils/files'
 import api from '@/utils/api'
 import { generateRandomId } from '@/utils/general'
 
@@ -86,6 +85,7 @@ export const useContexStore = defineStore('contex', () => {
     sidebarState,
     notification,
     tabs,
+    activeTabId,
     setActiveTab,
     addTab,
     removeTab,

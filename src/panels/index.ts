@@ -5,6 +5,7 @@ import { OutlinePanel } from './outline'
 import { SearchPanel } from './search'
 import { AboutPanel } from './about'
 import { SettingsPanel } from './settings'
+import { defineAsyncComponent } from 'vue'
 
 class PanelsManager {
   private static instance: PanelsManager
@@ -33,26 +34,36 @@ class PanelsManager {
     index: number
     noselect: boolean
   }> {
-    return this.panels.map((panel: Panel) => {
-      return {
+    return this.panels
+      .filter((panel: Panel) => panel.noSidebar)
+      .map((panel: Panel) => ({
         id: panel.id,
         icon: panel.icon,
-        position: panel.position,
-        index: panel.index,
+        position: panel.position!,
+        index: panel.index!,
         noselect: panel.noselect || false,
-      }
-    })
+      }))
   }
 
   public getPanel(id: string): Panel | undefined {
     return this.panels.find((panel: Panel) => panel.id === id)
   }
 
-  public async getPanelComponent(id: string) {
+  public getPanelComponent(id: string) {
     const panel = this.getPanel(id)
     if (panel) {
-      return await panel.component()
+      return defineAsyncComponent({
+        loader: panel.component,
+        loadingComponent: {
+          template: '<div>Loading...</div>',
+        },
+        errorComponent: {
+          template: '<div>Failed to load component</div>',
+        },
+        delay: 200,
+      })
     }
+    return null
   }
 
   public async activePanel(id: string) {

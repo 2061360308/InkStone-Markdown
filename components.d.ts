@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AboutPanel: typeof import('./src/components/AboutPanel.vue')['default']
+    CodemirrorEditor: typeof import('./src/components/editor/CodemirrorEditor.vue')['default']
+    CommitHistory: typeof import('./src/components/editor/CommitHistory.vue')['default']
     DifferencesPanel: typeof import('./src/components/DifferencesPanel.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -31,7 +33,11 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     FilePanel: typeof import('./src/components/FilePanel.vue')['default']
     FileTree: typeof import('./src/components/FileTree.vue')['default']
+    FrontMatterEditor: typeof import('./src/components/editor/FrontMatterEditor.vue')['default']
+    LocalFileEditor: typeof import('./src/components/editor/LocalFileEditor.vue')['default']
+    MdEditor: typeof import('./src/components/editor/MdEditor.vue')['default']
     OutlinePanel: typeof import('./src/components/OutlinePanel.vue')['default']
+    ReadOnly: typeof import('./src/components/editor/ReadOnly.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchPanel: typeof import('./src/components/SearchPanel.vue')['default']

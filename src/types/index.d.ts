@@ -8,3 +8,28 @@ declare module '*.vue' {
 declare module 'splitpanes'
 declare module '@imengyu/vue3-context-menu'
 declare const __APP_VERSION__: string
+
+declare interface EditorInstance {
+  setContent: (content: string) => void
+  getContent: () => string
+  saveFile: () => void
+}
+
+declare interface localFile {
+  path: string
+  repo: string
+  editor?: EditorInstance
+}
+
+declare interface remoteFile {
+  path: string
+  repo: string
+  user: string
+  branch: string
+  content: string
+  editor?: EditorInstance
+}
+
+declare interface nativeFile extends FileSystemFileHandle {
+  editor?: EditorInstance
+}

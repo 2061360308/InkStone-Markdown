@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { useContexStore } from '@/stores'
-import { localFile, nativeFile, remoteFile } from '@/utils/files'
 import { generateRandomId } from '@/utils/general'
 
 export const openNativeFile = async (fileHandle: FileSystemFileHandle) => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref, ref, onMounted } from 'vue'
-import { useContexStore, useSettingsStore, useTabsStore } from '@/stores'
+import { useContexStore, useSettingsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
@@ -252,8 +252,6 @@ const sidebarMenuMouseLeave = () => {
  *   主工作区
  */
 
-const tabsStore = useTabsStore()
-
 const truncateTitle = (title: string) => {
   const maxLength = 10 // 设置最大字符长度
   if (title.length > maxLength) {
@@ -419,15 +417,15 @@ const isDark = useDark()
         <pane :size="100 - sidebarPanelSize">
           <div class="workspace">
             <el-tabs
-              v-model="tabsStore.activeTabId"
+              v-model="contexStore.activeTabId"
               type="card"
               closable
-              @tab-remove="tabsStore.removeTab"
+              @tab-remove="(name) => contexStore.removeTab(name as string)"
               class="el-tabs"
-              v-if="tabsStore.tabs.length > 0"
+              v-if="contexStore.tabs.length > 0"
             >
               <el-tab-pane
-                v-for="item in tabsStore.tabs"
+                v-for="item in contexStore.tabs"
                 :key="item.id"
                 :name="item.id"
                 class="tab-pane"
@@ -436,20 +434,22 @@ const isDark = useDark()
                   <span
                     :class="{
                       'panel-tab': true,
-                      native: item.data.native,
-                      remote: item.data.remote,
+                      native: item.panel === 'nativeFile',
+                      remote: item.panel === 'remoteFile',
                     }"
                   >
                     <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" />
                     <el-tooltip
-                      :class="{ 'panel-tab': true, native: item.data.native }"
+                      :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
                       effect="dark"
-                      :content="item.data.title"
+                      :content="item.title.value"
                       placement="bottom-start"
-                      >{{ truncateTitle(item.data.title) }}</el-tooltip
+                      >{{ truncateTitle(item.title.value) }}</el-tooltip
                     >
                   </span>
                 </template>
+
+                <component :is="panelsManager.getPanelComponent(item.panel)" :id="item.id" />
               </el-tab-pane>
             </el-tabs>
             <div class="empty-box" v-else>
