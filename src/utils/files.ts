@@ -8,6 +8,7 @@ export interface remoteFile {
   repo: string
   user: string
   branch: string
+  content: string
 }
 
 export type nativeFile = FileSystemFileHandle

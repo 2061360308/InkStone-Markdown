@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/utils/api'
-import { encryptToken } from '@/utils/encryptToken'
+import { encryptToken } from '@/utils/general'
 import { githubAppClientId, githubAppName } from '@/config'
 import { useSettingsStore } from '@/stores'
-import { validateLogin } from '@/utils/validateLogin'
+import { validateLogin } from '@/utils/general'
 
 const settingsStore = useSettingsStore()
 const route = useRoute()

@@ -7,8 +7,8 @@ import { Splitpanes, Pane } from 'splitpanes'
 import { PanelIconPosition } from '@/panels/base'
 import panelsManager from '@/panels'
 import SidebarPanel from '@/components/SidebarPanel.vue'
-import { decryptToken } from '@/utils/encryptToken'
-import { validateLogin } from '@/utils/validateLogin'
+import { decryptToken } from '@/utils/general'
+import { validateLogin } from '@/utils/general'
 import api from '@/utils/api'
 import {
   ContextMenu,
@@ -567,6 +567,41 @@ const isDark = useDark()
   width: 100%;
   height: 100%;
 }
+
+.workspace {
+  width: 100%;
+  height: 100%;
+
+  .panel-tab.native {
+    color: var(--el-color-success);
+  }
+
+  .panel-tab.remote {
+    color: var(--el-color-warning);
+  }
+
+  .el-tabs {
+    height: 100%;
+  }
+
+  .empty-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .cover-image {
+      width: 60%;
+      height: 30%;
+      background-image: var(--app-cover-image);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+}
 </style>
 
 <style lang="scss">
@@ -596,42 +631,6 @@ const isDark = useDark()
 
     .el-drawer__body {
       padding: 0;
-    }
-  }
-}
-
-.workspace {
-  width: 100%;
-  height: 100%;
-
-  .panel-tab.native {
-    color: var(--el-color-success);
-  }
-
-  .panel-tab.remote {
-    color: var(--el-color-warning);
-  }
-
-  .el-tabs {
-    height: 100%;
-  }
-
-  .empty-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .cover-image {
-      width: 80%;
-      
-      height: 40%;
-      background-image: var(--app-cover-image);
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
     }
   }
 }
