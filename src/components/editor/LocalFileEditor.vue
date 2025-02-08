@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { defineProps, onMounted, Ref, ref } from 'vue'
-import { useContexStore } from '@/stores'
+import { useContexStore, useSettingsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import MdEditor from './MdEditor.vue'
 import fs from '@/utils/fs'
+import api from '@/utils/api'
 
 const contexStore = useContexStore()
+const settingsStore = useSettingsStore()
 const { tabs } = storeToRefs(contexStore)
+
+const ready: Ref<boolean> = ref(false)
 
 const props = defineProps({
   // 对应在Contex中tabs的id
@@ -18,10 +22,10 @@ const props = defineProps({
 
 const file: Ref<null | localFile> = ref(null)
 const fileName = ref('')
-const content = ref('')
 const isAllSaved = ref(true)
 let repo = ''
 let path = ''
+const EditorInstanceRef = ref<InstanceType<typeof MdEditor> | null>(null)
 
 onMounted(async () => {
   // 通过id获取当前tab的内容
@@ -32,38 +36,40 @@ onMounted(async () => {
   repo = file.value.repo
 
   fileName.value = path.split('/').pop() as string
-  content.value = (await fs.get(path, repo)) as string
 })
 
-// const saveFile = async () => {
-//   const file_path = props.path
-//   const file_content = getContent()
+const editorReady = async () => {
+  console.log('editorReady')
+  if (await fs.isExist(path, repo)) {
+    const content = (await fs.get(path, repo)) as string
+    EditorInstanceRef.value?.setContent(content)
+    ready.value = true
+  } else {
+    const branch = settingsStore.settings['基本配置'].repoBranch as string
+    api.getFileContent(path, branch).then((res) => {
+      fs.write(path, res.decodedContent, repo)
+      EditorInstanceRef.value?.setContent(res.decodedContent)
+      ready.value = true
+    })
+  }
+}
 
-//   if (props.native) {
-//     // 本地文件
-//     if (!fileHandle.value) {
-//       throw new Error('找不到文件句柄')
-//     }
+const saveFile = async () => {
+  if (!EditorInstanceRef.value) {
+    return
+  }
+  const file_content = EditorInstanceRef.value.getContent()
 
-//     // 请求写入权限
-//     const writable = await fileHandle.value.createWritable()
-//     // 写入内容
-//     await writable.write(file_content)
-//     // 关闭写入流
-//     await writable.close()
-//   } else {
-//     // 写入文件
-//     await fs.write(file_path, file_content, repoName.value)
-//   }
+  await fs.write(path, file_content, repo)
 
-//   ElMessage({
-//     message: '文章保存成功',
-//     grouping: true,
-//     type: 'success',
-//   })
+  ElMessage({
+    message: '文章保存成功',
+    grouping: true,
+    type: 'success',
+  })
 
-//   isAllSaved.value = false
-// }
+  isAllSaved.value = true
+}
 </script>
 
 <template>
@@ -72,8 +78,17 @@ onMounted(async () => {
       v-if="file"
       :editor="id"
       :file-name="fileName"
-      :content="content"
       v-model="isAllSaved"
+      :editorReady="editorReady"
+      :save-file="saveFile"
+      ref="EditorInstanceRef"
+      v-show="ready"
+    />
+    <el-skeleton
+      :rows="7"
+      animated
+      v-if="!ready"
+      style="margin: auto; max-width: 800px; padding: 40px"
     />
   </div>
 </template>

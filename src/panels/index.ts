@@ -5,6 +5,7 @@ import { OutlinePanel } from './outline'
 import { SearchPanel } from './search'
 import { AboutPanel } from './about'
 import { SettingsPanel } from './settings'
+import { localFileEditorPanel } from './localFileEditor'
 import { defineAsyncComponent } from 'vue'
 
 class PanelsManager {
@@ -16,6 +17,7 @@ class PanelsManager {
     new SearchPanel(),
     new AboutPanel(),
     new SettingsPanel(),
+    new localFileEditorPanel(),
   ]
 
   private constructor() {}
@@ -35,7 +37,7 @@ class PanelsManager {
     noselect: boolean
   }> {
     return this.panels
-      .filter((panel: Panel) => panel.noSidebar)
+      .filter((panel: Panel) => !panel.noSidebar)
       .map((panel: Panel) => ({
         id: panel.id,
         icon: panel.icon,

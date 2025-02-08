@@ -1,6 +1,7 @@
-import { ref } from 'vue'
 import { useContexStore } from '@/stores'
 import { generateRandomId } from '@/utils/general'
+import panelsManager from '@/panels'
+import { markRaw } from 'vue'
 
 export const openNativeFile = async (fileHandle: FileSystemFileHandle) => {
   /**
@@ -9,7 +10,7 @@ export const openNativeFile = async (fileHandle: FileSystemFileHandle) => {
   const contexStore = useContexStore()
 
   const path = `${fileHandle.name} @local`
-  const title = ref(path.split('/').pop() || '')
+  let title = path.split('/').pop() || ''
 
   const panelName = 'nativeFile'
 
@@ -22,8 +23,8 @@ export const openNativeFile = async (fileHandle: FileSystemFileHandle) => {
         return
       } else {
         // 如果不是同一个文件，但是文件名相同，修改标题,添加随机id
-        title.value = path + `- ${generateRandomId(4)}`
-        tab.title.value = path + `- ${generateRandomId(4)}`
+        title = path + `- ${generateRandomId(4)}`
+        tab.title = path + `- ${generateRandomId(4)}`
       }
     }
   }
@@ -35,8 +36,10 @@ export const openNativeFile = async (fileHandle: FileSystemFileHandle) => {
 
   const newtab = {
     id: '',
-    panel: panelName,
-    icon: ref(ext === 'md' ? 'faM' : 'faFile'),
+    panel: panelsManager.getPanelComponent(panelName)
+      ? markRaw(panelsManager.getPanelComponent(panelName)!)
+      : null,
+    icon: ext === 'md' ? 'm' : 'file',
     title,
     data: {
       file: fileHandle,
@@ -53,7 +56,7 @@ export const openRemoteFile = async (path: string, repo: string, branch: string)
 
   const panelName = 'remoteFile'
 
-  const title = ref((path.split('/').pop() || '') + ' @remote')
+  let title = (path.split('/').pop() || '') + ' @remote'
 
   // 防止重复打开
   for (const tab of contexStore.tabs) {
@@ -68,9 +71,9 @@ export const openRemoteFile = async (path: string, repo: string, branch: string)
       }
 
       // 有同名文件，展示完整路径
-      if (tab.title.value === title.value) {
-        title.value = path + ' @remote'
-        tab.title.value = (tab.data.file as remoteFile).path + ' @remote'
+      if (tab.title === title) {
+        title = path + ' @remote'
+        tab.title = (tab.data.file as remoteFile).path + ' @remote'
       }
     }
   }
@@ -79,8 +82,10 @@ export const openRemoteFile = async (path: string, repo: string, branch: string)
 
   const newtab = {
     id: '',
-    panel: panelName,
-    icon: ref(ext === 'md' ? 'faM' : 'faFile'),
+    panel: panelsManager.getPanelComponent(panelName)
+      ? markRaw(panelsManager.getPanelComponent(panelName)!)
+      : null,
+    icon: ext === 'md' ? 'm' : 'file',
     title,
     data: {
       file: {
@@ -115,14 +120,14 @@ export const openLocalFile = (path: string, repo: string) => {
     }
   }
 
-  const title = ref(path.split('/').pop() || '')
+  let title = path.split('/').pop() || ''
 
   // 如果有路径文件，标题加上repo
   for (const tab of contexStore.tabs) {
     if (tab.panel === panelName) {
       if ((tab.data.file as localFile).path === path) {
-        tab.title.value = tab.title + ' @ ' + (tab.data.file as localFile).repo
-        title.value = path + ' @ ' + repo
+        tab.title = tab.title + ' @ ' + (tab.data.file as localFile).repo
+        title = path + ' @ ' + repo
       }
     }
   }
@@ -130,21 +135,20 @@ export const openLocalFile = (path: string, repo: string) => {
   // 防止不同目录下同名文件标题相同
   for (const tab of contexStore.tabs) {
     if (tab.panel === panelName) {
-      if (tab.title.value === title.value) {
-        const original_tab_title = tab.title.value
-        const original_title = title.value
+      if (tab.title === title) {
+        const original_tab_title = tab.title
+        const original_title = title
 
         if (original_tab_title.endsWith(' @ ' + (tab.data.file as localFile).repo)) {
-          tab.title.value =
-            (tab.data.file as localFile).path + ' @ ' + (tab.data.file as localFile).repo
+          tab.title = (tab.data.file as localFile).path + ' @ ' + (tab.data.file as localFile).repo
         } else {
-          tab.title.value = (tab.data.file as localFile).path
+          tab.title = (tab.data.file as localFile).path
         }
 
         if (original_title.endsWith(' @ ' + repo)) {
-          title.value = path + ' @ ' + repo
+          title = path + ' @ ' + repo
         } else {
-          title.value = path
+          title = path
         }
       }
     }
@@ -155,8 +159,10 @@ export const openLocalFile = (path: string, repo: string) => {
 
   const newtab = {
     id: '',
-    panel: panelName,
-    icon: ref(ext === 'md' ? 'faM' : 'faFile'),
+    panel: panelsManager.getPanelComponent(panelName)
+      ? markRaw(panelsManager.getPanelComponent(panelName)!)
+      : null,
+    icon: ext === 'md' ? 'm' : 'file',
     title,
     data: {
       file: {
@@ -165,6 +171,8 @@ export const openLocalFile = (path: string, repo: string) => {
       },
     },
   }
+
+  console.log(newtab)
 
   contexStore.addTab(newtab)
 }

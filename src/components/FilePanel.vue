@@ -6,6 +6,7 @@ import fs from '@/utils/fs'
 import { useSettingsStore } from '@/stores'
 import FileTree from '@/components/FileTree.vue'
 import { watch } from 'vue'
+import { openLocalFile, openNativeFile, openRemoteFile } from '@/utils/filePanelOption'
 
 const settingsStore = useSettingsStore()
 
@@ -233,6 +234,28 @@ defineExpose({
   createFile,
   refresh,
 })
+
+/**
+ * 文件选中
+ */
+
+const fileSelected = (type: string, node: treeItemObject, treeItem: treeItemObject) => {
+  if (!node.isLeaf) {
+    return
+  }
+
+  const path = treeItem.data.path
+  const repo = settingsStore.settings['基本配置'].repoName
+  const branch = settingsStore.settings['基本配置'].repoBranch
+
+  if (type === 'mixed' || type === 'local') {
+    openLocalFile(path, repo)
+  } else if (type === 'remote') {
+    openRemoteFile(path, repo, branch)
+  } else if (type === 'native') {
+    // openNativeFile(path)
+  }
+}
 </script>
 <template>
   <div :class="{ tipLoad: tipLoad, 'file-tree-box': true }">
@@ -245,7 +268,14 @@ defineExpose({
         </div>
       </div>
       <div class="content">
-        <FileTree :dataSource="mixedTree" :defaultProps="defaultProps" />
+        <FileTree
+          :dataSource="mixedTree"
+          :defaultProps="defaultProps"
+          :nodeClick="
+            (node: treeItemObject, treeItem: treeItemObject) =>
+              fileSelected('mixed', node, treeItem)
+          "
+        />
       </div>
     </div>
     <div :class="{ current: activeTreeMode === 'local', item: true }">
@@ -257,7 +287,14 @@ defineExpose({
         </div>
       </div>
       <div class="content">
-        <FileTree :dataSource="localTree" :defaultProps="defaultProps" />
+        <FileTree
+          :dataSource="localTree"
+          :defaultProps="defaultProps"
+          :nodeClick="
+            (node: treeItemObject, treeItem: treeItemObject) =>
+              fileSelected('local', node, treeItem)
+          "
+        />
       </div>
     </div>
     <div :class="{ current: activeTreeMode === 'remote', item: true }">
@@ -269,7 +306,14 @@ defineExpose({
         </div>
       </div>
       <div class="content">
-        <FileTree :dataSource="remoteTree" :defaultProps="defaultProps" />
+        <FileTree
+          :dataSource="remoteTree"
+          :defaultProps="defaultProps"
+          :nodeClick="
+            (node: treeItemObject, treeItem: treeItemObject) =>
+              fileSelected('remote', node, treeItem)
+          "
+        />
       </div>
     </div>
     <div :class="{ current: activeTreeMode === 'native', item: true }">

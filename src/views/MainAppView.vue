@@ -442,14 +442,15 @@ const isDark = useDark()
                     <el-tooltip
                       :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
                       effect="dark"
-                      :content="item.title.value"
+                      :content="item.title"
                       placement="bottom-start"
-                      >{{ truncateTitle(item.title.value) }}</el-tooltip
+                      >{{ truncateTitle(item.title) }}</el-tooltip
                     >
                   </span>
                 </template>
 
-                <component :is="panelsManager.getPanelComponent(item.panel)" :id="item.id" />
+                <component :is="item.panel" :id="item.id" />
+                <!-- <LocalFileEditor :id="item.id" /> -->
               </el-tab-pane>
             </el-tabs>
             <div class="empty-box" v-else>
@@ -517,7 +518,8 @@ const isDark = useDark()
   }
 
   .main-container {
-    width: calc(100% - 50px);
+    //width: calc(100% - 50px);
+    width: 100%;
     height: 100%;
     display: flex;
   }

@@ -1,215 +1,206 @@
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, watch } from "vue";
-import { useSettingsStore } from "@/stores";
-import { ElMessageBox, ElMessage } from "element-plus";
+import { ref, defineProps, defineEmits, watch } from 'vue'
+import { useSettingsStore } from '@/stores'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import {
   ContextMenu,
   ContextMenuItem,
   ContextMenuGroup,
   ContextMenuSeparator,
-} from "@imengyu/vue3-context-menu";
-import { format } from "date-fns";
-import yaml from "js-yaml";
+} from '@imengyu/vue3-context-menu'
+import { format } from 'date-fns'
+import yaml from 'js-yaml'
 
-const settingsStore = useSettingsStore();
+const settingsStore = useSettingsStore()
 
-const props = defineProps<{ frontMatterString: string }>();
-const emit = defineEmits(["change"]);
+const props = defineProps<{ frontMatterString: string }>()
+const emit = defineEmits(['change'])
 
 // frontMatter
-const frontMatter = ref<
-  Array<{ name: string; type: fronMatterValueType; value: any }>
->([]);
+const frontMatter = ref<Array<{ name: string; type: fronMatterValueType; value: any }>>([])
 
 // frontMatter的备份数据
 // 如果用户输入的不合法将从此数组中恢复（如果有）
 // 只需要备份属性名即可
-let frontMatterBack: Array<string> = [];
+let frontMatterBack: Array<string> = []
 
 // frontMatter 原始yaml对象，
 // 无法可视化的数据（复杂嵌套数据），会保存在这里
 // 写回文件时会将这里的数据转换为yaml字符串
-let frontMatterObject = <Record<string, any>>{};
+let frontMatterObject = <Record<string, any>>{}
 
 // frontMatter 属性值类型
 enum fronMatterValueType {
-  string = "string",
-  array = "array",
-  number = "number",
-  boolean = "boolean",
-  dateTime = "dateTime",
+  string = 'string',
+  array = 'array',
+  number = 'number',
+  boolean = 'boolean',
+  dateTime = 'dateTime',
 }
 
 // 文章标题
-const fileName = ref("");
+const fileName = ref('')
 
 // 属性类型选择菜单弹出坐标
-const optionsComponent = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+const optionsComponent = ref<{ x: number; y: number }>({ x: 0, y: 0 })
 
 // 属性类型选择菜单是否显示标识
-const menuVisible = ref(false);
+const menuVisible = ref(true)
 
 // 当前正在编辑的 frontMatter 索引
-let currentFrontMatterIndex = 0;
+let currentFrontMatterIndex = 0
 
-const isFrontMatterFold = ref(false); // 文档属性折叠标识
+const isFrontMatterFold = ref(false) // 文档属性折叠标识
 
-let firstWatch = true;
+let firstWatch = true
 
 watch(
   () => props.frontMatterString,
   (newVal) => {
-
     // 只监听一次
     if (firstWatch) {
-      firstWatch = false;
+      firstWatch = false
     } else {
-      return;
+      return
     }
 
     // 解析 frontMatter
     if (newVal) {
-      let result = parseFrontMatter(newVal);
-      frontMatterObject = result ? result : {};
+      const result = parseFrontMatter(newVal)
+      frontMatterObject = result ? result : {}
     }
 
     // 生成 frontMatter
     for (const key in frontMatterObject) {
-      let value = frontMatterObject[key];
-      let type = typeof value;
+      const value = frontMatterObject[key]
+      const type = typeof value
 
-      let item_type: fronMatterValueType = fronMatterValueType.string;
+      let item_type: fronMatterValueType = fronMatterValueType.string
 
-      if (type === "string") {
-        item_type = fronMatterValueType.string;
-      } else if (type === "number") {
-        item_type = fronMatterValueType.number;
-      } else if (type === "boolean") {
-        item_type = fronMatterValueType.boolean;
-      } else if (type === "object") {
+      if (type === 'string') {
+        item_type = fronMatterValueType.string
+      } else if (type === 'number') {
+        item_type = fronMatterValueType.number
+      } else if (type === 'boolean') {
+        item_type = fronMatterValueType.boolean
+      } else if (type === 'object') {
         if (Array.isArray(value)) {
-          item_type = fronMatterValueType.array;
+          item_type = fronMatterValueType.array
         } else if (value instanceof Date) {
-          item_type = fronMatterValueType.dateTime;
+          item_type = fronMatterValueType.dateTime
         }
       } else {
-        continue; // 其他类型不处理, 暂时不支持
+        continue // 其他类型不处理, 暂时不支持
       }
 
       frontMatter.value.push({
         name: key,
         type: item_type,
         value: value,
-      });
+      })
     }
 
-    frontMatterBack = frontMatter.value.map((item) => item.name);
-  }
-);
+    frontMatterBack = frontMatter.value.map((item) => item.name)
+  },
+)
 
 const showTypeSelectMenu = (event: MouseEvent, index: number) => {
   /**
    * 显示属性类型选择菜单
    */
-  currentFrontMatterIndex = index;
-  optionsComponent.value = { x: event.clientX, y: event.clientY };
-  menuVisible.value = true;
-};
+  console.log('showTypeSelectMenu')
+  currentFrontMatterIndex = index
+  optionsComponent.value = { x: event.clientX, y: event.clientY }
+  menuVisible.value = true
+}
 
 const changeAttributeType = (type: fronMatterValueType) => {
   /**
    * 修改属性类型
    */
   if (frontMatter.value[currentFrontMatterIndex].value) {
-    ElMessageBox.confirm(
-      "修改属性类将导致原有值被丢弃，确认修改吗？",
-      "Warning",
-      {
-        confirmButtonText: "修改",
-        cancelButtonText: "保留原值",
-        type: "warning",
-      }
-    )
+    ElMessageBox.confirm('修改属性类将导致原有值被丢弃，确认修改吗？', 'Warning', {
+      confirmButtonText: '修改',
+      cancelButtonText: '保留原值',
+      type: 'warning',
+    })
       .then(() => {
         // 清空对应的属性值
-        let newValue: any = "";
+        const newValue: any = ''
         if (type === fronMatterValueType.array) {
-          frontMatter.value[currentFrontMatterIndex].value = [];
+          frontMatter.value[currentFrontMatterIndex].value = []
         } else if (type === fronMatterValueType.number) {
-          frontMatter.value[currentFrontMatterIndex].value = 0;
+          frontMatter.value[currentFrontMatterIndex].value = 0
         } else if (type === fronMatterValueType.boolean) {
-          frontMatter.value[currentFrontMatterIndex].value = false;
+          frontMatter.value[currentFrontMatterIndex].value = false
         } else if (type === fronMatterValueType.dateTime) {
-          frontMatter.value[currentFrontMatterIndex].value = new Date();
+          frontMatter.value[currentFrontMatterIndex].value = new Date()
         } else {
-          frontMatter.value[currentFrontMatterIndex].value = "";
+          frontMatter.value[currentFrontMatterIndex].value = ''
         }
 
-        frontMatter.value[currentFrontMatterIndex].value = newValue;
+        frontMatter.value[currentFrontMatterIndex].value = newValue
 
         // 修改属性类型
-        frontMatter.value[currentFrontMatterIndex].type = type;
+        frontMatter.value[currentFrontMatterIndex].type = type
         // 修改属性类型后，更新 frontMatterObject
         // frontMatterObject[frontMatter.value[currentFrontMatterIndex].name] =
         //   frontMatter.value[currentFrontMatterIndex].value;
 
-        frontMatterChange();
+        frontMatterChange()
         ElMessage({
-          type: "success",
-          message: "属性修改成功",
-        });
+          type: 'success',
+          message: '属性修改成功',
+        })
       })
       .catch(() => {
         ElMessage({
-          type: "info",
-          message: "取消修改",
-        });
-      });
+          type: 'info',
+          message: '取消修改',
+        })
+      })
   } else {
-    let newValue: any = "";
+    const newValue: any = ''
     if (type === fronMatterValueType.array) {
-      frontMatter.value[currentFrontMatterIndex].value = [];
+      frontMatter.value[currentFrontMatterIndex].value = []
     } else if (type === fronMatterValueType.number) {
-      frontMatter.value[currentFrontMatterIndex].value = 0;
+      frontMatter.value[currentFrontMatterIndex].value = 0
     } else if (type === fronMatterValueType.boolean) {
-      frontMatter.value[currentFrontMatterIndex].value = false;
+      frontMatter.value[currentFrontMatterIndex].value = false
     } else if (type === fronMatterValueType.dateTime) {
-      frontMatter.value[currentFrontMatterIndex].value = new Date();
+      frontMatter.value[currentFrontMatterIndex].value = new Date()
     } else {
-      frontMatter.value[currentFrontMatterIndex].value = "";
+      frontMatter.value[currentFrontMatterIndex].value = ''
     }
 
-    frontMatter.value[currentFrontMatterIndex].value = newValue;
+    frontMatter.value[currentFrontMatterIndex].value = newValue
 
     // 修改属性类型
-    frontMatter.value[currentFrontMatterIndex].type = type;
+    frontMatter.value[currentFrontMatterIndex].type = type
     // 修改属性类型后，更新 frontMatterObject
     // frontMatterObject[frontMatter.value[currentFrontMatterIndex].name] =
     //   frontMatter.value[currentFrontMatterIndex].value;
   }
 
-  menuVisible.value = false;
-};
+  menuVisible.value = false
+}
 
 const addPostAttribute = () => {
   /**
    * 添加文档属性
    */
-  if (
-    frontMatter.value.length !== 0 &&
-    !frontMatter.value[frontMatter.value.length - 1].name
-  ) {
-    return;
+  if (frontMatter.value.length !== 0 && !frontMatter.value[frontMatter.value.length - 1].name) {
+    return
   }
 
   frontMatter.value.push({
-    name: "",
+    name: '',
     type: fronMatterValueType.string,
-    value: "",
-  });
+    value: '',
+  })
 
-  frontMatterChange();
-};
+  frontMatterChange()
+}
 
 const attributeNameInputComplate = (index: number) => {
   /**
@@ -221,37 +212,37 @@ const attributeNameInputComplate = (index: number) => {
      * 恢复或删除错误的文档属性
      */
     if (frontMatterBack[index]) {
-      frontMatter.value[index].name = frontMatterBack[index];
+      frontMatter.value[index].name = frontMatterBack[index]
     } else {
-      frontMatter.value.splice(index, 1);
+      frontMatter.value.splice(index, 1)
     }
-  };
+  }
 
   if (!frontMatter.value[index].name) {
     // 查看之前是否有值，有值恢复, 没有值删除
-    restoreOrRemoveAttribute(index);
+    restoreOrRemoveAttribute(index)
   } else {
     const existingIndex = frontMatterBack.findIndex(
-      (item) => item === frontMatter.value[index].name
-    );
+      (item) => item === frontMatter.value[index].name,
+    )
     if (existingIndex !== -1) {
       // 查看之前是否有值，有值恢复, 没有值删除
-      restoreOrRemoveAttribute(index);
-      return;
+      restoreOrRemoveAttribute(index)
+      return
     } else {
       // 达成条件，更新 frontMatterBack 和 frontMatterObject
-      let originName = frontMatterBack[index];
-      frontMatterBack[index] = frontMatter.value[index].name;
+      const originName = frontMatterBack[index]
+      frontMatterBack[index] = frontMatter.value[index].name
       // 删除原来的键值
-      delete frontMatterObject[originName];
+      delete frontMatterObject[originName]
       // 添加新的键值
       // frontMatterObject[frontMatter.value[index].name] =
       //   frontMatter.value[index].value;
     }
   }
 
-  frontMatterChange();
-};
+  frontMatterChange()
+}
 
 const attributeValueInputComplate = (index: number) => {
   /**
@@ -263,61 +254,58 @@ const attributeValueInputComplate = (index: number) => {
   // frontMatterObject[frontMatter.value[index].name] =
   //   frontMatter.value[index].value;
 
-  frontMatterChange();
-};
+  frontMatterChange()
+}
 
 const parseFrontMatter = (content: string) => {
-  let parsedYaml = <Record<string, any>>{};
+  let parsedYaml = <Record<string, any>>{}
   if (content) {
     try {
-      const match = content.match(/---\s*([\s\S]*?)\s*---/);
+      const match = content.match(/---\s*([\s\S]*?)\s*---/)
       if (match && match[1]) {
-        parsedYaml = yaml.load(match[1]) as Record<string, any>;
+        parsedYaml = yaml.load(match[1]) as Record<string, any>
       } else {
-        parsedYaml = {};
+        parsedYaml = {}
       }
     } catch (e) {
-      console.error("Error parsing YAML:", e);
+      console.error('Error parsing YAML:', e)
     }
   }
 
-  return parsedYaml;
-};
+  return parsedYaml
+}
 
 const stringifyFrontMatter = (frontMatter: Record<string, any>) => {
-  let timeData: Record<string, string> = {};
+  const timeData: Record<string, string> = {}
 
   for (const key in frontMatter) {
-    let value = frontMatter[key];
+    const value = frontMatter[key]
     if (value instanceof Date) {
-      let id = Math.random().toString(36);
-      timeData[id] = format(
-        value,
-        settingsStore.settings["编辑器配置"].dateTimeFormat
-      );
-      frontMatter[key] = `${id}`;
+      const id = Math.random().toString(36)
+      timeData[id] = format(value, settingsStore.settings['编辑器配置'].dateTimeFormat)
+      frontMatter[key] = `${id}`
     }
   }
 
-  let frontMatterString = yaml.dump(frontMatter);
+  let frontMatterString = yaml.dump(frontMatter)
 
   for (const key in timeData) {
-    frontMatterString = frontMatterString.replace(`${key}`, timeData[key]);
+    frontMatterString = frontMatterString.replace(`${key}`, timeData[key])
   }
 
-  return `---\n${frontMatterString}---\n`;
-};
+  return `---\n${frontMatterString}---\n`
+}
 
 const frontMatterChange = () => {
   /**
    * frontMatter 内容变化时触发
    */
   for (let i = 0; i < frontMatter.value.length; i++) {
-    let item = frontMatter.value[i];
-    frontMatterObject[item.name] = item.value;
+    const item = frontMatter.value[i]
+    frontMatterObject[item.name] = item.value
   }
-  emit("change", stringifyFrontMatter(frontMatterObject));
-};
+  emit('change', stringifyFrontMatter(frontMatterObject))
+}
 </script>
 
 <template>
@@ -330,15 +318,9 @@ const frontMatterChange = () => {
       class="el-front-matter-custom post-title"
       style="margin: 20px 0"
     />
-    <div
-      class="front-matter-fold-bar"
-      @click="isFrontMatterFold = !isFrontMatterFold"
-    >
+    <div class="front-matter-fold-bar" @click="isFrontMatterFold = !isFrontMatterFold">
       <span class="icon">
-        <font-awesome-icon
-          :icon="['fas', 'chevron-right']"
-          v-if="isFrontMatterFold"
-        />
+        <font-awesome-icon :icon="['fas', 'chevron-right']" v-if="isFrontMatterFold" />
         <font-awesome-icon :icon="['fas', 'chevron-down']" v-else />
       </span>
       <span>文档属性</span>
@@ -504,19 +486,14 @@ const frontMatterChange = () => {
         </template>
       </context-menu-item>
       <context-menu-item label="复制" :clickClose="false">
-        <template #icon>
-          <font-awesome-icon :icon="['fas', 'copy']" /> </template
+        <template #icon> <font-awesome-icon :icon="['fas', 'copy']" /> </template
       ></context-menu-item>
       <context-menu-item label="粘贴" :clickClose="false">
-        <template #icon>
-          <font-awesome-icon :icon="['fas', 'paste']" /> </template
+        <template #icon> <font-awesome-icon :icon="['fas', 'paste']" /> </template
       ></context-menu-item>
       <context-menu-item label="删除" :clickClose="false">
         <template #icon>
-          <font-awesome-icon
-            :icon="['fas', 'trash']"
-            style="color: var(--el-color-danger)"
-          />
+          <font-awesome-icon :icon="['fas', 'trash']" style="color: var(--el-color-danger)" />
         </template>
       </context-menu-item>
     </context-menu>
@@ -535,16 +512,15 @@ const frontMatterChange = () => {
 .el-front-matter-custom .el-input__wrapper:focus-within,
 .el-front-matter-custom .el-textarea__inner:focus-within,
 .el-front-matter-custom:focus-within {
-  background-color: antiquewhite;
+  background-color: var(--el-color-primary-light-7);
 }
 </style>
 
 <style scoped>
 .post-title {
   font-size: 28px;
-  color: #e78a4e;
   font-weight: bold;
-  font-family: "微软雅黑", Courier, monospace;
+  font-family: '微软雅黑', Courier, monospace;
 }
 
 .front-matter-fold-bar {
@@ -571,7 +547,7 @@ const frontMatterChange = () => {
 }
 
 .front-matter-item:focus-within {
-  border: 1px solid #e78a4e;
+  border: 1px solid var(--el-color-primary);
 }
 
 .type-icon {
@@ -579,6 +555,6 @@ const frontMatterChange = () => {
 }
 
 .type-icon:hover {
-  color: #e78a4e;
+  color: var(--el-color-primary);
 }
 </style>

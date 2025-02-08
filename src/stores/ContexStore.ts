@@ -30,9 +30,9 @@ export const useContexStore = defineStore('contex', () => {
   // 内容状态
   interface TabItem {
     id: string // 唯一标识
-    panel: string // 面板名称
-    icon: Ref<string> // 图标
-    title: Ref<string> // 标题
+    panel: unknown // 面板名称
+    icon: string // 图标
+    title: string // 标题
     data: {
       file?: localFile | remoteFile | nativeFile
     }
