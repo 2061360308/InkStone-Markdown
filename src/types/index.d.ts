@@ -34,3 +34,14 @@ declare interface remoteFile {
 declare interface nativeFile extends FileSystemFileHandle {
   editor?: EditorInstance
 }
+
+declare interface treeItemObject {
+  title: string
+  isLeaf: boolean
+  isExpanded: boolean
+  data: {
+    path: string
+    position?: 'remote' | 'local'
+  }
+  children?: treeItemObject[]
+}

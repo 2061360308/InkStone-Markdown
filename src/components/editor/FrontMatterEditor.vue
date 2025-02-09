@@ -45,7 +45,7 @@ const fileName = ref('')
 const optionsComponent = ref<{ x: number; y: number }>({ x: 0, y: 0 })
 
 // 属性类型选择菜单是否显示标识
-const menuVisible = ref(true)
+const menuVisible = ref(false)
 
 // 当前正在编辑的 frontMatter 索引
 let currentFrontMatterIndex = 0
@@ -108,7 +108,6 @@ const showTypeSelectMenu = (event: MouseEvent, index: number) => {
   /**
    * 显示属性类型选择菜单
    */
-  console.log('showTypeSelectMenu')
   currentFrontMatterIndex = index
   optionsComponent.value = { x: event.clientX, y: event.clientY }
   menuVisible.value = true

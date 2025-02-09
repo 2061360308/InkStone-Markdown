@@ -3,7 +3,7 @@ import { Panel } from './base'
 // import { useContexStore } from '@/stores'
 
 export class localFileEditorPanel implements Panel {
-  id = 'localFile'
+  id = 'localFileEditor'
   name = '本地文件编辑器'
   icon = 'file'
   noSidebar = true

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed, defineProps, Component } from 'vue'
 
 interface treeItemObject {
   title: string
@@ -29,6 +29,10 @@ const props = defineProps({
       label: 'title',
     }),
   },
+  type: {
+    type: String,
+    default: '',
+  },
   readonly: {
     type: Boolean,
     default: false,
@@ -48,7 +52,7 @@ console.log(readonly)
 </script>
 
 <template>
-  <div class="file-tree">
+  <div :class="['file-tree', type]">
     <el-tree
       :data="dataSource"
       :props="defaultProps"
@@ -56,13 +60,14 @@ console.log(readonly)
       default-expand-all
       :expand-on-click-node="false"
       :default-expanded-keys="expendedKeys"
+      @node-contextmenu="
+        (e: MouseEvent, data: treeItemObject, node: HTMLElement, component: Component) => {
+          nodeContextmenu(e, data, node, component)
+        }
+      "
     >
       <template #default="{ node, data }">
-        <span
-          class="node-item"
-          @click="nodeClick(node, data)"
-          @contextmenu="nodeContextmenu(node, data)"
-        >
+        <span class="node-item" @click="nodeClick(node, data)">
           <FontAwesomeIcon
             v-if="node.isLeaf && node.label.endsWith('.md')"
             :icon="['fas', 'square-pen']"
@@ -71,7 +76,9 @@ console.log(readonly)
           />
           <FontAwesomeIcon v-else-if="node.isLeaf" :icon="['fas', 'file']" class="icon" />
           <FontAwesomeIcon v-else :icon="['fas', 'folder']" class="icon" />
-          <span class="label">{{ node.label }}</span>
+          <span :class="{ label: true, remote: data.data.position === 'remote' }">{{
+            node.label
+          }}</span>
         </span>
       </template>
     </el-tree>
@@ -90,6 +97,12 @@ console.log(readonly)
 
   .icon {
     padding: 5px;
+  }
+}
+
+.file-tree.mixed {
+  .label.remote {
+    color: var(--el-color-warning);
   }
 }
 </style>

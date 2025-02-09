@@ -2,6 +2,7 @@
 @use 'splitpanes/dist/splitpanes.css';
 @use 'element-plus/theme-chalk/dark/css-vars.css';
 @use './vditor.scss';
+@use './contex-menu.scss';
 
 .splitpanes__splitter {
   width: 1px;

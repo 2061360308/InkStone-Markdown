@@ -3,7 +3,7 @@ import { onMounted, onBeforeUnmount } from 'vue'
 
 onMounted(() => {
   const handleContextMenu = (event: MouseEvent) => {
-    event.preventDefault()
+    // event.preventDefault()
   }
 
   // 添加全局的 contextmenu 事件监听器
