@@ -36,6 +36,7 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     FilePanel: typeof import('./src/components/FilePanel.vue')['default']
     FileTree: typeof import('./src/components/FileTree.vue')['default']
+    FileTypeIcon: typeof import('./src/components/FileTypeIcon.vue')['default']
     FrontMatterEditor: typeof import('./src/components/editor/FrontMatterEditor.vue')['default']
     LocalFileEditor: typeof import('./src/components/editor/LocalFileEditor.vue')['default']
     MdEditor: typeof import('./src/components/editor/MdEditor.vue')['default']

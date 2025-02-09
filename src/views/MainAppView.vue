@@ -10,12 +10,6 @@ import SidebarPanel from '@/components/SidebarPanel.vue'
 import { decryptToken } from '@/utils/general'
 import { validateLogin } from '@/utils/general'
 import api from '@/utils/api'
-import {
-  ContextMenu,
-  ContextMenuGroup,
-  ContextMenuSeparator,
-  ContextMenuItem,
-} from '@imengyu/vue3-context-menu'
 import { useDark } from '@vueuse/core'
 
 const contexStore = useContexStore()
@@ -103,24 +97,6 @@ const titleBarCheck = () => {
     titleBarVisible.value = false
   }
 }
-
-const menuVisible = ref(false)
-const optionsComponent = ref({
-  x: 500,
-  y: 200,
-})
-
-const onFileMenu = (event: { preventDefault: () => void; clientX: number; clientY: number }) => {
-  console.log('onFileMenu', event)
-  event.preventDefault()
-
-  optionsComponent.value = {
-    x: event.clientX,
-    y: event.clientY,
-  }
-  menuVisible.value = !menuVisible.value
-}
-
 /**
  *    左侧边栏
  */
@@ -204,12 +180,16 @@ const unpinSideBarPanel = () => {
 
 const handleMenuSelect = (index: string) => {
   // Set the active menu
-  if (sidebarPanelFixed.value && !panelsManager.getPanel(index)?.noselect) {
-    if (index === activeMenu.value) {
-      activeMenu.value = ''
-      closeSideBarPanel()
+  if (!panelsManager.getPanel(index)?.noselect) {
+    if (sidebarPanelFixed.value) {
+      if (index === activeMenu.value) {
+        activeMenu.value = ''
+        closeSideBarPanel()
+      } else {
+        contexStore.sidebarState.opened = true
+        activeMenu.value = index
+      }
     } else {
-      contexStore.sidebarState.opened = true
       activeMenu.value = index
     }
   }
@@ -315,44 +295,8 @@ const isDark = useDark()
         <el-image src="/favicon.ico" alt="logo" class="logo-img" />
       </div>
       <span class="title">砚台 Inkstone</span>
-      <div class="bar-menu" @click="onFileMenu">文件</div>
-      <div class="opened-file-tip">这是打开的文件</div>
-      <context-menu v-model:show="menuVisible" :options="optionsComponent">
-        <context-menu-group label="新建" icon="fas fa-plus">
-          <context-menu-item label="新建文章" :clickClose="true" data-filetype="post">
-            <template #icon>
-              <font-awesome-icon :icon="['fas', 'square-pen']" />
-            </template>
-          </context-menu-item>
-          <context-menu-item label="新建草稿" :clickClose="true" data-filetype="draft">
-            <template #icon>
-              <font-awesome-icon :icon="['fas', 'pen-ruler']" />
-            </template>
-          </context-menu-item>
-
-          <ContextMenuSeparator />
-
-          <context-menu-item label="文件" :clickClose="true" data-filetype="file">
-            <template #icon>
-              <font-awesome-icon :icon="['fas', 'file']" />
-            </template>
-          </context-menu-item>
-        </context-menu-group>
-
-        <context-menu-item label="重命名" :clickClose="false">
-          <template #icon>
-            <font-awesome-icon :icon="['fas', 'i-cursor']" />
-          </template>
-        </context-menu-item>
-        <context-menu-item label="复制" :clickClose="false">
-          <template #icon> <font-awesome-icon :icon="['fas', 'copy']" /> </template
-        ></context-menu-item>
-        <context-menu-item label="删除" :clickClose="false">
-          <template #icon>
-            <font-awesome-icon :icon="['fas', 'trash']" style="color: var(--el-color-danger)" />
-          </template>
-        </context-menu-item>
-      </context-menu>
+      <div class="bar-menu">文件</div>
+      <div class="opened-file-tip">{{ contexStore.titleBarText }}</div>
     </div>
     <div class="notification" v-if="notificationVisible"></div>
     <div :class="[titleBarVisible ? 'has-titlebar' : '', 'main-container']">

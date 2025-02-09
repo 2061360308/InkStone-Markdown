@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, onMounted, Ref, ref } from 'vue'
+import { defineProps, onMounted, Ref, ref, watch } from 'vue'
 import { useContexStore, useSettingsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import MdEditor from './MdEditor.vue'
@@ -37,6 +37,19 @@ onMounted(async () => {
 
   fileName.value = path.split('/').pop() as string
 })
+
+// 根据文件是否保存来修改标题提示文字
+watch(
+  () => isAllSaved.value,
+  (value) => {
+    const title = path.split('/').pop() || ''
+    if (value) {
+      contexStore.titleBarText = title
+    } else {
+      contexStore.titleBarText = title + ' *'
+    }
+  },
+)
 
 const editorReady = async () => {
   console.log('editorReady')

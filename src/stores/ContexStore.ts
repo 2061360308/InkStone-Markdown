@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, Ref } from 'vue'
+import { ref, Ref, watch } from 'vue'
 import api from '@/utils/api'
 import { generateRandomId } from '@/utils/general'
 
@@ -79,12 +79,27 @@ export const useContexStore = defineStore('contex', () => {
     }
   }
 
+  // 标题栏提示字符
+  const titleBarText = ref('')
+
+  watch(
+    () => activeTabId.value,
+    (id) => {
+      const item = tabs.value.find((tab) => tab.id === id)
+      if (item && (item.data.file as localFile).path) {
+        const title = (item.data.file as localFile).path.split('/').pop()
+        titleBarText.value = title || ''
+      }
+    },
+  )
+
   return {
     api,
     openedFiles,
     routerParams,
     sidebarState,
     notification,
+    titleBarText,
     tabs,
     activeTabId,
     setActiveTab,
