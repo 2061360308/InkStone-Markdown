@@ -463,76 +463,78 @@ const isDark = useDark()
       >
         <SidebarPanel @update:pin="handelPinButton" />
       </el-drawer>
-      <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
-        <pane
-          v-if="sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen"
-          :size="sidebarPanelSize"
-        >
-          <SidebarPanel @update:pin="handelPinButton" style="width: 100%; height: 100%" />
-        </pane>
-        <pane
-          :size="
-            sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
-              ? 100 - sidebarPanelSize
-              : 100
-          "
-        >
-          <!-- :size="
+      <div class="main-center">
+        <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
+          <pane
+            v-if="sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen"
+            :size="sidebarPanelSize"
+          >
+            <SidebarPanel @update:pin="handelPinButton" style="width: 100%; height: 100%" />
+          </pane>
+          <pane
+            :size="
+              sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
+                ? 100 - sidebarPanelSize
+                : 100
+            "
+          >
+            <!-- :size="
             sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
               ? 100 - sidebarPanelSize
               : 100
           " -->
-          <div class="workspace">
-            <el-tabs
-              v-model="contexStore.activeTabId"
-              type="card"
-              closable
-              @tab-remove="(name) => contexStore.removeTab(name as string)"
-              class="el-tabs"
-              v-if="contexStore.tabs.length > 0"
-            >
-              <el-tab-pane
-                v-for="item in contexStore.tabs"
-                :key="item.id"
-                :name="item.id"
-                class="tab-pane"
+            <div class="workspace">
+              <el-tabs
+                v-model="contexStore.activeTabId"
+                type="card"
+                closable
+                @tab-remove="(name) => contexStore.removeTab(name as string)"
+                class="el-tabs"
+                v-if="contexStore.tabs.length > 0"
               >
-                <template #label>
-                  <span
-                    :class="{
-                      'panel-tab': true,
-                      native: item.panel === 'nativeFile',
-                      remote: item.panel === 'remoteFile',
-                    }"
-                  >
-                    <!-- <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" /> -->
-                    <FileTypeIcon :suffix="item.title.split('.').pop() || ''" />
-                    <el-tooltip
-                      :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
-                      effect="dark"
-                      :content="item.title"
-                      placement="bottom-start"
-                      >{{ truncateTitle(item.title) }}</el-tooltip
+                <el-tab-pane
+                  v-for="item in contexStore.tabs"
+                  :key="item.id"
+                  :name="item.id"
+                  class="tab-pane"
+                >
+                  <template #label>
+                    <span
+                      :class="{
+                        'panel-tab': true,
+                        native: item.panel === 'nativeFile',
+                        remote: item.panel === 'remoteFile',
+                      }"
                     >
-                  </span>
-                </template>
+                      <!-- <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" /> -->
+                      <FileTypeIcon :suffix="item.title.split('.').pop() || ''" />
+                      <el-tooltip
+                        :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
+                        effect="dark"
+                        :content="item.title"
+                        placement="bottom-start"
+                        >{{ truncateTitle(item.title) }}</el-tooltip
+                      >
+                    </span>
+                  </template>
 
-                <component :is="item.panel" :id="item.id" />
-                <!-- <LocalFileEditor :id="item.id" /> -->
-              </el-tab-pane>
-            </el-tabs>
-            <div class="empty-box" v-else>
-              <div class="cover-image"></div>
-              <div class="tip-content"><span>请在左侧文件管理器中选择文件打开</span></div>
-              <!-- <el-empty image="cover.png" :image-size="550">
+                  <component :is="item.panel" :id="item.id" />
+                  <!-- <LocalFileEditor :id="item.id" /> -->
+                </el-tab-pane>
+              </el-tabs>
+              <div class="empty-box" v-else>
+                <div class="cover-image"></div>
+                <div class="tip-content"><span>请在左侧文件管理器中选择文件打开</span></div>
+                <!-- <el-empty image="cover.png" :image-size="550">
                 <template #description>
 
                 </template>
               </el-empty> -->
+              </div>
             </div>
-          </div>
-        </pane>
-      </splitpanes>
+          </pane>
+        </splitpanes>
+      </div>
     </div>
   </div>
 </template>
@@ -589,10 +591,21 @@ const isDark = useDark()
     width: 100%;
     height: 100%;
     display: flex;
+
+    .main-center {
+      flex-grow: 1; /* 占满剩余空间 */
+      max-width: calc(100% - $sidebar-menu-w);
+    }
   }
 
   .main-container.has-titlebar {
     height: calc(100% - env(titlebar-area-height, 33px));
+  }
+
+  .main-container.is-narrowscreen {
+    .main-center {
+      max-width: 100%;
+    }
   }
 }
 
@@ -701,21 +714,6 @@ const isDark = useDark()
     left: 0 !important;
   }
 }
-
-// .sidebar-drawer-hastitlebar {
-//   top: env(titlebar-area-height, 33px) !important;
-//   left: $sidebar-menu-w !important;
-//   padding: 0;
-
-//   .el-drawer.ltr {
-//     border-radius: 0 10px 10px 0;
-//     box-shadow: none;
-
-//     .el-drawer__body {
-//       padding: 0;
-//     }
-//   }
-// }
 
 .workspace {
   .el-tabs__content {

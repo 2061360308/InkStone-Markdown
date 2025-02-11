@@ -15,7 +15,7 @@
   --app-editor-tabs-border-color-local: #dcdfe6;
   --app-editor-tabs-border-color-remote: #e6a23c;
   --app-editor-tabs-border-color-nactive: #67c23a;
-  --app-cover-image: url('cover.png');
+  --app-cover-image: url('/cover.png');
 }
 
 html.dark {
@@ -23,5 +23,5 @@ html.dark {
   --app-editor-tabs-border-color-local: #4c4d4f;
   --app-editor-tabs-border-color-remote: #e6a23c;
   --app-editor-tabs-border-color-nactive: #67c23a;
-  --app-cover-image: url('cover_light.png');
+  --app-cover-image: url('/cover_light.png');
 }

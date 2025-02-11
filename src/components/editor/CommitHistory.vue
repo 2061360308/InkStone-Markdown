@@ -15,12 +15,27 @@ const changeSha = (sha: string) => {
   emit('change-sha', sha)
 }
 
-const histories: Ref<unknown[]> = ref([])
+const histories: Ref<
+  Array<{
+    sha: string
+    author: {
+      avatar_url: string
+    }
+    commit: {
+      message: string
+      author: {
+        name: string
+        date: string
+        message: string
+      }
+    }
+  }>
+> = ref([])
 
 watch(
   () => props.path,
   async (newPath) => {
-    histories.value = await api.getFileCommitHistory(newPath)
+    histories.value = (await api.getFileCommitHistory(newPath)) as unknown as typeof histories.value
   },
   { immediate: true },
 )
@@ -29,9 +44,9 @@ watch(
 <template>
   <el-timeline>
     <el-timeline-item
+      v-for="data in histories"
       :timestamp="data.commit.author.date"
       placement="top"
-      v-for="data in histories"
       :key="data.sha"
     >
       <el-card>

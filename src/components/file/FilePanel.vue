@@ -517,6 +517,7 @@ const fileRightClick = (
     y: e.clientY,
     // theme: 'default dark',
     items: buildContextMenu(contexmenu, data, repo, type),
+    zIndex: 2017,
   })
 }
 </script>
