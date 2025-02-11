@@ -186,11 +186,11 @@ export const openLocalFile = (path: string, repo: string) => {
 export const createFile = async (
   data: treeItemObject | null,
   repo: string,
+  type: string,
   post: boolean,
   draft: boolean,
   _callback: (path: string, repo: string) => void,
 ) => {
-  console.log(data)
   const settingsStore = useSettingsStore()
 
   const fileName = ref('')
@@ -291,6 +291,7 @@ export const createFile = async (
 export const deleteFile = async (
   data: treeItemObject | null,
   repo: string,
+  type: string,
   _callback: () => void,
 ) => {
   if (!data) {
@@ -386,4 +387,38 @@ export const deleteFile = async (
         })
       })
   }
+}
+
+export const exportFile = async (
+  data: treeItemObject | null,
+  repo: string,
+  type: string,
+  fileHandle: FileSystemFileHandle,
+) => {
+  if (!data) {
+    return
+  }
+  const path = data.data.path
+  let content
+  if (type === 'local' || type === 'mixed') {
+    // 这里都是优先本地缓存内容
+    if (await fs.isExist(path, repo)) {
+      content = await fs.get(path, repo)
+    } else {
+      content = (await api.getFileContent(path, repo)).decodedContent
+    }
+  } else {
+    // 直接从远程获取内容
+    content = (await api.getFileContent(path, repo)).decodedContent
+  }
+
+  // 写入文件
+  const writable = await fileHandle.createWritable()
+  await writable.write(content)
+  await writable.close()
+
+  ElMessage({
+    type: 'success',
+    message: '文件已导出!',
+  })
 }

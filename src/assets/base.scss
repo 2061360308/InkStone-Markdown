@@ -12,10 +12,16 @@
 
 :root {
   --app-titlebar-color: #dde3e9;
+  --app-editor-tabs-border-color-local: #dcdfe6;
+  --app-editor-tabs-border-color-remote: #e6a23c;
+  --app-editor-tabs-border-color-nactive: #67c23a;
   --app-cover-image: url('cover.png');
 }
 
 html.dark {
   --app-titlebar-color: #2c2c2c; /* 暗色模式值 */
+  --app-editor-tabs-border-color-local: #4c4d4f;
+  --app-editor-tabs-border-color-remote: #e6a23c;
+  --app-editor-tabs-border-color-nactive: #67c23a;
   --app-cover-image: url('cover_light.png');
 }

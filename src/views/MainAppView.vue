@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Ref, ref, onMounted } from 'vue'
+import { Ref, ref, onMounted, computed, watch } from 'vue'
 import { useContexStore, useSettingsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import { PanelIconPosition } from '@/panels/base'
 import panelsManager from '@/panels'
 import SidebarPanel from '@/components/SidebarPanel.vue'
-import { decryptToken } from '@/utils/general'
-import { validateLogin } from '@/utils/general'
+import { decryptToken, validateLogin } from '@/utils/general'
 import api from '@/utils/api'
-import { useDark } from '@vueuse/core'
+import { useDark, useMediaQuery } from '@vueuse/core'
+import { MenuBar } from '@imengyu/vue3-context-menu'
+import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
 
 const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
@@ -35,6 +35,8 @@ declare global {
   }
 }
 
+const isNarrowscreen = useMediaQuery('(max-width: 650px)')
+
 const titleBarCheck = () => {
   // 防止标题栏覆盖检测函数频繁触发
   const debounce = <F extends (...args: unknown[]) => unknown>(func: F, wait: number) => {
@@ -53,7 +55,8 @@ const titleBarCheck = () => {
 
   if ('windowControlsOverlay' in navigator) {
     const overlay = navigator.windowControlsOverlay
-    titleBarVisible.value = overlay?.visible || false // 立即同步一次
+    titleBarVisible.value = overlay?.visible || isNarrowscreen.value // 立即同步一次
+    updateMenuBarData()
     overlay?.addEventListener(
       'geometrychange',
       debounce(() => {
@@ -65,7 +68,7 @@ const titleBarCheck = () => {
         //   `The overlay is ${isOverlayVisible ? 'visible' : 'hidden'},` +
         //   `the title bar width is ${titleBarRect.width}px`
         // );
-        titleBarVisible.value = overlay.visible
+        titleBarVisible.value = overlay.visible || isNarrowscreen.value
       }, 200),
     )
 
@@ -97,6 +100,105 @@ const titleBarCheck = () => {
     titleBarVisible.value = false
   }
 }
+
+type MenubarItem = Array<{
+  label: string
+  onClick?: () => void
+  divided?: boolean
+  children?: MenubarItem
+}>
+
+interface MenubarData {
+  items: MenubarItem
+  zIndex: number
+  mini: boolean
+}
+
+const updateMenuBarData = () => {
+  if (isNarrowscreen.value) {
+    menuBarData.value.items = [...baseMenuBarItem]
+    for (const item of topMenuItems.value) {
+      menuBarData.value.items.push({
+        label: item.name,
+        onClick: () => {
+          handleMenuSelect(item.id)
+          sidebarDrawerVisible.value = true
+        },
+        divided: false,
+      })
+    }
+
+    menuBarData.value.items[menuBarData.value.items.length - 1].divided = true
+
+    menuBarData.value.items.push({
+      label: '日/夜间模式',
+      onClick: () => {
+        isDark.value = !isDark.value
+      },
+      divided: true,
+    })
+
+    for (const item of bottomMenuItems.value) {
+      menuBarData.value.items.push({
+        label: item.name,
+        onClick: () => {
+          handleMenuSelect(item.id)
+          if (!item.noselect) {
+            sidebarDrawerVisible.value = true
+          }
+        },
+      })
+    }
+  } else {
+    menuBarData.value.items = baseMenuBarItem
+  }
+}
+
+watch(isNarrowscreen, (value) => {
+  if ('windowControlsOverlay' in navigator) {
+    const overlay = navigator.windowControlsOverlay
+    titleBarVisible.value = overlay?.visible || value
+  } else {
+    titleBarVisible.value = value
+  }
+
+  updateMenuBarData()
+})
+
+const baseMenuBarItem: MenubarItem = [
+  {
+    label: 'File',
+    children: [
+      { label: 'New' },
+      { label: 'Open' },
+      {
+        label: 'Open recent',
+        children: [
+          { label: 'File 1....' },
+          { label: 'File 2....' },
+          { label: 'File 3....' },
+          { label: 'File 4....' },
+          { label: 'File 5....' },
+        ],
+      },
+      { label: 'Save', divided: true },
+      { label: 'Save as...' },
+      {
+        label: 'Close',
+      },
+      { label: 'Close all' },
+      { label: 'Exit' },
+    ],
+    divided: true,
+  },
+]
+
+const menuBarData: Ref<MenubarData> = ref({
+  items: [],
+  zIndex: 3,
+  mini: true,
+})
+
 /**
  *    左侧边栏
  */
@@ -295,15 +397,22 @@ const isDark = useDark()
         <el-image src="/favicon.ico" alt="logo" class="logo-img" />
       </div>
       <span class="title">砚台 Inkstone</span>
-      <div class="bar-menu">文件</div>
+      <div class="bar-menu"><MenuBar :options="menuBarData" /></div>
       <div class="opened-file-tip">{{ contexStore.titleBarText }}</div>
     </div>
     <div class="notification" v-if="notificationVisible"></div>
-    <div :class="[titleBarVisible ? 'has-titlebar' : '', 'main-container']">
+    <div
+      :class="[
+        titleBarVisible ? 'has-titlebar' : '',
+        isNarrowscreen ? 'is-narrowscreen' : '',
+        'main-container',
+      ]"
+    >
       <div
         class="sidebar-menu"
         @mouseenter="sidebarMenuMouseEnter"
         @mouseleave="menuBarEnter = false"
+        v-if="!isNarrowscreen"
       >
         <div class="items-top items-box">
           <div
@@ -343,22 +452,36 @@ const isDark = useDark()
         </div>
       </div>
       <el-drawer
-        :modal-class="titleBarVisible ? 'sidebar-drawer-hastitlebar' : 'sidebar-drawer'"
+        modal-class="sidebar-drawer"
         v-model="sidebarDrawerVisible"
         direction="ltr"
         :with-header="false"
-        :size="350"
-        :modal="false"
+        :size="isNarrowscreen ? '85%' : 350"
+        :modal="isNarrowscreen ? true : false"
         @mouseleave="sidebarMenuMouseLeave"
-        v-if="!sidebarPanelFixed"
+        v-if="!sidebarPanelFixed || isNarrowscreen"
       >
         <SidebarPanel @update:pin="handelPinButton" />
       </el-drawer>
       <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
-        <pane v-if="sidebarPanelFixed && sidebarPanelVisible" :size="sidebarPanelSize">
+        <pane
+          v-if="sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen"
+          :size="sidebarPanelSize"
+        >
           <SidebarPanel @update:pin="handelPinButton" style="width: 100%; height: 100%" />
         </pane>
-        <pane :size="100 - sidebarPanelSize">
+        <pane
+          :size="
+            sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
+              ? 100 - sidebarPanelSize
+              : 100
+          "
+        >
+          <!-- :size="
+            sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
+              ? 100 - sidebarPanelSize
+              : 100
+          " -->
           <div class="workspace">
             <el-tabs
               v-model="contexStore.activeTabId"
@@ -382,7 +505,8 @@ const isDark = useDark()
                       remote: item.panel === 'remoteFile',
                     }"
                   >
-                    <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" />
+                    <!-- <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" /> -->
+                    <FileTypeIcon :suffix="item.title.split('.').pop() || ''" />
                     <el-tooltip
                       :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
                       effect="dark"
@@ -444,14 +568,14 @@ const isDark = useDark()
     }
 
     .bar-menu {
-      padding: 4px 6px;
-      border-radius: 4px;
+      // padding: 4px 6px;
+      // border-radius: 4px;
       -webkit-app-region: no-drag;
     }
 
-    .bar-menu:hover {
-      background-color: var(--el-color-primary-light-8);
-    }
+    //.bar-menu:hover {
+    //  background-color: var(--el-color-primary-light-8);
+    // }
 
     .opened-file-tip {
       font-size: 14px;
@@ -462,7 +586,6 @@ const isDark = useDark()
   }
 
   .main-container {
-    //width: calc(100% - 50px);
     width: 100%;
     height: 100%;
     display: flex;
@@ -527,6 +650,7 @@ const isDark = useDark()
   }
 
   .el-tabs {
+    width: 100%;
     height: 100%;
   }
 
@@ -566,18 +690,41 @@ const isDark = useDark()
   }
 }
 
-.sidebar-drawer-hastitlebar {
-  top: env(titlebar-area-height, 33px) !important;
-  left: $sidebar-menu-w !important;
-  padding: 0;
+.has-titlebar {
+  .sidebar-drawer {
+    top: env(titlebar-area-height, 33px) !important;
+  }
+}
 
-  .el-drawer.ltr {
-    border-radius: 0 10px 10px 0;
-    box-shadow: none;
+.is-narrowscreen {
+  .sidebar-drawer {
+    left: 0 !important;
+  }
+}
 
-    .el-drawer__body {
-      padding: 0;
-    }
+// .sidebar-drawer-hastitlebar {
+//   top: env(titlebar-area-height, 33px) !important;
+//   left: $sidebar-menu-w !important;
+//   padding: 0;
+
+//   .el-drawer.ltr {
+//     border-radius: 0 10px 10px 0;
+//     box-shadow: none;
+
+//     .el-drawer__body {
+//       padding: 0;
+//     }
+//   }
+// }
+
+.workspace {
+  .el-tabs__content {
+    width: 100%;
+    height: 100%;
+  }
+  .tab-pane {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

@@ -28,16 +28,6 @@ export const useContexStore = defineStore('contex', () => {
   const notification: Ref<{ hash: string; data: Array<string> }> = ref({ hash: '', data: [] })
 
   // 内容状态
-  interface TabItem {
-    id: string // 唯一标识
-    panelName: string // 面板名称
-    panel: unknown // 面板组件
-    icon: string // 图标
-    title: string // 标题
-    data: {
-      file?: localFile | remoteFile | nativeFile
-    }
-  }
 
   const tabs: Ref<Array<TabItem>> = ref([])
   const activeTabId: Ref<string> = ref('')

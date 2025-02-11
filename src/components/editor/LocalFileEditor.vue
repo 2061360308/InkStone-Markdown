@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, onMounted, Ref, ref, watch } from 'vue'
+import { defineProps, onMounted, Ref, ref, watch, defineAsyncComponent, Component } from 'vue'
 import { useContexStore, useSettingsStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import MdEditor from './MdEditor.vue'
@@ -22,18 +22,30 @@ const props = defineProps({
 
 const file: Ref<null | localFile> = ref(null)
 const fileName = ref('')
+const isMarkdown = ref(true)
 const isAllSaved = ref(true)
 let repo = ''
 let path = ''
 const EditorInstanceRef = ref<InstanceType<typeof MdEditor> | null>(null)
+let Editor: Component
 
 onMounted(async () => {
   // 通过id获取当前tab的内容
   const tab = tabs.value.find((tab) => tab.id === props.id)
-  file.value = tab?.data.file as localFile
+  const tabFile = tab?.data.file as localFile
 
-  path = file.value.path
-  repo = file.value.repo
+  path = tabFile.path
+  repo = tabFile.repo
+  const ext = path.split('.').pop() as string
+  isMarkdown.value = ext === 'md' || ext === 'markdown'
+
+  if (isMarkdown.value) {
+    Editor = defineAsyncComponent(() => import('./MdEditor.vue'))
+  } else {
+    Editor = defineAsyncComponent(() => import('./CodemirrorEditor.vue'))
+  }
+
+  file.value = tabFile
 
   fileName.value = path.split('/').pop() as string
 })
@@ -86,10 +98,11 @@ const saveFile = async () => {
 </script>
 
 <template>
-  <div>
-    <MdEditor
+  <div class="local-file-editor file-editor">
+    <Editor
       v-if="file"
       :editor="id"
+      class="editor"
       :file-name="fileName"
       v-model="isAllSaved"
       :editorReady="editorReady"
@@ -105,3 +118,15 @@ const saveFile = async () => {
     />
   </div>
 </template>
+
+<style scoped lang="scss">
+.local-file-editor {
+  width: 100%;
+  height: 100%;
+
+  .editor {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

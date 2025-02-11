@@ -1,0 +1,42 @@
+.codemirror-editor.editor {
+  .cm-editor {
+    background-color: var(--el-bg-color);
+    color: var(--el-text-color-primary);
+
+    .cm-content {
+      font-size: 15px;
+    }
+
+    .cm-gutters {
+      background-color: var(--el-bg-color-overlay);
+      color: var(--el-text-color-primary);
+      border: 1px solid var(--el-border-color);
+
+      .cm-activeLineGutter {
+        background-color: var(--el-color-primary-light-5);
+      }
+    }
+
+    .cm-tooltip-autocomplete.cm-tooltip.cm-tooltip-below {
+      border: 1px solid var(--el-border-color);
+      background-color: var(--el-bg-color-overlay);
+      li[aria-selected='true'] {
+        background: var(--el-color-primary);
+      }
+    }
+  }
+
+  .cm-editor.cm-focused {
+    .cm-layer.cm-layer-above.cm-cursorLayer {
+      .cm-cursor {
+        border-left-color: var(--el-text-color-primary);
+      }
+    }
+  }
+
+  .cm-layer.cm-selectionLayer {
+    .cm-selectionBackground {
+      background: var(--el-color-primary-light-7) !important;
+    }
+  }
+}

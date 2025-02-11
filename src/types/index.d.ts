@@ -25,8 +25,6 @@ declare interface localFile {
 declare interface remoteFile {
   path: string
   repo: string
-  user: string
-  branch: string
   content: string
   editor?: EditorInstance
 }
@@ -44,4 +42,20 @@ declare interface treeItemObject {
     position?: 'remote' | 'local'
   }
   children?: treeItemObject[]
+}
+
+declare interface Window {
+  showOpenFilePicker: (opstions: Record<string, unknown>) => Promise<FileSystemFileHandle[]>
+  showSaveFilePicker: (opstions: Record<string, unknown>) => Promise<FileSystemFileHandle>
+}
+
+declare interface TabItem {
+  id: string // 唯一标识
+  panelName: string // 面板名称
+  panel: unknown // 面板组件
+  icon: string // 图标
+  title: string // 标题
+  data: {
+    file?: localFile | remoteFile | nativeFile
+  }
 }

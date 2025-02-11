@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import api from "@/utils/api";
-import { Ref, defineProps, defineEmits, ref, watch } from "vue";
+import api from '@/utils/api'
+import { Ref, defineProps, defineEmits, ref, watch } from 'vue'
 
 const props = defineProps({
-    path: {
-        type: String,
-        required: true,
-    }
-});
+  path: {
+    type: String,
+    required: true,
+  },
+})
 
-const emit = defineEmits(["change-sha"]);
+const emit = defineEmits(['change-sha'])
 
 const changeSha = (sha: string) => {
-    emit("change-sha", sha);
-};
+  emit('change-sha', sha)
+}
 
-const histories: Ref<any[]> = ref([]);
+const histories: Ref<unknown[]> = ref([])
 
 watch(
-    () => props.path,
-    async (newPath) => {
-        histories.value = await api.getFileCommitHistory(newPath);
-    },
-    { immediate: true }
-);
+  () => props.path,
+  async (newPath) => {
+    histories.value = await api.getFileCommitHistory(newPath)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

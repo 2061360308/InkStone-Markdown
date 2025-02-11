@@ -106,7 +106,7 @@ const totalWordsNum = ref(0)
 
 const currentMode = ref(settingsStore.settings['编辑器配置'].editorDefaultMode)
 
-let modeInerval: number // 编辑器模式检测定时器
+let modeInerval: ReturnType<typeof setInterval> // 编辑器模式检测定时器
 
 const createVditorInstance = () => {
   /**

@@ -5,7 +5,8 @@ import { OutlinePanel } from './outline'
 import { SearchPanel } from './search'
 import { AboutPanel } from './about'
 import { SettingsPanel } from './settings'
-import { localFileEditorPanel } from './localFileEditor'
+import { LocalFileEditorPanel } from './localFileEditor'
+import { RemoteFileEditorPanel } from './RocalFileEditor'
 import { defineAsyncComponent } from 'vue'
 
 class PanelsManager {
@@ -17,7 +18,8 @@ class PanelsManager {
     new SearchPanel(),
     new AboutPanel(),
     new SettingsPanel(),
-    new localFileEditorPanel(),
+    new LocalFileEditorPanel(),
+    new RemoteFileEditorPanel(),
   ]
 
   private constructor() {}
@@ -31,6 +33,7 @@ class PanelsManager {
 
   public getAllPanels(): Array<{
     id: string
+    name: string
     icon: string
     position: PanelIconPosition
     index: number
@@ -40,6 +43,7 @@ class PanelsManager {
       .filter((panel: Panel) => !panel.noSidebar)
       .map((panel: Panel) => ({
         id: panel.id,
+        name: panel.name,
         icon: panel.icon,
         position: panel.position!,
         index: panel.index!,

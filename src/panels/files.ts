@@ -25,7 +25,7 @@ export class FilePanel implements Panel {
   ]
 
   async component(): Promise<Component> {
-    const m = await import('@/components/FilePanel.vue')
+    const m = await import('@/components/file/FilePanel.vue')
     return m.default as Component
   }
 

@@ -4,8 +4,14 @@ import api from '@/utils/api'
 import { computed } from 'vue'
 import fs from '@/utils/fs'
 import { useSettingsStore } from '@/stores'
-import FileTree from '@/components/FileTree.vue'
-import { openLocalFile, openRemoteFile, createFile, deleteFile } from '@/utils/filePanelOption'
+import FileTree from '@/components/file/FileTree.vue'
+import {
+  openLocalFile,
+  openRemoteFile,
+  createFile,
+  deleteFile,
+  exportFile,
+} from '@/utils/filePanelOption'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import { Component } from 'vue'
 
@@ -201,6 +207,9 @@ const updateTreeData = async (noCache: boolean = false) => {
   if (!localRepoNames.value.includes(localNameSpace)) {
     localRepoNames.value.push(localNameSpace)
   }
+  if (!localRepoNames.value.includes(repoName.value)) {
+    localRepoNames.value.push(repoName.value)
+  }
   selectedLocalData.value = await fs.list(localSelectRepoName.value)
   if (api.ready) {
     // 没有登录时不请求远程文件树
@@ -226,13 +235,17 @@ onMounted(async () => {
 
 // 暴露给外部的方法,在定义面板时定义
 
-const refresh = () => {
-  updateTreeData(true)
+const refresh = async () => {
+  await updateTreeData(true)
+  ElMessage({
+    type: 'success',
+    message: '刷新成功!',
+  })
 }
 
 defineExpose({
   createFile: () => {
-    createFile(null, repoName.value, false, false, createFileCallback)
+    createFile(null, repoName.value, 'local', false, false, createFileCallback)
   },
   refresh,
 })
@@ -268,7 +281,7 @@ const fileSelected = (type: string, node: treeItemObject, treeItem: treeItemObje
 interface contextMenuItem {
   label: string
   icon?: VNode
-  onClick?: (data: treeItemObject | null, repo: string) => void
+  onClick?: (data: treeItemObject | null, repo: string, type: string) => void
   children?: Array<contextMenuItem>
 }
 
@@ -281,23 +294,25 @@ const createFileCallback = (path: string, repo: string) => {
 
 const deleteFileCallback = () => {
   updateTreeData()
+  loading.value = false
 }
 
 const buildContextMenu = (
   contexmenu: contextMenuItemData,
   data: treeItemObject | null,
   repo: string,
+  type: string,
 ): contextMenuItemData => {
   return contexmenu.map((item) => {
     return {
       label: item.label,
       onClick: () => {
         if (item.onClick) {
-          item.onClick(data, repo)
+          item.onClick(data, repo, type)
         }
       },
       icon: item.icon,
-      children: item.children ? buildContextMenu(item.children, data, repo) : undefined,
+      children: item.children ? buildContextMenu(item.children, data, repo, type) : undefined,
     }
   })
 }
@@ -307,11 +322,12 @@ const createFileMenu = {
   onClick: (
     data: treeItemObject | null,
     repo: string,
+    type: string,
     post: boolean = false,
     draft: boolean = false,
     _callback: (path: string, repo: string) => void = createFileCallback,
   ) => {
-    createFile(data, repo, post, draft, _callback)
+    createFile(data, repo, type, post, draft, _callback)
   },
 }
 
@@ -320,11 +336,12 @@ const createPostMenu = {
   onClick: (
     data: treeItemObject | null,
     repo: string,
+    type: string,
     post: boolean = true,
     draft: boolean = false,
     _callback: (path: string, repo: string) => void = createFileCallback,
   ) => {
-    createFile(data, repo, post, draft, _callback)
+    createFile(data, repo, type, post, draft, _callback)
   },
 }
 
@@ -333,11 +350,12 @@ const createDraftMenu = {
   onClick: (
     data: treeItemObject | null,
     repo: string,
+    type: string,
     post: boolean = true,
     draft: boolean = true,
     _callback: (path: string, repo: string) => void = createFileCallback,
   ) => {
-    createFile(data, repo, post, draft, _callback)
+    createFile(data, repo, type, post, draft, _callback)
   },
 }
 
@@ -361,14 +379,35 @@ const deleteMenu = {
   onClick: (
     data: treeItemObject | null,
     repo: string,
+    type: string,
     _callback: () => void = deleteFileCallback,
   ) => {
-    deleteFile(data, repo, _callback)
+    loading.value = true
+    deleteFile(data, repo, type, _callback)
   },
 }
 
 const exportMenu = {
   label: '导出到本机磁盘',
+  onClick: async (data: treeItemObject | null, repo: string, type: string) => {
+    if (!data) {
+      return
+    }
+
+    if ('showSaveFilePicker' in window) {
+      const fileHandle = await window.showSaveFilePicker({
+        startIn: 'desktop',
+        suggestedName: data.title,
+      })
+      exportFile(data, repo, type, fileHandle)
+    } else {
+      ElNotification({
+        title: 'Warning',
+        message: '抱歉，当前浏览器不支持打开本地文件',
+        type: 'warning',
+      })
+    }
+  },
 }
 
 const refreshMenu = {
@@ -386,6 +425,29 @@ const copyToOtherRepoMenu = {
   })),
 }
 
+const openNativeFileMenu = {
+  label: '打开本机文件',
+  onClick: async () => {
+    if ('showOpenFilePicker' in window) {
+      const [fileHandle] = await window.showOpenFilePicker({ startIn: 'desktop' })
+      console.log(fileHandle)
+    } else {
+      ElNotification({
+        title: 'Warning',
+        message: '抱歉，当前浏览器不支持打开本地文件',
+        type: 'warning',
+      })
+    }
+  },
+}
+
+const createNativeFileMenu = {
+  label: '创建本机文件',
+  onClick: () => {
+    console.log('新建')
+  },
+}
+
 const fileRightClick = (
   type: string,
   e: MouseEvent,
@@ -401,12 +463,21 @@ const fileRightClick = (
   if (type === 'mixed') {
     if (data) {
       if (data.isLeaf) {
-        contexmenu = [createMenu, renameMenu, copyMenu, deleteMenu, exportMenu, refreshMenu]
+        contexmenu = [
+          createMenu,
+          renameMenu,
+          copyMenu,
+          deleteMenu,
+          exportMenu,
+          createNativeFileMenu,
+          openNativeFileMenu,
+          refreshMenu,
+        ]
       } else {
-        contexmenu = [createMenu, refreshMenu]
+        contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
       }
     } else {
-      contexmenu = [createMenu, refreshMenu]
+      contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
     }
   } else if (type === 'local') {
     if (data) {
@@ -417,25 +488,27 @@ const fileRightClick = (
           copyMenu,
           deleteMenu,
           exportMenu,
+          createNativeFileMenu,
+          openNativeFileMenu,
           refreshMenu,
           copyToOtherRepoMenu,
         ]
       } else {
-        contexmenu = [createMenu, refreshMenu]
+        contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
       }
     } else {
-      contexmenu = [createMenu, refreshMenu]
+      contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
     }
     repo = localSelectRepoName.value
   } else if (type === 'remote') {
     if (data) {
       if (data.isLeaf) {
-        contexmenu = [exportMenu, refreshMenu]
+        contexmenu = [exportMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
       } else {
-        contexmenu = [refreshMenu]
+        contexmenu = [createNativeFileMenu, openNativeFileMenu, refreshMenu]
       }
     } else {
-      contexmenu = [refreshMenu]
+      contexmenu = [createNativeFileMenu, openNativeFileMenu, refreshMenu]
     }
   }
 
@@ -443,13 +516,13 @@ const fileRightClick = (
     x: e.clientX,
     y: e.clientY,
     // theme: 'default dark',
-    items: buildContextMenu(contexmenu, data, repo),
+    items: buildContextMenu(contexmenu, data, repo, type),
   })
 }
 </script>
 <template>
-  <div :class="{ tipLoad: tipLoad, 'file-tree-box': true }">
-    <div :class="{ current: activeTreeMode === 'mixed', item: true }">
+  <div :class="{ tipLoad: tipLoad, 'file-tree-box': true, noLogin: !api.ready }">
+    <div :class="{ current: activeTreeMode === 'mixed', item: true }" v-if="api.ready">
       <div class="title" @click="activeTreeMode = 'mixed'">
         混合文件树
         <div class="icon">
@@ -546,16 +619,6 @@ const fileRightClick = (
         />
       </div>
     </div>
-    <div :class="{ current: activeTreeMode === 'native', item: true }">
-      <div class="title" @click="activeTreeMode = 'native'">
-        最近打开（本机文件）
-        <div class="icon">
-          <font-awesome-icon class="icon-left" :icon="['fas', 'chevron-right']" />
-          <font-awesome-icon class="icon-down" :icon="['fas', 'chevron-down']" />
-        </div>
-      </div>
-      <div class="content"></div>
-    </div>
   </div>
 </template>
 
@@ -604,7 +667,7 @@ const fileRightClick = (
 
   .item.current {
     width: 100%;
-    height: calc(100% - 40px * 3);
+    height: calc(100% - 40px * 2);
 
     .title {
       .icon-left {
@@ -620,6 +683,15 @@ const fileRightClick = (
       height: calc(100% - 40px);
       padding: 10px;
       overflow: auto;
+    }
+  }
+}
+
+.file-tree-box.noLogin {
+  .item.current {
+    height: calc(100% - 40px);
+    .content {
+      height: calc(100% - 40px);
     }
   }
 }
