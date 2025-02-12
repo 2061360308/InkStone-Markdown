@@ -34,7 +34,8 @@ onMounted(() => {
         return
       }
       for (const fileHandle of launchParams.files) {
-        contexStore.openedFiles.push(fileHandle)
+        // contexStore.openedFiles.push(fileHandle)
+        console.log('Todo:', fileHandle)
       }
     })
   } else {

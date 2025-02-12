@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, defineProps, Component } from 'vue'
 import FileTypeIcon from './FileTypeIcon.vue'
+import { useDark } from '@vueuse/core'
+
+const isDark = useDark()
 
 interface treeItemObject {
   title: string
@@ -69,15 +72,12 @@ console.log(readonly)
     >
       <template #default="{ node, data }">
         <span class="node-item" @click="nodeClick(node, data)">
-          <!-- <FontAwesomeIcon
-            v-if="node.isLeaf && node.label.endsWith('.md')"
-            :icon="['fas', 'square-pen']"
-            style="color: var(--el-color-primary)"
-            class="icon"
+          <FileTypeIcon
+            :name="node.data.title"
+            :folder="!node.isLeaf"
+            :forder-open="node.expanded"
+            :light="!isDark"
           />
-          <FontAwesomeIcon v-else-if="node.isLeaf" :icon="['fas', 'file']" class="icon" />
-          <FontAwesomeIcon v-else :icon="['fas', 'folder']" class="icon" /> -->
-          <FileTypeIcon :suffix="node.isLeaf ? node.label.split('.').pop() || '' : 'FOLDER'" />
           <span :class="{ label: true, remote: data.data.position === 'remote' }">{{
             node.label
           }}</span>

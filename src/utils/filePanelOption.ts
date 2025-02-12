@@ -279,7 +279,7 @@ export const createFile = async (
       const fileNameWithExtension = path.substring(path.lastIndexOf('/') + 1)
       // 去掉文件后缀
       const fileName = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'))
-      content = `---\n${settingsStore.getfrontMatter(fileName, draft)}\n---`
+      content = `---\n${settingsStore.getfrontMatter(fileName, draft)}\n---\n`
     }
 
     fs.write(path, content, repo).then(() => {
@@ -385,6 +385,7 @@ export const deleteFile = async (
           type: 'info',
           message: '已取消删除',
         })
+        _callback()
       })
   }
 }
@@ -421,4 +422,54 @@ export const exportFile = async (
     type: 'success',
     message: '文件已导出!',
   })
+}
+
+export const createNativeFile = async (
+  post: boolean,
+  draft: boolean,
+  _callback: (fileHandle: FileSystemFileHandle) => void,
+) => {
+  if (!window.showSaveFilePicker) {
+    ElMessage.error('当前浏览器不支持此功能')
+    return
+  }
+
+  let fileType
+
+  if (post) {
+    fileType = [
+      {
+        description: 'Markdown File',
+        accept: {
+          'text/markdown': ['.md'],
+        },
+      },
+    ]
+  }
+
+  const fileHandle = await window.showSaveFilePicker({
+    types: fileType,
+  })
+
+  if (!fileHandle) {
+    return
+  }
+
+  const file = await fileHandle.getFile()
+
+  const settingsStore = useSettingsStore()
+
+  let content = ''
+
+  // 如果是文章，添加 front matter
+  if (post) {
+    // 去掉文件后缀
+    const fileName = file.name.split('.').slice(0, -1).join('.')
+    content = `---\n${settingsStore.getfrontMatter(fileName, draft)}\n---\n`
+  }
+
+  const writable = await fileHandle.createWritable()
+  await writable.write(content)
+  _callback(fileHandle)
+  writable.close() // 比较耗时
 }

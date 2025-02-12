@@ -58,9 +58,27 @@ export default defineConfig({
         file_handlers: [
           {
             action: '/',
+            // name: 'Markdown',
             accept: {
-              'text/markdown': ['.md'],
+              'text/markdown': [
+                '.md',
+                '.mkd',
+                '.mdwn',
+                '.mdown',
+                '.markdown',
+                '.markdn',
+                '.mdtxt',
+                '.mdtext',
+                '.workbook',
+              ],
             },
+            // icons: [
+            //   {
+            //     src: '/markdown.png',
+            //     sizes: '256x256',
+            //     type: 'image/png',
+            //   },
+            // ],
           },
         ],
       },

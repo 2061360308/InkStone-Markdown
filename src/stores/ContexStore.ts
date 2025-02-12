@@ -5,7 +5,7 @@ import { generateRandomId } from '@/utils/general'
 
 export const useContexStore = defineStore('contex', () => {
   // 打开的文件
-  const openedFiles: Ref<Array<localFile | remoteFile | nativeFile>> = ref([])
+  // const openedFiles: Ref<Array<localFile | remoteFile | nativeFile>> = ref([])
   // 路由参数
   const routerParams: Ref<Record<string, unknown>> = ref({})
   // 侧边栏状态
@@ -76,16 +76,13 @@ export const useContexStore = defineStore('contex', () => {
     () => activeTabId.value,
     (id) => {
       const item = tabs.value.find((tab) => tab.id === id)
-      if (item && (item.data.file as localFile).path) {
-        const title = (item.data.file as localFile).path.split('/').pop()
-        titleBarText.value = title || ''
-      }
+      titleBarText.value = item?.title || ''
     },
   )
 
   return {
     api,
-    openedFiles,
+    // openedFiles,
     routerParams,
     sidebarState,
     notification,

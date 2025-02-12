@@ -11,6 +11,7 @@ import api from '@/utils/api'
 import { useDark, useMediaQuery } from '@vueuse/core'
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
+import { createNativeFile, openNativeFile } from '@/utils/filePanelOption'
 
 const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
@@ -167,28 +168,55 @@ watch(isNarrowscreen, (value) => {
 
 const baseMenuBarItem: MenubarItem = [
   {
-    label: 'File',
+    label: '新建',
     children: [
-      { label: 'New' },
-      { label: 'Open' },
       {
-        label: 'Open recent',
-        children: [
-          { label: 'File 1....' },
-          { label: 'File 2....' },
-          { label: 'File 3....' },
-          { label: 'File 4....' },
-          { label: 'File 5....' },
-        ],
+        label: '文章',
+        onClick: (
+          post: boolean = true,
+          draft: boolean = false,
+          _callback: (file: FileSystemFileHandle) => void = openNativeFile,
+        ) => {
+          createNativeFile(post, draft, _callback)
+        },
       },
-      { label: 'Save', divided: true },
-      { label: 'Save as...' },
       {
-        label: 'Close',
+        label: '草稿',
+        onClick: (
+          post: boolean = true,
+          draft: boolean = true,
+          _callback: (file: FileSystemFileHandle) => void = openNativeFile,
+        ) => {
+          createNativeFile(post, draft, _callback)
+        },
       },
-      { label: 'Close all' },
-      { label: 'Exit' },
+      {
+        label: '文件',
+        onClick: (
+          post: boolean = false,
+          draft: boolean = false,
+          _callback: (file: FileSystemFileHandle) => void = openNativeFile,
+        ) => {
+          createNativeFile(post, draft, _callback)
+        },
+      },
     ],
+  },
+  {
+    label: '打开',
+    onClick: async () => {
+      if ('showOpenFilePicker' in window) {
+        const [fileHandle] = await window.showOpenFilePicker({ startIn: 'desktop' })
+        openNativeFile(fileHandle)
+        console.log(fileHandle)
+      } else {
+        ElNotification({
+          title: 'Warning',
+          message: '抱歉，当前浏览器不支持打开本地文件',
+          type: 'warning',
+        })
+      }
+    },
     divided: true,
   },
 ]
@@ -507,7 +535,7 @@ const isDark = useDark()
                       }"
                     >
                       <!-- <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" /> -->
-                      <FileTypeIcon :suffix="item.title.split('.').pop() || ''" />
+                      <FileTypeIcon :name="item.title" :light="!isDark" />
                       <el-tooltip
                         :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
                         effect="dark"

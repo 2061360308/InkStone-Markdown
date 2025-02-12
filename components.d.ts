@@ -39,6 +39,7 @@ declare module 'vue' {
     FrontMatterEditor: typeof import('./src/components/editor/FrontMatterEditor.vue')['default']
     LocalFileEditor: typeof import('./src/components/editor/LocalFileEditor.vue')['default']
     MdEditor: typeof import('./src/components/editor/MdEditor.vue')['default']
+    NativeFileEditor: typeof import('./src/components/editor/NativeFileEditor.vue')['default']
     OutlinePanel: typeof import('./src/components/OutlinePanel.vue')['default']
     RemoteFileEditor: typeof import('./src/components/editor/RemoteFileEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

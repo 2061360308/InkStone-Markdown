@@ -7,6 +7,7 @@ import { AboutPanel } from './about'
 import { SettingsPanel } from './settings'
 import { LocalFileEditorPanel } from './localFileEditor'
 import { RemoteFileEditorPanel } from './RocalFileEditor'
+import { NativeFileEditorPanel } from './nativeFileEditor'
 import { defineAsyncComponent } from 'vue'
 
 class PanelsManager {
@@ -20,6 +21,7 @@ class PanelsManager {
     new SettingsPanel(),
     new LocalFileEditorPanel(),
     new RemoteFileEditorPanel(),
+    new NativeFileEditorPanel(),
   ]
 
   private constructor() {}

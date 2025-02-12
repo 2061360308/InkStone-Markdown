@@ -1,185 +1,73 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { defineProps } from 'vue'
+import { supportedExtensions } from '@/utils/supportFileExtensions'
+import { Ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
-  suffix: {
+  name: {
     type: String,
     required: true,
   },
+  light: {
+    type: Boolean,
+    default: false,
+  },
+  folder: {
+    type: Boolean,
+    default: false,
+  },
+  forderOpen: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const allowType = [
-  'folder',
-  'file-unknow',
-  'draft',
-  'post',
-  'AE',
-  'AI',
-  'APK',
-  'C',
-  'CSS',
-  'AVI',
-  'BMP',
-  'DOC',
-  'HTML',
-  'CPP',
-  'C#',
-  'DLL',
-  'DOCX',
-  'EXE',
-  'GIF',
-  'LIB',
-  'EXCEL',
-  'FLV',
-  'JAVA',
-  'JSON',
-  'JPG',
-  'PHP',
-  'GO',
-  'MP3',
-  'MP4',
-  'JAR',
-  'MOV',
-  'PY',
-  'SVG',
-  'TIFF',
-  'RAR',
-  'PNG',
-  'RUST',
-  'PSD',
-  'PDF',
-  'R',
-  'ZIP',
-  'SQL',
-  'TXT',
-  'JS',
-  'XLS',
-  'XLSX',
-  'WOFF',
-  'TTF',
-  'FOLDER',
-  'FILE-UNKNOW',
-  'DRAFT',
-  'POST',
-  'AE',
-  'AI',
-  'APK',
-  'C',
-  'CSS',
-  'AVI',
-  'BMP',
-  'DOC',
-  'HTML',
-  'CPP',
-  'C#',
-  'DLL',
-  'DOCX',
-  'EXE',
-  'GIF',
-  'LIB',
-  'EXCEL',
-  'FLV',
-  'JAVA',
-  'JSON',
-  'JPG',
-  'PHP',
-  'GO',
-  'MP3',
-  'MP4',
-  'JAR',
-  'MOV',
-  'PY',
-  'SVG',
-  'TIFF',
-  'RAR',
-  'PNG',
-  'RUST',
-  'PSD',
-  'PDF',
-  'R',
-  'ZIP',
-  'SQL',
-  'TXT',
-  'JS',
-  'XLS',
-  'XLSX',
-  'WOFF',
-  'TTF',
-  'folder',
-  'file-unknow',
-  'draft',
-  'post',
-  'AE',
-  'AI',
-  'APK',
-  'C',
-  'CSS',
-  'AVI',
-  'BMP',
-  'DOC',
-  'HTML',
-  'CPP',
-  'C#',
-  'DLL',
-  'DOCX',
-  'EXE',
-  'GIF',
-  'LIB',
-  'EXCEL',
-  'FLV',
-  'JAVA',
-  'JSON',
-  'JPG',
-  'PHP',
-  'GO',
-  'MP3',
-  'MP4',
-  'JAR',
-  'MOV',
-  'PY',
-  'SVG',
-  'TIFF',
-  'RAR',
-  'PNG',
-  'RUST',
-  'PSD',
-  'PDF',
-  'R',
-  'ZIP',
-  'SQL',
-  'TXT',
-  'JS',
-  'XLS',
-  'XLSX',
-  'WOFF',
-  'TTF',
-]
-
-const fileType = computed(() => {
-  let result = props.suffix.toUpperCase()
-  if (['MD', 'MARKDOWN'].includes(result)) {
-    result = 'POST'
-  } else if (['JPG', 'JPEG'].includes(result)) {
-    result = 'JPG'
-  } else if (['HTM', 'HTML'].includes(result)) {
-    result = 'HTML'
+const icon: Ref<string> = computed(() => {
+  if (props.folder) {
+    return props.forderOpen
+      ? '/fileTypeIcons/default_folder_opened.svg'
+      : '/fileTypeIcons/default_folder.svg'
   }
 
-  if (!allowType.includes(result)) {
-    result = 'FILE-UNKNOW'
+  // console.log('props.name', props.name)
+
+  if (!props.name) {
+    return '/fileTypeIcons/default_file.svg'
   }
 
-  return result
+  //按照"."分割文件名
+  const fileNameChuck = props.name.split('.')
+  // 从整个文件名开始由长到短依次尝试后缀名，直到找到支持的后缀名
+  let extensionType
+  for (let i = 0; i < fileNameChuck.length; i++) {
+    const extension = fileNameChuck.slice(i).join('.')
+    console.log(extension)
+    if (extension in supportedExtensions) {
+      extensionType = supportedExtensions[extension]
+    }
+  }
+  let svgFilePath: string
+  if (!extensionType) {
+    svgFilePath = '/fileTypeIcons/default_file.svg'
+  } else {
+    if (props.light && extensionType.light) {
+      svgFilePath = `/fileTypeIcons/file_type_light_${extensionType.icon}.svg`
+    } else {
+      svgFilePath = `/fileTypeIcons/file_type_${extensionType.icon}.svg`
+    }
+  }
+  console.log('svgFilePath', svgFilePath)
+  return svgFilePath
 })
 </script>
 
 <template>
-  <!-- <i :class="`iconfont icon-${fileType}`"></i> -->
-  <span class="file-type-icon">
-    <svg class="icon svg-icon" aria-hidden="true">
-      <use :xlink:href="`#icon-${fileType}`"></use>
-    </svg>
+  <span class="file-type-icon" v-if="icon">
+    <!-- <svg class="icon svg-icon" aria-hidden="true">
+      <use :xlink:href="icon"></use>
+    </svg> -->
+    <img :src="icon" class="icon svg-icon" alt="file type icon" />
   </span>
 </template>
 
@@ -189,12 +77,13 @@ const fileType = computed(() => {
   height: 100%;
   margin-right: 5px;
   font-size: 20px;
-}
-.icon {
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.15em;
-  fill: currentColor;
-  overflow: hidden;
+
+  .icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
 }
 </style>

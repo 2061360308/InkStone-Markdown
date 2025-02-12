@@ -1,7296 +1,7298 @@
-export const uniqueProcessedExtensions = {
+type SupportedExtensionItemType = { icon: string; light?: boolean }
+
+export const supportedExtensions: Record<string, SupportedExtensionItemType> = {
   accdb: {
-    icon: "access",
+    icon: 'access',
   },
   accdt: {
-    icon: "access",
+    icon: 'access',
   },
   mdb: {
-    icon: "access",
+    icon: 'access',
   },
   accda: {
-    icon: "access",
+    icon: 'access',
   },
   accdc: {
-    icon: "access",
+    icon: 'access',
   },
   accde: {
-    icon: "access",
+    icon: 'access',
   },
   accdp: {
-    icon: "access",
+    icon: 'access',
   },
   accdr: {
-    icon: "access",
+    icon: 'access',
   },
   accdu: {
-    icon: "access",
+    icon: 'access',
   },
   ade: {
-    icon: "access",
+    icon: 'access',
   },
   adp: {
-    icon: "access",
+    icon: 'access',
   },
   laccdb: {
-    icon: "access",
+    icon: 'access',
   },
   ldb: {
-    icon: "access",
+    icon: 'access',
   },
   mam: {
-    icon: "access",
+    icon: 'access',
   },
   maq: {
-    icon: "access",
+    icon: 'access',
   },
   mdw: {
-    icon: "access",
+    icon: 'access',
   },
   as: {
-    icon: "actionscript",
+    icon: 'actionscript',
     light: true,
   },
   ada: {
-    icon: "ada",
+    icon: 'ada',
     light: true,
   },
   prw: {
-    icon: "advpl",
+    icon: 'advpl',
   },
   ai: {
-    icon: "ai",
+    icon: 'ai',
   },
   al: {
-    icon: "al",
+    icon: 'al',
   },
   dal: {
-    icon: "al_dal",
+    icon: 'al_dal',
   },
-  "all-contributorsrc": {
-    icon: "allcontributors",
+  'all-contributorsrc': {
+    icon: 'allcontributors',
   },
   afdesign: {
-    icon: "affinitydesigner",
+    icon: 'affinitydesigner',
   },
   affinitydesigner: {
-    icon: "affinitydesigner",
+    icon: 'affinitydesigner',
   },
   afphoto: {
-    icon: "affinityphoto",
+    icon: 'affinityphoto',
   },
   affinityphoto: {
-    icon: "affinityphoto",
+    icon: 'affinityphoto',
   },
   afpub: {
-    icon: "affinitypublisher",
+    icon: 'affinitypublisher',
   },
   affinitypublisher: {
-    icon: "affinitypublisher",
+    icon: 'affinitypublisher',
   },
   agda: {
-    icon: "agda",
+    icon: 'agda',
     light: true,
   },
   gs: {
-    icon: "appscript",
+    icon: 'appscript',
   },
   fba: {
-    icon: "fitbit",
+    icon: 'fitbit',
   },
-  "angular-cli.json": {
-    icon: "angular",
+  'angular-cli.json': {
+    icon: 'angular',
   },
-  "angular.json": {
-    icon: "angular",
+  'angular.json': {
+    icon: 'angular',
   },
-  "component.dart": {
-    icon: "ng_component_dart",
+  'component.dart': {
+    icon: 'ng_component_dart',
   },
-  "component.ts": {
-    icon: "ng_component_ts",
+  'component.ts': {
+    icon: 'ng_component_ts',
   },
-  "component.js": {
-    icon: "ng_component_js",
+  'component.js': {
+    icon: 'ng_component_js',
   },
-  "controller.ts": {
-    icon: "ng_controller_ts",
+  'controller.ts': {
+    icon: 'ng_controller_ts',
   },
-  "controller.js": {
-    icon: "ng_controller_js",
+  'controller.js': {
+    icon: 'ng_controller_js',
   },
-  "directive.dart": {
-    icon: "ng_directive_dart",
+  'directive.dart': {
+    icon: 'ng_directive_dart',
   },
-  "directive.ts": {
-    icon: "ng_directive_ts",
+  'directive.ts': {
+    icon: 'ng_directive_ts',
   },
-  "directive.js": {
-    icon: "ng_directive_js",
+  'directive.js': {
+    icon: 'ng_directive_js',
   },
-  "guard.dart": {
-    icon: "ng_guard_dart",
+  'guard.dart': {
+    icon: 'ng_guard_dart',
   },
-  "guard.ts": {
-    icon: "ng_guard_ts",
+  'guard.ts': {
+    icon: 'ng_guard_ts',
   },
-  "guard.js": {
-    icon: "ng_guard_js",
+  'guard.js': {
+    icon: 'ng_guard_js',
   },
-  "module.dart": {
-    icon: "ng_module_dart",
+  'module.dart': {
+    icon: 'ng_module_dart',
   },
-  "module.ts": {
-    icon: "ng_module_ts",
+  'module.ts': {
+    icon: 'ng_module_ts',
   },
-  "module.js": {
-    icon: "ng_module_js",
+  'module.js': {
+    icon: 'ng_module_js',
   },
-  "pipe.dart": {
-    icon: "ng_pipe_dart",
+  'pipe.dart': {
+    icon: 'ng_pipe_dart',
   },
-  "pipe.ts": {
-    icon: "ng_pipe_ts",
+  'pipe.ts': {
+    icon: 'ng_pipe_ts',
   },
-  "pipe.js": {
-    icon: "ng_pipe_js",
+  'pipe.js': {
+    icon: 'ng_pipe_js',
   },
-  "routing.dart": {
-    icon: "ng_routing_dart",
+  'routing.dart': {
+    icon: 'ng_routing_dart',
   },
-  "routes.dart": {
-    icon: "ng_routing_dart",
+  'routes.dart': {
+    icon: 'ng_routing_dart',
   },
-  "routing.ts": {
-    icon: "ng_routing_ts",
+  'routing.ts': {
+    icon: 'ng_routing_ts',
   },
-  "routes.ts": {
-    icon: "ng_routing_ts",
+  'routes.ts': {
+    icon: 'ng_routing_ts',
   },
-  "routing.js": {
-    icon: "ng_routing_js",
+  'routing.js': {
+    icon: 'ng_routing_js',
   },
-  "routes.js": {
-    icon: "ng_routing_js",
+  'routes.js': {
+    icon: 'ng_routing_js',
   },
-  "app-routing.module.dart": {
-    icon: "ng_routing_dart",
+  'app-routing.module.dart': {
+    icon: 'ng_routing_dart',
   },
-  "app-routing.module.ts": {
-    icon: "ng_routing_ts",
+  'app-routing.module.ts': {
+    icon: 'ng_routing_ts',
   },
-  "app-routing.module.js": {
-    icon: "ng_routing_js",
+  'app-routing.module.js': {
+    icon: 'ng_routing_js',
   },
-  "page.dart": {
-    icon: "ng_smart_component_dart",
+  'page.dart': {
+    icon: 'ng_smart_component_dart',
   },
-  "container.dart": {
-    icon: "ng_smart_component_dart",
+  'container.dart': {
+    icon: 'ng_smart_component_dart',
   },
-  "page.ts": {
-    icon: "ng_smart_component_ts",
+  'page.ts': {
+    icon: 'ng_smart_component_ts',
   },
-  "container.ts": {
-    icon: "ng_smart_component_ts",
+  'container.ts': {
+    icon: 'ng_smart_component_ts',
   },
-  "page.js": {
-    icon: "ng_smart_component_js",
+  'page.js': {
+    icon: 'ng_smart_component_js',
   },
-  "container.js": {
-    icon: "ng_smart_component_js",
+  'container.js': {
+    icon: 'ng_smart_component_js',
   },
-  "service.dart": {
-    icon: "ng_service_dart",
+  'service.dart': {
+    icon: 'ng_service_dart',
   },
-  "service.ts": {
-    icon: "ng_service_ts",
+  'service.ts': {
+    icon: 'ng_service_ts',
   },
-  "service.js": {
-    icon: "ng_service_js",
+  'service.js': {
+    icon: 'ng_service_js',
   },
-  "interceptor.dart": {
-    icon: "ng_interceptor_dart",
+  'interceptor.dart': {
+    icon: 'ng_interceptor_dart',
   },
-  "interceptor.ts": {
-    icon: "ng_interceptor_ts",
+  'interceptor.ts': {
+    icon: 'ng_interceptor_ts',
   },
-  "interceptor.js": {
-    icon: "ng_interceptor_js",
+  'interceptor.js': {
+    icon: 'ng_interceptor_js',
   },
-  "ng-tailwind.js": {
-    icon: "ng_tailwind",
+  'ng-tailwind.js': {
+    icon: 'ng_tailwind',
   },
   affect: {
-    icon: "affectscript",
+    icon: 'affectscript',
   },
   ansible: {
-    icon: "ansible",
+    icon: 'ansible',
   },
-  "antlers.html": {
-    icon: "antlers_html",
+  'antlers.html': {
+    icon: 'antlers_html',
   },
   g4: {
-    icon: "antlr",
+    icon: 'antlr',
   },
   any: {
-    icon: "anyscript",
+    icon: 'anyscript',
   },
   htaccess: {
-    icon: "apache",
+    icon: 'apache',
   },
   cls: {
-    icon: "apex",
+    icon: 'apex',
   },
   apib: {
-    icon: "apib",
+    icon: 'apib',
   },
-  "api-extractor.json": {
-    icon: "api_extractor",
+  'api-extractor.json': {
+    icon: 'api_extractor',
   },
-  "api-extractor-base.json": {
-    icon: "api_extractor",
+  'api-extractor-base.json': {
+    icon: 'api_extractor',
   },
   apl: {
-    icon: "apl",
+    icon: 'apl',
     light: true,
   },
   applescript: {
-    icon: "applescript",
+    icon: 'applescript',
   },
-  "appsemblerc.yaml": {
-    icon: "appsemble",
+  'appsemblerc.yaml': {
+    icon: 'appsemble',
   },
-  "app-definition.yaml": {
-    icon: "appsemble",
+  'app-definition.yaml': {
+    icon: 'appsemble',
   },
-  "appveyor.yml": {
-    icon: "appveyor",
+  'appveyor.yml': {
+    icon: 'appveyor',
   },
   ino: {
-    icon: "arduino",
+    icon: 'arduino',
   },
   pde: {
-    icon: "arduino",
+    icon: 'arduino',
   },
   adoc: {
-    icon: "asciidoc",
+    icon: 'asciidoc',
   },
   asp: {
-    icon: "asp",
+    icon: 'asp',
   },
   aspx: {
-    icon: "aspx",
+    icon: 'aspx',
   },
   ascx: {
-    icon: "aspx",
+    icon: 'aspx',
   },
   asm: {
-    icon: "assembly",
+    icon: 'assembly',
   },
   s: {
-    icon: "assembly",
+    icon: 'assembly',
   },
   astro: {
-    icon: "astro",
+    icon: 'astro',
     light: true,
   },
-  "astro.config.js": {
-    icon: "astroconfig",
+  'astro.config.js': {
+    icon: 'astroconfig',
     light: true,
   },
-  "astro.config.cjs": {
-    icon: "astroconfig",
+  'astro.config.cjs': {
+    icon: 'astroconfig',
     light: true,
   },
-  "astro.config.mjs": {
-    icon: "astroconfig",
+  'astro.config.mjs': {
+    icon: 'astroconfig',
     light: true,
   },
-  "astro.config.ts": {
-    icon: "astroconfig",
+  'astro.config.ts': {
+    icon: 'astroconfig',
     light: true,
   },
   atom: {
-    icon: "atom",
+    icon: 'atom',
   },
   ats: {
-    icon: "ats",
+    icon: 'ats',
   },
-  "attw.json": {
-    icon: "attw",
+  'attw.json': {
+    icon: 'attw',
   },
   aac: {
-    icon: "audio",
+    icon: 'audio',
   },
   act: {
-    icon: "audio",
+    icon: 'audio',
   },
   aiff: {
-    icon: "audio",
+    icon: 'audio',
   },
   amr: {
-    icon: "audio",
+    icon: 'audio',
   },
   ape: {
-    icon: "audio",
+    icon: 'audio',
   },
   au: {
-    icon: "audio",
+    icon: 'audio',
   },
   dct: {
-    icon: "audio",
+    icon: 'audio',
   },
   dss: {
-    icon: "audio",
+    icon: 'audio',
   },
   dvf: {
-    icon: "audio",
+    icon: 'audio',
   },
   flac: {
-    icon: "audio",
+    icon: 'audio',
   },
   gsm: {
-    icon: "audio",
+    icon: 'audio',
   },
   iklax: {
-    icon: "audio",
+    icon: 'audio',
   },
   ivs: {
-    icon: "audio",
+    icon: 'audio',
   },
   m4a: {
-    icon: "audio",
+    icon: 'audio',
   },
   m4b: {
-    icon: "audio",
+    icon: 'audio',
   },
   m4p: {
-    icon: "audio",
+    icon: 'audio',
   },
   mmf: {
-    icon: "audio",
+    icon: 'audio',
   },
   mogg: {
-    icon: "audio",
+    icon: 'audio',
   },
   mp3: {
-    icon: "audio",
+    icon: 'audio',
   },
   mpc: {
-    icon: "audio",
+    icon: 'audio',
   },
   msv: {
-    icon: "audio",
+    icon: 'audio',
   },
   oga: {
-    icon: "audio",
+    icon: 'audio',
   },
   ogg: {
-    icon: "audio",
+    icon: 'audio',
   },
   opus: {
-    icon: "audio",
+    icon: 'audio',
   },
   ra: {
-    icon: "audio",
+    icon: 'audio',
   },
   raw: {
-    icon: "audio",
+    icon: 'audio',
   },
   tta: {
-    icon: "audio",
+    icon: 'audio',
   },
   vox: {
-    icon: "audio",
+    icon: 'audio',
   },
   wav: {
-    icon: "audio",
+    icon: 'audio',
   },
   wma: {
-    icon: "audio",
+    icon: 'audio',
   },
-  "aurelia.json": {
-    icon: "aurelia",
+  'aurelia.json': {
+    icon: 'aurelia',
   },
   ahk: {
-    icon: "autohotkey",
+    icon: 'autohotkey',
   },
   au3: {
-    icon: "autoit",
+    icon: 'autoit',
   },
   avif: {
-    icon: "avif",
+    icon: 'avif',
   },
   avcs: {
-    icon: "avro",
+    icon: 'avro',
   },
   awk: {
-    icon: "awk",
+    icon: 'awk',
   },
   azcli: {
-    icon: "azure",
+    icon: 'azure',
   },
-  "azure-pipelines.yml": {
-    icon: "azurepipelines",
+  'azure-pipelines.yml': {
+    icon: 'azurepipelines',
   },
-  "vsts-ci.yml": {
-    icon: "azurepipelines",
+  'vsts-ci.yml': {
+    icon: 'azurepipelines',
   },
   babelrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   babelignore: {
-    icon: "babel",
+    icon: 'babel',
     light: true,
   },
-  "babelrc.js": {
-    icon: "babel",
+  'babelrc.js': {
+    icon: 'babel',
     light: true,
   },
-  "babelrc.cjs": {
-    icon: "babel",
+  'babelrc.cjs': {
+    icon: 'babel',
     light: true,
   },
-  "babelrc.mjs": {
-    icon: "babel",
+  'babelrc.mjs': {
+    icon: 'babel',
     light: true,
   },
-  "babelrc.json": {
-    icon: "babel",
+  'babelrc.json': {
+    icon: 'babel',
     light: true,
   },
-  "babel.config.js": {
-    icon: "babel",
+  'babel.config.js': {
+    icon: 'babel',
     light: true,
   },
-  "babel.config.cjs": {
-    icon: "babel",
+  'babel.config.cjs': {
+    icon: 'babel',
     light: true,
   },
-  "babel.config.mjs": {
-    icon: "babel",
+  'babel.config.mjs': {
+    icon: 'babel',
     light: true,
   },
-  "babel.config.json": {
-    icon: "babel",
+  'babel.config.json': {
+    icon: 'babel',
     light: true,
   },
   back: {
-    icon: "bak",
+    icon: 'bak',
   },
   backup: {
-    icon: "bak",
+    icon: 'bak',
   },
   bak: {
-    icon: "bak",
+    icon: 'bak',
   },
   bal: {
-    icon: "ballerina",
+    icon: 'ballerina',
   },
   bat: {
-    icon: "bat",
+    icon: 'bat',
   },
   cmd: {
-    icon: "bat",
+    icon: 'bat',
   },
   bats: {
-    icon: "bats",
+    icon: 'bats',
   },
   bzrignore: {
-    icon: "bazaar",
+    icon: 'bazaar',
   },
   bazel: {
-    icon: "bazel",
+    icon: 'bazel',
   },
   bzl: {
-    icon: "bazel",
+    icon: 'bazel',
   },
-  "BUILD.bazel": {
-    icon: "bazel",
+  'BUILD.bazel': {
+    icon: 'bazel',
   },
   bazelrc: {
-    icon: "bazel",
+    icon: 'bazel',
   },
-  "bazel.rc": {
-    icon: "bazel",
+  'bazel.rc': {
+    icon: 'bazel',
   },
-  "bazel.bazelrc": {
-    icon: "bazel",
+  'bazel.bazelrc': {
+    icon: 'bazel',
   },
   bazelignore: {
-    icon: "bazel_ignore",
+    icon: 'bazel_ignore',
   },
   bazelversion: {
-    icon: "bazel_version",
+    icon: 'bazel_version',
   },
   bf: {
-    icon: "befunge",
+    icon: 'befunge',
   },
   bicep: {
-    icon: "bicep",
+    icon: 'bicep',
   },
   biml: {
-    icon: "biml",
+    icon: 'biml',
   },
   bin: {
-    icon: "binary",
+    icon: 'binary',
   },
   a: {
-    icon: "binary",
+    icon: 'binary',
   },
   app: {
-    icon: "binary",
+    icon: 'binary',
   },
   cmo: {
-    icon: "binary",
+    icon: 'binary',
   },
   cmx: {
-    icon: "binary",
+    icon: 'binary',
   },
   cma: {
-    icon: "binary",
+    icon: 'binary',
   },
   cmxa: {
-    icon: "binary",
+    icon: 'binary',
   },
   cmi: {
-    icon: "binary",
+    icon: 'binary',
   },
   dll: {
-    icon: "binary",
+    icon: 'binary',
   },
   exe: {
-    icon: "binary",
+    icon: 'binary',
   },
   hl: {
-    icon: "binary",
+    icon: 'binary',
   },
   ilk: {
-    icon: "binary",
+    icon: 'binary',
   },
   lib: {
-    icon: "binary",
+    icon: 'binary',
   },
   n: {
-    icon: "binary",
+    icon: 'binary',
   },
   ndll: {
-    icon: "binary",
+    icon: 'binary',
   },
   o: {
-    icon: "binary",
+    icon: 'binary',
   },
   obj: {
-    icon: "binary",
+    icon: 'binary',
   },
   pyc: {
-    icon: "binary",
+    icon: 'binary',
   },
   pyd: {
-    icon: "binary",
+    icon: 'binary',
   },
   pyo: {
-    icon: "binary",
+    icon: 'binary',
   },
   pdb: {
-    icon: "binary",
+    icon: 'binary',
   },
   scpt: {
-    icon: "binary",
+    icon: 'binary',
   },
   scptd: {
-    icon: "binary",
+    icon: 'binary',
   },
   so: {
-    icon: "binary",
+    icon: 'binary',
   },
   bithoundrc: {
-    icon: "bithound",
+    icon: 'bithound',
   },
-  "bitbucket-pipelines.yml": {
-    icon: "bitbucketpipeline",
+  'bitbucket-pipelines.yml': {
+    icon: 'bitbucketpipeline',
   },
-  "blade.php": {
-    icon: "blade",
+  'blade.php': {
+    icon: 'blade',
   },
   blend: {
-    icon: "blender",
+    icon: 'blender',
   },
   blitzbasic: {
-    icon: "blitzbasic",
+    icon: 'blitzbasic',
   },
   bb: {
-    icon: "blitzbasic",
+    icon: 'blitzbasic',
   },
   bolt: {
-    icon: "bolt",
+    icon: 'bolt',
   },
   bsq: {
-    icon: "bosque",
+    icon: 'bosque',
   },
   bowerrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
-  "bower.json": {
-    icon: "bower",
+  'bower.json': {
+    icon: 'bower',
   },
   browserslist: {
-    icon: "browserslist",
+    icon: 'browserslist',
   },
   browserslistrc: {
-    icon: "browserslist",
+    icon: 'browserslist',
   },
   bru: {
-    icon: "bruno",
+    icon: 'bruno',
   },
   buckconfig: {
-    icon: "buckbuild",
+    icon: 'buckbuild',
   },
-  "buf.yaml": {
-    icon: "buf",
+  'buf.yaml': {
+    icon: 'buf',
   },
-  "buf.yml": {
-    icon: "buf",
+  'buf.yml': {
+    icon: 'buf',
   },
-  "buf.gen.yml": {
-    icon: "buf",
+  'buf.gen.yml': {
+    icon: 'buf',
   },
-  "buf.gen.yaml": {
-    icon: "buf",
+  'buf.gen.yaml': {
+    icon: 'buf',
   },
-  "buf.work.yaml": {
-    icon: "buf",
+  'buf.work.yaml': {
+    icon: 'buf',
   },
-  "buf.work.yml": {
-    icon: "buf",
+  'buf.work.yml': {
+    icon: 'buf',
   },
   lockb: {
-    icon: "bun",
+    icon: 'bun',
   },
-  "bunfig.toml": {
-    icon: "bunfig",
+  'bunfig.toml': {
+    icon: 'bunfig',
   },
-  "bun.lockb": {
-    icon: "bun",
+  'bun.lockb': {
+    icon: 'bun',
   },
-  "bun.lock": {
-    icon: "bun",
+  'bun.lock': {
+    icon: 'bun',
   },
   bundlemonrc: {
-    icon: "bundlemon",
+    icon: 'bundlemon',
   },
-  "bundlemon.config.js": {
-    icon: "bundlemon",
+  'bundlemon.config.js': {
+    icon: 'bundlemon',
   },
-  "bundlemon.config.mjs": {
-    icon: "bundlemon",
+  'bundlemon.config.mjs': {
+    icon: 'bundlemon',
   },
-  "bundlemon.config.cjs": {
-    icon: "bundlemon",
+  'bundlemon.config.cjs': {
+    icon: 'bundlemon',
   },
-  "bundlemonrc.js": {
-    icon: "bundlemon",
+  'bundlemonrc.js': {
+    icon: 'bundlemon',
   },
-  "bundlemonrc.mjs": {
-    icon: "bundlemon",
+  'bundlemonrc.mjs': {
+    icon: 'bundlemon',
   },
-  "bundlemonrc.cjs": {
-    icon: "bundlemon",
+  'bundlemonrc.cjs': {
+    icon: 'bundlemon',
   },
-  "bundlemonrc.json": {
-    icon: "bundlemon",
+  'bundlemonrc.json': {
+    icon: 'bundlemon',
   },
-  "bundlemonrc.yaml": {
-    icon: "bundlemon",
+  'bundlemonrc.yaml': {
+    icon: 'bundlemon',
   },
-  "bundlemonrc.yml": {
-    icon: "bundlemon",
+  'bundlemonrc.yml': {
+    icon: 'bundlemon',
   },
   gemfile: {
-    icon: "bundler",
+    icon: 'bundler',
   },
-  "gemfile.lock": {
-    icon: "bundler",
+  'gemfile.lock': {
+    icon: 'bundler',
   },
   c: {
-    icon: "c",
+    icon: 'c',
   },
   i: {
-    icon: "c",
+    icon: 'c',
   },
   cal: {
-    icon: "c_al",
+    icon: 'c_al',
   },
   cabal: {
-    icon: "cabal",
+    icon: 'cabal',
     light: true,
   },
   Caddyfile: {
-    icon: "caddy",
+    icon: 'caddy',
   },
   cake: {
-    icon: "cake",
+    icon: 'cake',
   },
-  "capacitor.config.json": {
-    icon: "capacitor",
+  'capacitor.config.json': {
+    icon: 'capacitor',
   },
   capnp: {
-    icon: "capnp",
+    icon: 'capnp',
   },
-  "cargo.toml": {
-    icon: "cargo",
+  'cargo.toml': {
+    icon: 'cargo',
   },
-  "cargo.lock": {
-    icon: "cargo",
+  'cargo.lock': {
+    icon: 'cargo',
   },
   casc: {
-    icon: "casc",
+    icon: 'casc',
   },
   cddl: {
-    icon: "cddl",
+    icon: 'cddl',
   },
   csr: {
-    icon: "cert",
+    icon: 'cert',
   },
   crt: {
-    icon: "cert",
+    icon: 'cert',
   },
   cer: {
-    icon: "cert",
+    icon: 'cert',
   },
   der: {
-    icon: "cert",
+    icon: 'cert',
   },
   pfx: {
-    icon: "cert",
+    icon: 'cert',
   },
   p12: {
-    icon: "cert",
+    icon: 'cert',
   },
   p7b: {
-    icon: "cert",
+    icon: 'cert',
   },
   p7r: {
-    icon: "cert",
+    icon: 'cert',
   },
   src: {
-    icon: "cert",
+    icon: 'cert',
   },
   crl: {
-    icon: "cert",
+    icon: 'cert',
   },
   sst: {
-    icon: "cert",
+    icon: 'cert',
   },
   stl: {
-    icon: "cert",
+    icon: 'cert',
   },
   ceylon: {
-    icon: "ceylon",
+    icon: 'ceylon',
   },
   cfml: {
-    icon: "cf",
+    icon: 'cf',
   },
   lucee: {
-    icon: "cf",
+    icon: 'cf',
   },
   cfc: {
-    icon: "cfc",
+    icon: 'cfc',
   },
   cfm: {
-    icon: "cfm",
+    icon: 'cfm',
   },
   h: {
-    icon: "cheader",
+    icon: 'cheader',
   },
-  "changie.yaml": {
-    icon: "changie",
+  'changie.yaml': {
+    icon: 'changie',
   },
-  "changie.yml": {
-    icon: "changie",
+  'changie.yml': {
+    icon: 'changie',
   },
   chefignore: {
-    icon: "chef",
+    icon: 'chef',
   },
   berksfile: {
-    icon: "chef",
+    icon: 'chef',
   },
-  "berksfile.lock": {
-    icon: "chef",
+  'berksfile.lock': {
+    icon: 'chef',
   },
-  "policyfile.rb": {
-    icon: "chef",
+  'policyfile.rb': {
+    icon: 'chef',
   },
-  "policyfile.lock.json": {
-    icon: "chef",
+  'policyfile.lock.json': {
+    icon: 'chef',
   },
   class: {
-    icon: "class",
+    icon: 'class',
   },
-  "circle.yml": {
-    icon: "circleci",
+  'circle.yml': {
+    icon: 'circleci',
     light: true,
   },
   clojure: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   clj: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   cljs: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   cljc: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   cljx: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   edn: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   cjm: {
-    icon: "clojure",
+    icon: 'clojure',
   },
   clojurescript: {
-    icon: "clojurescript",
+    icon: 'clojurescript',
   },
   yml: {
-    icon: "cloudfoundry",
+    icon: 'cloudfoundry',
     light: true,
   },
   cfignore: {
-    icon: "cloudfoundry",
+    icon: 'cloudfoundry',
     light: true,
   },
-  "CMakeCache.txt": {
-    icon: "cmake",
+  'CMakeCache.txt': {
+    icon: 'cmake',
   },
   cmake: {
-    icon: "cmake",
+    icon: 'cmake',
   },
   cbl: {
-    icon: "cobol",
+    icon: 'cobol',
   },
-  "codemagic.yaml": {
-    icon: "codemagic",
+  'codemagic.yaml': {
+    icon: 'codemagic',
   },
   ql: {
-    icon: "codeql",
+    icon: 'codeql',
   },
   codeowners: {
-    icon: "codeowners",
+    icon: 'codeowners',
     light: true,
   },
-  "codacy.yml": {
-    icon: "codacy",
+  'codacy.yml': {
+    icon: 'codacy',
     light: true,
   },
-  "codacy.yaml": {
-    icon: "codacy",
+  'codacy.yaml': {
+    icon: 'codacy',
     light: true,
   },
-  "codeclimate.yml": {
-    icon: "codeclimate",
+  'codeclimate.yml': {
+    icon: 'codeclimate',
     light: true,
   },
-  "codecov.yml": {
-    icon: "codecov",
+  'codecov.yml': {
+    icon: 'codecov',
   },
   kit: {
-    icon: "codekit",
+    icon: 'codekit',
   },
-  "config.codekit": {
-    icon: "codekit",
+  'config.codekit': {
+    icon: 'codekit',
   },
-  "config.codekit2": {
-    icon: "codekit",
+  'config.codekit2': {
+    icon: 'codekit',
   },
-  "config.codekit3": {
-    icon: "codekit",
+  'config.codekit3': {
+    icon: 'codekit',
   },
-  "coderabbit.yaml": {
-    icon: "coderabbit",
+  'coderabbit.yaml': {
+    icon: 'coderabbit',
   },
-  "coffeelint.json": {
-    icon: "coffeelint",
+  'coffeelint.json': {
+    icon: 'coffeelint',
   },
   coffeelintignore: {
-    icon: "coffeelint",
+    icon: 'coffeelint',
   },
   coffee: {
-    icon: "coffeescript",
+    icon: 'coffeescript',
   },
   cson: {
-    icon: "coffeescript",
+    icon: 'coffeescript',
   },
   iced: {
-    icon: "coffeescript",
+    icon: 'coffeescript',
   },
-  "conanfile.txt": {
-    icon: "conan",
+  'conanfile.txt': {
+    icon: 'conan',
   },
-  "conanfile.py": {
-    icon: "conan",
+  'conanfile.py': {
+    icon: 'conan',
   },
   condarc: {
-    icon: "conda",
+    icon: 'conda',
   },
   properties: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   conf: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   cfg: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   directory: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   gitattributes: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   gitconfig: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   gitmodules: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   editorconfig: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   repo: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   npmrc: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
   plist: {
-    icon: "config",
+    icon: 'config',
     light: true,
   },
-  "tool-versions": {
-    icon: "config",
+  'tool-versions': {
+    icon: 'config',
     light: true,
   },
   czrc: {
-    icon: "commitizen",
+    icon: 'commitizen',
   },
-  "cz.json": {
-    icon: "commitizen",
+  'cz.json': {
+    icon: 'commitizen',
   },
   commitlintrc: {
-    icon: "commitlint",
+    icon: 'commitlint',
   },
-  "commitlint.config.js": {
-    icon: "commitlint",
+  'commitlint.config.js': {
+    icon: 'commitlint',
   },
-  "commitlint.config.cjs": {
-    icon: "commitlint",
+  'commitlint.config.cjs': {
+    icon: 'commitlint',
   },
-  "commitlint.config.mjs": {
-    icon: "commitlint",
+  'commitlint.config.mjs': {
+    icon: 'commitlint',
   },
-  "commitlint.config.ts": {
-    icon: "commitlint",
+  'commitlint.config.ts': {
+    icon: 'commitlint',
   },
-  "commitlint.config.cts": {
-    icon: "commitlint",
+  'commitlint.config.cts': {
+    icon: 'commitlint',
   },
-  "commitlintrc.json": {
-    icon: "commitlint",
+  'commitlintrc.json': {
+    icon: 'commitlint',
   },
-  "commitlintrc.yaml": {
-    icon: "commitlint",
+  'commitlintrc.yaml': {
+    icon: 'commitlint',
   },
-  "commitlintrc.yml": {
-    icon: "commitlint",
+  'commitlintrc.yml': {
+    icon: 'commitlint',
   },
-  "commitlintrc.js": {
-    icon: "commitlint",
+  'commitlintrc.js': {
+    icon: 'commitlint',
   },
-  "commitlintrc.cjs": {
-    icon: "commitlint",
+  'commitlintrc.cjs': {
+    icon: 'commitlint',
   },
-  "commitlintrc.mjs": {
-    icon: "commitlint",
+  'commitlintrc.mjs': {
+    icon: 'commitlint',
   },
-  "commitlintrc.ts": {
-    icon: "commitlint",
+  'commitlintrc.ts': {
+    icon: 'commitlint',
   },
-  "commitlintrc.cts": {
-    icon: "commitlint",
+  'commitlintrc.cts': {
+    icon: 'commitlint',
   },
-  "composer.json": {
-    icon: "composer",
+  'composer.json': {
+    icon: 'composer',
   },
-  "composer.lock": {
-    icon: "composer",
+  'composer.lock': {
+    icon: 'composer',
   },
   ckbk: {
-    icon: "chef_cookbook",
+    icon: 'chef_cookbook',
   },
   confluence: {
-    icon: "confluence",
+    icon: 'confluence',
   },
-  "copilot-instructions.md": {
-    icon: "copilot",
+  'copilot-instructions.md': {
+    icon: 'copilot',
     light: true,
   },
-  "github-copilot.xml": {
-    icon: "copilot",
+  'github-copilot.xml': {
+    icon: 'copilot',
     light: true,
   },
   coverage: {
-    icon: "coverage",
+    icon: 'coverage',
   },
-  "lcov.info": {
-    icon: "coverage",
+  'lcov.info': {
+    icon: 'coverage',
   },
   lcov: {
-    icon: "coverage",
+    icon: 'coverage',
   },
-  "coveralls.yml": {
-    icon: "coveralls",
+  'coveralls.yml': {
+    icon: 'coveralls',
   },
   cpp: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   cppm: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   cc: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   ccm: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   cxx: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   cxxm: {
-    icon: "cpp",
+    icon: 'cpp',
   },
-  "c++": {
-    icon: "cpp",
+  'c++': {
+    icon: 'cpp',
   },
-  "c++m": {
-    icon: "cpp",
+  'c++m': {
+    icon: 'cpp',
   },
   hpp: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   hh: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   hxx: {
-    icon: "cpp",
+    icon: 'cpp',
   },
-  "h++": {
-    icon: "cpp",
+  'h++': {
+    icon: 'cpp',
   },
   ii: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   inl: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   ipp: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   ixx: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   tpp: {
-    icon: "cpp",
+    icon: 'cpp',
   },
   txx: {
-    icon: "cpp",
+    icon: 'cpp',
   },
-  "hpp.in": {
-    icon: "cpp",
+  'hpp.in': {
+    icon: 'cpp',
   },
-  "h.in": {
-    icon: "cpp",
+  'h.in': {
+    icon: 'cpp',
   },
-  "craco.config.ts": {
-    icon: "craco",
+  'craco.config.ts': {
+    icon: 'craco',
   },
-  "craco.config.js": {
-    icon: "craco",
+  'craco.config.js': {
+    icon: 'craco',
   },
-  "craco.config.cjs": {
-    icon: "craco",
+  'craco.config.cjs': {
+    icon: 'craco',
   },
-  "cracorc.ts": {
-    icon: "craco",
+  'cracorc.ts': {
+    icon: 'craco',
   },
-  "cracorc.js": {
-    icon: "craco",
+  'cracorc.js': {
+    icon: 'craco',
   },
   cracorc: {
-    icon: "craco",
+    icon: 'craco',
   },
-  "crowdin.yml": {
-    icon: "crowdin",
+  'crowdin.yml': {
+    icon: 'crowdin',
   },
   cr: {
-    icon: "crystal",
+    icon: 'crystal',
     light: true,
   },
   cs: {
-    icon: "csharp",
+    icon: 'csharp',
   },
   csx: {
-    icon: "csharp",
+    icon: 'csharp',
   },
-  "cspell.config.json": {
-    icon: "cspell",
+  'cspell.config.json': {
+    icon: 'cspell',
   },
-  "cspell.config.js": {
-    icon: "cspell",
+  'cspell.config.js': {
+    icon: 'cspell',
   },
-  "cspell.config.cjs": {
-    icon: "cspell",
+  'cspell.config.cjs': {
+    icon: 'cspell',
   },
-  "cspell.config.yaml": {
-    icon: "cspell",
+  'cspell.config.yaml': {
+    icon: 'cspell',
   },
-  "cspell.config.yml": {
-    icon: "cspell",
+  'cspell.config.yml': {
+    icon: 'cspell',
   },
-  "cspell.json": {
-    icon: "cspell",
+  'cspell.json': {
+    icon: 'cspell',
   },
-  "cspell.js": {
-    icon: "cspell",
+  'cspell.js': {
+    icon: 'cspell',
   },
-  "cspell.cjs": {
-    icon: "cspell",
+  'cspell.cjs': {
+    icon: 'cspell',
   },
-  "cspell.yaml": {
-    icon: "cspell",
+  'cspell.yaml': {
+    icon: 'cspell',
   },
-  "cspell.yml": {
-    icon: "cspell",
+  'cspell.yml': {
+    icon: 'cspell',
   },
   csproj: {
-    icon: "csproj",
+    icon: 'csproj',
   },
   css: {
-    icon: "css",
+    icon: 'css',
   },
-  "csscomb.json": {
-    icon: "csscomb",
+  'csscomb.json': {
+    icon: 'csscomb',
   },
   csslintrc: {
-    icon: "csslint",
+    icon: 'csslint',
   },
-  "css.map": {
-    icon: "cssmap",
+  'css.map': {
+    icon: 'cssmap',
   },
   feature: {
-    icon: "cucumber",
+    icon: 'cucumber',
   },
   cu: {
-    icon: "cuda",
+    icon: 'cuda',
   },
   cuh: {
-    icon: "cuda",
+    icon: 'cuda',
   },
   cursorrules: {
-    icon: "cursorrules",
+    icon: 'cursorrules',
   },
   pyx: {
-    icon: "cython",
+    icon: 'cython',
   },
-  "cypress.json": {
-    icon: "cypress",
+  'cypress.json': {
+    icon: 'cypress',
     light: true,
   },
-  "cypress.env.json": {
-    icon: "cypress",
+  'cypress.env.json': {
+    icon: 'cypress',
     light: true,
   },
-  "cypress.config.js": {
-    icon: "cypress",
+  'cypress.config.js': {
+    icon: 'cypress',
     light: true,
   },
-  "cypress.config.ts": {
-    icon: "cypress",
+  'cypress.config.ts': {
+    icon: 'cypress',
     light: true,
   },
-  "cypress.config.cjs": {
-    icon: "cypress",
+  'cypress.config.cjs': {
+    icon: 'cypress',
     light: true,
   },
-  "cypress.config.mjs": {
-    icon: "cypress",
+  'cypress.config.mjs': {
+    icon: 'cypress',
     light: true,
   },
-  "cy.js": {
-    icon: "cypress_spec",
+  'cy.js': {
+    icon: 'cypress_spec',
     light: true,
   },
-  "cy.mjs": {
-    icon: "cypress_spec",
+  'cy.mjs': {
+    icon: 'cypress_spec',
     light: true,
   },
-  "cy.cjs": {
-    icon: "cypress_spec",
+  'cy.cjs': {
+    icon: 'cypress_spec',
     light: true,
   },
-  "cy.coffee": {
-    icon: "cypress_spec",
+  'cy.coffee': {
+    icon: 'cypress_spec',
     light: true,
   },
-  "cy.ts": {
-    icon: "cypress_spec",
+  'cy.ts': {
+    icon: 'cypress_spec',
     light: true,
   },
-  "cy.tsx": {
-    icon: "cypress_spec",
+  'cy.tsx': {
+    icon: 'cypress_spec',
     light: true,
   },
-  "cy.jsx": {
-    icon: "cypress_spec",
+  'cy.jsx': {
+    icon: 'cypress_spec',
     light: true,
   },
   cvsignore: {
-    icon: "cvs",
+    icon: 'cvs',
   },
   boringignore: {
-    icon: "darcs",
+    icon: 'darcs',
   },
   dart: {
-    icon: "dartlang",
+    icon: 'dartlang',
   },
-  "g.dart": {
-    icon: "dartlang_generated",
+  'g.dart': {
+    icon: 'dartlang_generated',
   },
-  "freezed.dart": {
-    icon: "dartlang_generated",
+  'freezed.dart': {
+    icon: 'dartlang_generated',
   },
   pubignore: {
-    icon: "dartlang_ignore",
+    icon: 'dartlang_ignore',
   },
-  "service.datadog.yaml": {
-    icon: "datadog",
+  'service.datadog.yaml': {
+    icon: 'datadog',
   },
-  "datadog-ci.json": {
-    icon: "datadog",
+  'datadog-ci.json': {
+    icon: 'datadog',
   },
-  "static-analysis.datadog.yml": {
-    icon: "datadog",
+  'static-analysis.datadog.yml': {
+    icon: 'datadog',
   },
-  "static-analysis.datadog.yaml": {
-    icon: "datadog",
+  'static-analysis.datadog.yaml': {
+    icon: 'datadog',
   },
   db: {
-    icon: "db",
+    icon: 'db',
     light: true,
   },
   txt: {
-    icon: "debian",
+    icon: 'debian',
   },
   deb: {
-    icon: "debian",
+    icon: 'debian',
   },
   aptfile: {
-    icon: "debian",
+    icon: 'debian',
   },
-  "deno.json": {
-    icon: "deno",
+  'deno.json': {
+    icon: 'deno',
   },
-  "deno.jsonc": {
-    icon: "deno",
+  'deno.jsonc': {
+    icon: 'deno',
   },
-  "deno.lock": {
-    icon: "deno",
+  'deno.lock': {
+    icon: 'deno',
   },
   denoifyrc: {
-    icon: "denoify",
+    icon: 'denoify',
   },
-  "denoify.config.json": {
-    icon: "denoify",
+  'denoify.config.json': {
+    icon: 'denoify',
   },
-  "denoify.config.js": {
-    icon: "denoify",
+  'denoify.config.js': {
+    icon: 'denoify',
   },
-  "dependabot.yml": {
-    icon: "dependabot",
+  'dependabot.yml': {
+    icon: 'dependabot',
   },
-  "dependabot.yaml": {
-    icon: "dependabot",
+  'dependabot.yaml': {
+    icon: 'dependabot',
   },
-  "dependencies.yml": {
-    icon: "dependencies",
+  'dependencies.yml': {
+    icon: 'dependencies',
   },
   pas: {
-    icon: "delphi",
+    icon: 'delphi',
   },
-  "devcontainer.json": {
-    icon: "devcontainer",
+  'devcontainer.json': {
+    icon: 'devcontainer',
   },
   dhall: {
-    icon: "dhall",
+    icon: 'dhall',
     light: true,
   },
   html: {
-    icon: "django",
+    icon: 'django',
   },
   djt: {
-    icon: "django",
+    icon: 'django',
   },
   d: {
-    icon: "dlang",
+    icon: 'dlang',
   },
   diff: {
-    icon: "diff",
+    icon: 'diff',
   },
   patch: {
-    icon: "patch",
+    icon: 'patch',
   },
   rej: {
-    icon: "diff",
+    icon: 'diff',
   },
   dockerfile: {
-    icon: "docker",
+    icon: 'docker',
   },
   containerfile: {
-    icon: "docker",
+    icon: 'docker',
   },
   dockerignore: {
-    icon: "docker",
+    icon: 'docker',
   },
-  "compose.yaml": {
-    icon: "docker",
+  'compose.yaml': {
+    icon: 'docker',
   },
-  "compose.yml": {
-    icon: "docker",
+  'compose.yml': {
+    icon: 'docker',
   },
-  "docker-compose.yaml": {
-    icon: "docker",
+  'docker-compose.yaml': {
+    icon: 'docker',
   },
-  "docker-compose.yml": {
-    icon: "docker",
+  'docker-compose.yml': {
+    icon: 'docker',
   },
-  "docker-compose.debug.yaml": {
-    icon: "docker",
+  'docker-compose.debug.yaml': {
+    icon: 'docker',
   },
-  "docker-compose.debug.yml": {
-    icon: "docker",
+  'docker-compose.debug.yml': {
+    icon: 'docker',
   },
-  "docker-compose.ci-build.yaml": {
-    icon: "docker",
+  'docker-compose.ci-build.yaml': {
+    icon: 'docker',
   },
-  "docker-compose.ci-build.yml": {
-    icon: "docker",
+  'docker-compose.ci-build.yml': {
+    icon: 'docker',
   },
-  "docker-compose.override.yaml": {
-    icon: "docker",
+  'docker-compose.override.yaml': {
+    icon: 'docker',
   },
-  "docker-compose.override.yml": {
-    icon: "docker",
+  'docker-compose.override.yml': {
+    icon: 'docker',
   },
-  "docker-compose.vs.debug.yaml": {
-    icon: "docker",
+  'docker-compose.vs.debug.yaml': {
+    icon: 'docker',
   },
-  "docker-compose.vs.debug.yml": {
-    icon: "docker",
+  'docker-compose.vs.debug.yml': {
+    icon: 'docker',
   },
-  "docker-compose.vs.release.yaml": {
-    icon: "docker",
+  'docker-compose.vs.release.yaml': {
+    icon: 'docker',
   },
-  "docker-compose.vs.release.yml": {
-    icon: "docker",
+  'docker-compose.vs.release.yml': {
+    icon: 'docker',
   },
-  "docker-cloud.yaml": {
-    icon: "docker",
+  'docker-cloud.yaml': {
+    icon: 'docker',
   },
-  "docker-cloud.yml": {
-    icon: "docker",
+  'docker-cloud.yml': {
+    icon: 'docker',
   },
-  "docker-compose.test.yml": {
-    icon: "dockertest",
+  'docker-compose.test.yml': {
+    icon: 'dockertest',
   },
   eco: {
-    icon: "docpad",
+    icon: 'docpad',
     light: true,
   },
-  "docusaurus.config.ts": {
-    icon: "docusaurus",
+  'docusaurus.config.ts': {
+    icon: 'docusaurus',
   },
-  "docusaurus.config.mts": {
-    icon: "docusaurus",
+  'docusaurus.config.mts': {
+    icon: 'docusaurus',
   },
-  "docusaurus.config.cts": {
-    icon: "docusaurus",
+  'docusaurus.config.cts': {
+    icon: 'docusaurus',
   },
-  "docusaurus.config.js": {
-    icon: "docusaurus",
+  'docusaurus.config.js': {
+    icon: 'docusaurus',
   },
-  "docusaurus.config.mjs": {
-    icon: "docusaurus",
+  'docusaurus.config.mjs': {
+    icon: 'docusaurus',
   },
-  "docusaurus.config.cjs": {
-    icon: "docusaurus",
+  'docusaurus.config.cjs': {
+    icon: 'docusaurus',
   },
   doczrc: {
-    icon: "docz",
+    icon: 'docz',
   },
-  "docz.js": {
-    icon: "docz",
+  'docz.js': {
+    icon: 'docz',
   },
-  "docz.json": {
-    icon: "docz",
+  'docz.json': {
+    icon: 'docz',
   },
-  "doczrc.js": {
-    icon: "docz",
+  'doczrc.js': {
+    icon: 'docz',
   },
-  "doczrc.json": {
-    icon: "docz",
+  'doczrc.json': {
+    icon: 'docz',
   },
-  "docz.config.js": {
-    icon: "docz",
+  'docz.config.js': {
+    icon: 'docz',
   },
-  "docz.config.json": {
-    icon: "docz",
+  'docz.config.json': {
+    icon: 'docz',
   },
   dojorc: {
-    icon: "dojo",
+    icon: 'dojo',
   },
   env: {
-    icon: "dotenv",
+    icon: 'dotenv',
   },
   dox: {
-    icon: "doxygen",
+    icon: 'doxygen',
   },
   drawio: {
-    icon: "drawio",
+    icon: 'drawio',
   },
   dio: {
-    icon: "drawio",
+    icon: 'drawio',
   },
-  "drawio.png": {
-    icon: "drawio",
+  'drawio.png': {
+    icon: 'drawio',
   },
-  "drawio.svg": {
-    icon: "drawio",
+  'drawio.svg': {
+    icon: 'drawio',
   },
-  "dio.png": {
-    icon: "drawio",
+  'dio.png': {
+    icon: 'drawio',
   },
-  "dio.svg": {
-    icon: "drawio",
+  'dio.svg': {
+    icon: 'drawio',
   },
-  "drone.yml": {
-    icon: "drone",
+  'drone.yml': {
+    icon: 'drone',
     light: true,
   },
-  "drone.yml.sig": {
-    icon: "drone",
+  'drone.yml.sig': {
+    icon: 'drone',
     light: true,
   },
   drl: {
-    icon: "drools",
+    icon: 'drools',
   },
   dot: {
-    icon: "dotjs",
+    icon: 'dotjs',
   },
   dtd: {
-    icon: "dtd",
+    icon: 'dtd',
   },
   dust: {
-    icon: "dustjs",
+    icon: 'dustjs',
   },
   dvc: {
-    icon: "dvc",
+    icon: 'dvc',
   },
   dylan: {
-    icon: "dylan",
+    icon: 'dylan',
   },
   earthfile: {
-    icon: "earthly",
+    icon: 'earthly',
   },
   earthlyignore: {
-    icon: "earthly",
+    icon: 'earthly',
   },
   Earthfile: {
-    icon: "earthly",
+    icon: 'earthly',
   },
-  "store.config.json": {
-    icon: "eas-metadata",
+  'store.config.json': {
+    icon: 'eas-metadata',
     light: true,
   },
   edge: {
-    icon: "edge",
+    icon: 'edge',
   },
   eex: {
-    icon: "eex",
+    icon: 'eex',
   },
   heex: {
-    icon: "eex",
+    icon: 'eex',
   },
-  "phoenix-heex": {
-    icon: "eex",
+  'phoenix-heex': {
+    icon: 'eex',
   },
-  "html-heex": {
-    icon: "eex",
+  'html-heex': {
+    icon: 'eex',
   },
   ejs: {
-    icon: "ejs",
+    icon: 'ejs',
   },
   es: {
-    icon: "elastic",
+    icon: 'elastic',
   },
-  "eleventy.js": {
-    icon: "eleventy",
+  'eleventy.js': {
+    icon: 'eleventy',
     light: true,
   },
-  "eleventy.config.js": {
-    icon: "eleventy",
+  'eleventy.config.js': {
+    icon: 'eleventy',
     light: true,
   },
-  "eleventy.config.cjs": {
-    icon: "eleventy",
+  'eleventy.config.cjs': {
+    icon: 'eleventy',
     light: true,
   },
-  "eleventy.config.mjs": {
-    icon: "eleventy",
+  'eleventy.config.mjs': {
+    icon: 'eleventy',
     light: true,
   },
   ex: {
-    icon: "elixir",
+    icon: 'elixir',
   },
   elm: {
-    icon: "elm",
+    icon: 'elm',
   },
-  "elm-package.json": {
-    icon: "elm",
+  'elm-package.json': {
+    icon: 'elm',
   },
   el: {
-    icon: "emacs",
+    icon: 'emacs',
   },
   elc: {
-    icon: "emacs",
+    icon: 'emacs',
   },
-  "ember-cli": {
-    icon: "ember",
+  'ember-cli': {
+    icon: 'ember',
   },
   ensime: {
-    icon: "ensime",
+    icon: 'ensime',
   },
   eps: {
-    icon: "eps",
+    icon: 'eps',
   },
   epub: {
-    icon: "epub",
+    icon: 'epub',
   },
   erb: {
-    icon: "erb",
+    icon: 'erb',
   },
   erl: {
-    icon: "erlang",
+    icon: 'erlang',
   },
   emakefile: {
-    icon: "erlang",
+    icon: 'erlang',
   },
   emakerfile: {
-    icon: "erlang",
+    icon: 'erlang',
   },
-  "esbuild.js": {
-    icon: "esbuild",
+  'esbuild.js': {
+    icon: 'esbuild',
   },
-  "esbuild.mjs": {
-    icon: "esbuild",
+  'esbuild.mjs': {
+    icon: 'esbuild',
   },
-  "esbuild.cjs": {
-    icon: "esbuild",
+  'esbuild.cjs': {
+    icon: 'esbuild',
   },
-  "esbuild.ts": {
-    icon: "esbuild",
+  'esbuild.ts': {
+    icon: 'esbuild',
   },
-  "esbuild.config.js": {
-    icon: "esbuild",
+  'esbuild.config.js': {
+    icon: 'esbuild',
   },
-  "esbuild.config.mjs": {
-    icon: "esbuild",
+  'esbuild.config.mjs': {
+    icon: 'esbuild',
   },
-  "esbuild.config.cjs": {
-    icon: "esbuild",
+  'esbuild.config.cjs': {
+    icon: 'esbuild',
   },
-  "esbuild.config.ts": {
-    icon: "esbuild",
+  'esbuild.config.ts': {
+    icon: 'esbuild',
   },
   eslintrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   eslintignore: {
-    icon: "eslint",
+    icon: 'eslint',
   },
   eslintcache: {
-    icon: "eslint",
+    icon: 'eslint',
   },
-  "eslint.config.js": {
-    icon: "eslint",
+  'eslint.config.js': {
+    icon: 'eslint',
   },
-  "eslint.config.mjs": {
-    icon: "eslint",
+  'eslint.config.mjs': {
+    icon: 'eslint',
   },
-  "eslint.config.cjs": {
-    icon: "eslint",
+  'eslint.config.cjs': {
+    icon: 'eslint',
   },
-  "eslint.config.ts": {
-    icon: "eslint",
+  'eslint.config.ts': {
+    icon: 'eslint',
   },
-  "eslint.config.mts": {
-    icon: "eslint",
+  'eslint.config.mts': {
+    icon: 'eslint',
   },
-  "eslint.config.cts": {
-    icon: "eslint",
+  'eslint.config.cts': {
+    icon: 'eslint',
   },
-  "eslintrc.js": {
-    icon: "eslint",
+  'eslintrc.js': {
+    icon: 'eslint',
   },
-  "eslintrc.mjs": {
-    icon: "eslint",
+  'eslintrc.mjs': {
+    icon: 'eslint',
   },
-  "eslintrc.cjs": {
-    icon: "eslint",
+  'eslintrc.cjs': {
+    icon: 'eslint',
   },
-  "eslintrc.ts": {
-    icon: "eslint",
+  'eslintrc.ts': {
+    icon: 'eslint',
   },
-  "eslintrc.mts": {
-    icon: "eslint",
+  'eslintrc.mts': {
+    icon: 'eslint',
   },
-  "eslintrc.cts": {
-    icon: "eslint",
+  'eslintrc.cts': {
+    icon: 'eslint',
   },
-  "eslintrc.json": {
-    icon: "json",
+  'eslintrc.json': {
+    icon: 'json',
     light: true,
   },
-  "eslintrc.yaml": {
-    icon: "eslint",
+  'eslintrc.yaml': {
+    icon: 'eslint',
   },
-  "eslintrc.yml": {
-    icon: "eslint",
+  'eslintrc.yml': {
+    icon: 'eslint',
   },
   yaml: {
-    icon: "esphome",
+    icon: 'yaml',
     light: true,
   },
   excalidraw: {
-    icon: "excalidraw",
+    icon: 'excalidraw',
   },
-  "excalidraw.json": {
-    icon: "excalidraw",
+  'excalidraw.json': {
+    icon: 'excalidraw',
   },
-  "excalidraw.svg": {
-    icon: "excalidraw",
+  'excalidraw.svg': {
+    icon: 'excalidraw',
   },
-  "excalidraw.png": {
-    icon: "excalidraw",
+  'excalidraw.png': {
+    icon: 'excalidraw',
   },
   xlsx: {
-    icon: "excel",
+    icon: 'excel',
   },
   xls: {
-    icon: "excel",
+    icon: 'excel',
   },
   xlsm: {
-    icon: "excel",
+    icon: 'excel',
   },
   ods: {
-    icon: "excel",
+    icon: 'excel',
   },
   fods: {
-    icon: "excel",
+    icon: 'excel',
   },
   xlsb: {
-    icon: "excel",
+    icon: 'excel',
   },
-  "app.json": {
-    icon: "expo",
+  'app.json': {
+    icon: 'expo',
     light: true,
   },
-  "app.config.js": {
-    icon: "expo",
+  'app.config.js': {
+    icon: 'expo',
     light: true,
   },
-  "app.config.json": {
-    icon: "expo",
+  'app.config.json': {
+    icon: 'expo',
     light: true,
   },
-  "app.config.json5": {
-    icon: "expo",
+  'app.config.json5': {
+    icon: 'expo',
     light: true,
   },
   falcon: {
-    icon: "falcon",
+    icon: 'falcon',
   },
   fantasticonrc: {
-    icon: "fantasticon",
+    icon: 'fantasticon',
   },
-  "fantasticonrc.json": {
-    icon: "fantasticon",
+  'fantasticonrc.json': {
+    icon: 'fantasticon',
   },
-  "fantasticonrc.js": {
-    icon: "fantasticon",
+  'fantasticonrc.js': {
+    icon: 'fantasticon',
   },
   fql: {
-    icon: "fauna",
+    icon: 'fauna',
   },
   faunarc: {
-    icon: "fauna",
+    icon: 'fauna',
   },
-  "fastly.toml": {
-    icon: "fastly",
+  'fastly.toml': {
+    icon: 'fastly',
   },
-  "favicon.ico": {
-    icon: "favicon",
+  'favicon.ico': {
+    icon: 'favicon',
   },
   fbx: {
-    icon: "fbx",
+    icon: 'fbx',
   },
   firebaserc: {
-    icon: "firebase",
+    icon: 'firebase',
   },
-  "firebase.json": {
-    icon: "firebasehosting",
+  'firebase.json': {
+    icon: 'firebasehosting',
     light: true,
   },
-  "firestore.rules": {
-    icon: "firestore",
+  'firestore.rules': {
+    icon: 'firestore',
   },
-  "firestore.indexes.json": {
-    icon: "firestore",
+  'firestore.indexes.json': {
+    icon: 'firestore',
   },
   fla: {
-    icon: "fla",
+    icon: 'fla',
     light: true,
   },
-  "flareact.config.js": {
-    icon: "flareact",
+  'flareact.config.js': {
+    icon: 'flareact',
   },
   swf: {
-    icon: "flash",
+    icon: 'flash',
   },
   swc: {
-    icon: "flash",
+    icon: 'flash',
   },
   flooignore: {
-    icon: "floobits",
+    icon: 'floobits',
   },
-  "js.flow": {
-    icon: "flow",
+  'js.flow': {
+    icon: 'flow',
   },
   flowconfig: {
-    icon: "flow",
+    icon: 'flow',
   },
-  "flutter-plugins": {
-    icon: "flutter",
+  'flutter-plugins': {
+    icon: 'flutter',
   },
   metadata: {
-    icon: "flutter",
+    icon: 'flutter',
   },
-  "pubspec.lock": {
-    icon: "flutter_package",
+  'pubspec.lock': {
+    icon: 'flutter_package',
   },
-  "pubspec.yaml": {
-    icon: "flutter_package",
+  'pubspec.yaml': {
+    icon: 'flutter_package',
   },
   packages: {
-    icon: "flutter_package",
+    icon: 'flutter_package',
   },
-  "fly.toml": {
-    icon: "flyio",
+  'fly.toml': {
+    icon: 'flyio',
   },
   woff: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   woff2: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   ttf: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   otf: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   eot: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   pfa: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   pfb: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
   sfd: {
-    icon: "font",
+    icon: 'font',
     light: true,
   },
-  "formkit.config.js": {
-    icon: "formkit",
+  'formkit.config.js': {
+    icon: 'formkit',
   },
-  "formkit.config.mjs": {
-    icon: "formkit",
+  'formkit.config.mjs': {
+    icon: 'formkit',
   },
-  "formkit.config.cjs": {
-    icon: "formkit",
+  'formkit.config.cjs': {
+    icon: 'formkit',
   },
-  "formkit.config.ts": {
-    icon: "formkit",
+  'formkit.config.ts': {
+    icon: 'formkit',
   },
   f: {
-    icon: "fortran",
+    icon: 'fortran',
   },
   fossaignore: {
-    icon: "fossa",
+    icon: 'fossa',
   },
-  "ignore-glob": {
-    icon: "fossil",
+  'ignore-glob': {
+    icon: 'fossil',
   },
   fs: {
-    icon: "fsharp",
+    icon: 'fsharp',
   },
   fsi: {
-    icon: "fsharp",
+    icon: 'fsharp',
   },
   fsx: {
-    icon: "fsharp",
+    icon: 'fsharp',
   },
   fsscript: {
-    icon: "fsharp",
+    icon: 'fsharp',
   },
   fsproj: {
-    icon: "fsproj",
+    icon: 'fsproj',
   },
   ftl: {
-    icon: "freemarker",
+    icon: 'freemarker',
   },
-  "front-commerce.js": {
-    icon: "frontcommerce",
+  'front-commerce.js': {
+    icon: 'frontcommerce',
   },
-  "front-commerce.config.ts": {
-    icon: "frontcommerce",
+  'front-commerce.config.ts': {
+    icon: 'frontcommerce',
   },
   fthtml: {
-    icon: "fthtml",
+    icon: 'fthtml',
   },
-  "funding.yml": {
-    icon: "funding",
+  'funding.yml': {
+    icon: 'funding',
   },
-  "fuse.js": {
-    icon: "fusebox",
+  'fuse.js': {
+    icon: 'fusebox',
   },
   gspec: {
-    icon: "galen",
+    icon: 'galen',
   },
   git: {
-    icon: "git",
+    icon: 'git',
   },
   gitignore_global: {
-    icon: "git",
+    icon: 'git',
   },
   gitignore: {
-    icon: "git",
+    icon: 'git',
   },
-  "git-blame-ignore-revs": {
-    icon: "git",
+  'git-blame-ignore-revs': {
+    icon: 'git',
   },
   npmignore: {
-    icon: "git",
+    icon: 'git',
   },
   gitkeep: {
-    icon: "git",
+    icon: 'git',
   },
   mailmap: {
-    icon: "git",
+    icon: 'git',
   },
   issuetracker: {
-    icon: "git",
+    icon: 'git',
   },
   gml: {
-    icon: "gamemaker",
+    icon: 'gamemaker',
   },
   gmx: {
-    icon: "gamemaker",
+    icon: 'gamemaker',
   },
   yy: {
-    icon: "gamemaker2",
+    icon: 'gamemaker2',
     light: true,
   },
   yyp: {
-    icon: "gamemaker2",
+    icon: 'gamemaker2',
     light: true,
   },
-  "gatsby-browser.js": {
-    icon: "gatsby",
+  'gatsby-browser.js': {
+    icon: 'gatsby',
   },
-  "gatsby-browser.ts": {
-    icon: "gatsby",
+  'gatsby-browser.ts': {
+    icon: 'gatsby',
   },
-  "gatsby-browser.tsx": {
-    icon: "gatsby",
+  'gatsby-browser.tsx': {
+    icon: 'gatsby',
   },
-  "gatsby-ssr.js": {
-    icon: "gatsby",
+  'gatsby-ssr.js': {
+    icon: 'gatsby',
   },
-  "gatsby-ssr.ts": {
-    icon: "gatsby",
+  'gatsby-ssr.ts': {
+    icon: 'gatsby',
   },
-  "gatsby-ssr.tsx": {
-    icon: "gatsby",
+  'gatsby-ssr.tsx': {
+    icon: 'gatsby',
   },
-  "gatsby-config.js": {
-    icon: "gatsby",
+  'gatsby-config.js': {
+    icon: 'gatsby',
   },
-  "gatsby-config.ts": {
-    icon: "gatsby",
+  'gatsby-config.ts': {
+    icon: 'gatsby',
   },
-  "gatsby-config.mjs": {
-    icon: "gatsby",
+  'gatsby-config.mjs': {
+    icon: 'gatsby',
   },
-  "gatsby-node.js": {
-    icon: "gatsby",
+  'gatsby-node.js': {
+    icon: 'gatsby',
   },
-  "gatsby-node.ts": {
-    icon: "gatsby",
+  'gatsby-node.ts': {
+    icon: 'gatsby',
   },
-  "gatsby-node.mjs": {
-    icon: "gatsby",
+  'gatsby-node.mjs': {
+    icon: 'gatsby',
   },
   gcode: {
-    icon: "gcode",
+    icon: 'gcode',
   },
   gd: {
-    icon: "gdscript",
+    icon: 'gdscript',
   },
   gcloudignore: {
-    icon: "gcloud",
+    icon: 'gcloud',
   },
   gen: {
-    icon: "genstat",
+    icon: 'genstat',
   },
-  "gitlab-ci.yml": {
-    icon: "gitlab",
+  'gitlab-ci.yml': {
+    icon: 'gitlab',
   },
-  "gitpod.yaml": {
-    icon: "gitpod",
+  'gitpod.yaml': {
+    icon: 'gitpod',
   },
-  "gitpod.yml": {
-    icon: "gitpod",
+  'gitpod.yml': {
+    icon: 'gitpod',
   },
   gleam: {
-    icon: "gleam",
+    icon: 'gleam',
   },
-  "gleam.toml": {
-    icon: "gleamconfig",
+  'gleam.toml': {
+    icon: 'gleamconfig',
   },
-  "glide.yml": {
-    icon: "glide",
+  'glide.yml': {
+    icon: 'glide',
   },
   glitterrc: {
-    icon: "glitter",
+    icon: 'glitter',
   },
   glsl: {
-    icon: "glsl",
+    icon: 'glsl',
   },
   glb: {
-    icon: "gltf",
+    icon: 'gltf',
   },
   gltf: {
-    icon: "gltf",
+    icon: 'gltf',
   },
   glyphs: {
-    icon: "glyphs",
+    icon: 'glyphs',
   },
   mk: {
-    icon: "gnu",
+    icon: 'gnu',
   },
   mak: {
-    icon: "gnu",
+    icon: 'gnu',
   },
   m4: {
-    icon: "gnu",
+    icon: 'gnu',
   },
   am: {
-    icon: "gnu",
+    icon: 'gnu',
   },
   ld: {
-    icon: "gnu",
+    icon: 'gnu',
   },
   makefile: {
-    icon: "gnu",
+    icon: 'gnu',
   },
   gp: {
-    icon: "gnuplot",
+    icon: 'gnuplot',
   },
   go: {
-    icon: "go",
+    icon: 'go',
   },
   mod: {
-    icon: "go_package",
+    icon: 'go_package',
   },
-  "go.sum": {
-    icon: "go_package",
+  'go.sum': {
+    icon: 'go_package',
   },
-  "go.mod": {
-    icon: "go_package",
+  'go.mod': {
+    icon: 'go_package',
   },
   work: {
-    icon: "go_work",
+    icon: 'go_work',
   },
-  "go.work": {
-    icon: "go_work",
+  'go.work': {
+    icon: 'go_work',
   },
-  "go.work.sum": {
-    icon: "go_work",
+  'go.work.sum': {
+    icon: 'go_work',
   },
   api: {
-    icon: "goctl",
+    icon: 'goctl',
   },
   godot: {
-    icon: "godot",
+    icon: 'godot',
   },
   gpg: {
-    icon: "gpg",
+    icon: 'gpg',
   },
   pgp: {
-    icon: "gpg",
+    icon: 'gpg',
   },
-  "gradle.kts": {
-    icon: "gradle",
+  'gradle.kts': {
+    icon: 'gradle',
     light: true,
   },
   gradle: {
-    icon: "gradle",
+    icon: 'gradle',
     light: true,
   },
   gr: {
-    icon: "grain",
+    icon: 'grain',
   },
   gql: {
-    icon: "graphql",
+    icon: 'graphql',
   },
   gqlconfig: {
-    icon: "graphql",
+    icon: 'graphql',
   },
   graphqlconfig: {
-    icon: "graphql_config",
+    icon: 'graphql_config',
   },
-  "graphqlconfig.yml": {
-    icon: "graphql_config",
+  'graphqlconfig.yml': {
+    icon: 'graphql_config',
   },
-  "graphqlconfig.yaml": {
-    icon: "graphql_config",
+  'graphqlconfig.yaml': {
+    icon: 'graphql_config',
   },
   gv: {
-    icon: "graphviz",
+    icon: 'graphviz',
   },
-  "greenkeeper.json": {
-    icon: "greenkeeper",
+  'greenkeeper.json': {
+    icon: 'greenkeeper',
   },
-  "gridsome.config.js": {
-    icon: "gridsome",
+  'gridsome.config.js': {
+    icon: 'gridsome',
   },
-  "gridsome.config.ts": {
-    icon: "gridsome",
+  'gridsome.config.ts': {
+    icon: 'gridsome',
   },
-  "gridsome.server.js": {
-    icon: "gridsome",
+  'gridsome.server.js': {
+    icon: 'gridsome',
   },
-  "gridsome.server.ts": {
-    icon: "gridsome",
+  'gridsome.server.ts': {
+    icon: 'gridsome',
   },
-  "gridsome.client.js": {
-    icon: "gridsome",
+  'gridsome.client.js': {
+    icon: 'gridsome',
   },
-  "gridsome.client.ts": {
-    icon: "gridsome",
+  'gridsome.client.ts': {
+    icon: 'gridsome',
   },
   groovy: {
-    icon: "groovy",
+    icon: 'groovy',
   },
   gvy: {
-    icon: "groovy",
+    icon: 'groovy',
   },
   jenkinsfile: {
-    icon: "groovy",
+    icon: 'groovy',
   },
   nf: {
-    icon: "groovy",
+    icon: 'groovy',
   },
-  "gruntfile.js": {
-    icon: "grunt",
+  'gruntfile.js': {
+    icon: 'grunt',
   },
-  "gruntfile.cjs": {
-    icon: "grunt",
+  'gruntfile.cjs': {
+    icon: 'grunt',
   },
-  "gruntfile.coffee": {
-    icon: "grunt",
+  'gruntfile.coffee': {
+    icon: 'grunt',
   },
-  "gruntfile.ts": {
-    icon: "grunt",
+  'gruntfile.ts': {
+    icon: 'grunt',
   },
-  "gruntfile.babel.js": {
-    icon: "grunt",
+  'gruntfile.babel.js': {
+    icon: 'grunt',
   },
-  "gruntfile.babel.cjs": {
-    icon: "grunt",
+  'gruntfile.babel.cjs': {
+    icon: 'grunt',
   },
-  "gruntfile.babel.coffee": {
-    icon: "grunt",
+  'gruntfile.babel.coffee': {
+    icon: 'grunt',
   },
-  "gruntfile.babel.ts": {
-    icon: "grunt",
+  'gruntfile.babel.ts': {
+    icon: 'grunt',
   },
-  "gulpfile.js": {
-    icon: "gulp",
+  'gulpfile.js': {
+    icon: 'gulp',
   },
-  "gulpfile.coffee": {
-    icon: "gulp",
+  'gulpfile.coffee': {
+    icon: 'gulp',
   },
-  "gulpfile.ts": {
-    icon: "gulp",
+  'gulpfile.ts': {
+    icon: 'gulp',
   },
-  "gulpfile.mjs": {
-    icon: "gulp",
+  'gulpfile.mjs': {
+    icon: 'gulp',
   },
-  "gulpfile.esm.js": {
-    icon: "gulp",
+  'gulpfile.esm.js': {
+    icon: 'gulp',
   },
-  "gulpfile.esm.coffee": {
-    icon: "gulp",
+  'gulpfile.esm.coffee': {
+    icon: 'gulp',
   },
-  "gulpfile.esm.ts": {
-    icon: "gulp",
+  'gulpfile.esm.ts': {
+    icon: 'gulp',
   },
-  "gulpfile.esm.mjs": {
-    icon: "gulp",
+  'gulpfile.esm.mjs': {
+    icon: 'gulp',
   },
-  "gulpfile.babel.js": {
-    icon: "gulp",
+  'gulpfile.babel.js': {
+    icon: 'gulp',
   },
-  "gulpfile.babel.coffee": {
-    icon: "gulp",
+  'gulpfile.babel.coffee': {
+    icon: 'gulp',
   },
-  "gulpfile.babel.ts": {
-    icon: "gulp",
+  'gulpfile.babel.ts': {
+    icon: 'gulp',
   },
-  "gulpfile.babel.mjs": {
-    icon: "gulp",
+  'gulpfile.babel.mjs': {
+    icon: 'gulp',
   },
   haml: {
-    icon: "haml",
+    icon: 'haml',
   },
   hbs: {
-    icon: "handlebars",
+    icon: 'handlebars',
   },
   handlebars: {
-    icon: "handlebars",
+    icon: 'handlebars',
   },
   hjs: {
-    icon: "handlebars",
+    icon: 'handlebars',
   },
   prg: {
-    icon: "harbour",
+    icon: 'harbour',
   },
   hcl: {
-    icon: "hashicorp",
+    icon: 'hashicorp',
     light: true,
   },
   hcl2: {
-    icon: "hashicorp",
+    icon: 'hashicorp',
     light: true,
   },
   sentinel: {
-    icon: "hashicorp",
+    icon: 'hashicorp',
     light: true,
   },
-  "hardhat.config.js": {
-    icon: "hardhat",
+  'hardhat.config.js': {
+    icon: 'hardhat',
   },
-  "hardhat.config.ts": {
-    icon: "hardhat",
+  'hardhat.config.ts': {
+    icon: 'hardhat',
   },
   lhs: {
-    icon: "haskell",
+    icon: 'haskell',
   },
   hs: {
-    icon: "haskell",
+    icon: 'haskell',
   },
   haxe: {
-    icon: "haxe",
+    icon: 'haxe',
   },
-  "haxelib.json": {
-    icon: "haxe",
+  'haxelib.json': {
+    icon: 'haxe',
   },
-  "checkstyle.json": {
-    icon: "haxecheckstyle",
+  'checkstyle.json': {
+    icon: 'haxecheckstyle',
   },
   hxproj: {
-    icon: "haxedevelop",
+    icon: 'haxedevelop',
   },
   p4ignore: {
-    icon: "helix",
+    icon: 'helix',
   },
-  "helm.tpl": {
-    icon: "helm",
+  'helm.tpl': {
+    icon: 'helm',
   },
-  "chart.lock": {
-    icon: "helm",
+  'chart.lock': {
+    icon: 'helm',
   },
-  "chart.yaml": {
-    icon: "helm",
+  'chart.yaml': {
+    icon: 'helm',
   },
-  "histoire.config.ts": {
-    icon: "histoire",
+  'histoire.config.ts': {
+    icon: 'histoire',
   },
-  "histoire.config.js": {
-    icon: "histoire",
+  'histoire.config.js': {
+    icon: 'histoire',
   },
-  "histoire.ts": {
-    icon: "histoire",
+  'histoire.ts': {
+    icon: 'histoire',
   },
-  "histoire.js": {
-    icon: "histoire",
+  'histoire.js': {
+    icon: 'histoire',
   },
   hjson: {
-    icon: "hjson",
+    icon: 'hjson',
     light: true,
   },
   hlsl: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   hlsli: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   fx: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   fxh: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   vsh: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   psh: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   cginc: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
   compute: {
-    icon: "hlsl",
+    icon: 'hlsl',
   },
-  "horusec-config.json": {
-    icon: "horusec",
+  'horusec-config.json': {
+    icon: 'horusec',
   },
   hosts: {
-    icon: "host",
+    icon: 'host',
   },
   htm: {
-    icon: "html",
+    icon: 'html',
   },
   shtml: {
-    icon: "html",
+    icon: 'html',
   },
   xhtml: {
-    icon: "html",
+    icon: 'html',
   },
   xht: {
-    icon: "html",
+    icon: 'html',
   },
   mdoc: {
-    icon: "html",
+    icon: 'html',
   },
   jsp: {
-    icon: "html",
+    icon: 'html',
   },
   jshtm: {
-    icon: "html",
+    icon: 'html',
   },
   volt: {
-    icon: "html",
+    icon: 'html',
   },
   rhtml: {
-    icon: "html",
+    icon: 'html',
   },
   htmlhintrc: {
-    icon: "htmlhint",
+    icon: 'htmlhint',
   },
   htmlvalidateignore: {
-    icon: "htmlvalidate",
+    icon: 'htmlvalidate',
   },
-  "htmlvalidate.js": {
-    icon: "htmlvalidate",
+  'htmlvalidate.js': {
+    icon: 'htmlvalidate',
   },
-  "htmlvalidate.cjs": {
-    icon: "htmlvalidate",
+  'htmlvalidate.cjs': {
+    icon: 'htmlvalidate',
   },
-  "htmlvalidate.json": {
-    icon: "htmlvalidate",
+  'htmlvalidate.json': {
+    icon: 'htmlvalidate',
   },
   http: {
-    icon: "http",
+    icon: 'http',
   },
   aff: {
-    icon: "hunspell",
+    icon: 'hunspell',
   },
-  "hugo.json": {
-    icon: "hugo",
+  'hugo.json': {
+    icon: 'hugo',
   },
-  "hugo.toml": {
-    icon: "hugo",
+  'hugo.toml': {
+    icon: 'hugo',
   },
-  "hugo.yaml": {
-    icon: "hugo",
+  'hugo.yaml': {
+    icon: 'hugo',
   },
-  "hugo_build.lock": {
-    icon: "hugo",
+  'hugo_build.lock': {
+    icon: 'hugo',
   },
-  "humans.txt": {
-    icon: "humanstxt",
+  'humans.txt': {
+    icon: 'humanstxt',
   },
   huskyrc: {
-    icon: "husky",
+    icon: 'husky',
   },
-  "husky.config.js": {
-    icon: "husky",
+  'husky.config.js': {
+    icon: 'husky',
   },
-  "huskyrc.js": {
-    icon: "husky",
+  'huskyrc.js': {
+    icon: 'husky',
   },
-  "huskyrc.json": {
-    icon: "husky",
+  'huskyrc.json': {
+    icon: 'husky',
   },
-  "huskyrc.yaml": {
-    icon: "husky",
+  'huskyrc.yaml': {
+    icon: 'husky',
   },
-  "huskyrc.yml": {
-    icon: "husky",
+  'huskyrc.yml': {
+    icon: 'husky',
   },
   hy: {
-    icon: "hy",
+    icon: 'hy',
   },
-  "ejs.t": {
-    icon: "hygen",
+  'ejs.t': {
+    icon: 'hygen',
   },
   hypr: {
-    icon: "hypr",
+    icon: 'hypr',
   },
   icl: {
-    icon: "icl",
+    icon: 'icl',
   },
   idr: {
-    icon: "idris",
+    icon: 'idris',
   },
   lidr: {
-    icon: "idris",
+    icon: 'idris',
   },
   ibc: {
-    icon: "idrisbin",
+    icon: 'idrisbin',
   },
   ipkg: {
-    icon: "idrispkg",
+    icon: 'idrispkg',
   },
   jpeg: {
-    icon: "image",
+    icon: 'image',
   },
   jpg: {
-    icon: "image",
+    icon: 'image',
   },
   gif: {
-    icon: "image",
+    icon: 'image',
   },
   png: {
-    icon: "image",
+    icon: 'image',
   },
   bmp: {
-    icon: "image",
+    icon: 'image',
   },
   tiff: {
-    icon: "image",
+    icon: 'image',
   },
   heic: {
-    icon: "image",
+    icon: 'image',
   },
   ico: {
-    icon: "image",
+    icon: 'image',
   },
   icns: {
-    icon: "image",
+    icon: 'image',
   },
   webp: {
-    icon: "image",
+    icon: 'image',
   },
   imba: {
-    icon: "imba",
+    icon: 'imba',
   },
   imba2: {
-    icon: "imba",
+    icon: 'imba',
   },
   inc: {
-    icon: "inc",
+    icon: 'inc',
   },
   include: {
-    icon: "inc",
+    icon: 'inc',
   },
   infopathxml: {
-    icon: "infopath",
+    icon: 'infopath',
   },
   xsn: {
-    icon: "infopath",
+    icon: 'infopath',
   },
   xsf: {
-    icon: "infopath",
+    icon: 'infopath',
   },
   xtp2: {
-    icon: "infopath",
+    icon: 'infopath',
   },
-  "4gl": {
-    icon: "informix",
+  '4gl': {
+    icon: 'informix',
   },
   ini: {
-    icon: "ini",
+    icon: 'ini',
     light: true,
   },
   ink: {
-    icon: "ink",
+    icon: 'ink',
   },
   iss: {
-    icon: "innosetup",
+    icon: 'innosetup',
   },
-  "ionic.project": {
-    icon: "ionic",
+  'ionic.project': {
+    icon: 'ionic',
   },
-  "ionic.config.json": {
-    icon: "ionic",
+  'ionic.config.json': {
+    icon: 'ionic',
   },
   jakefile: {
-    icon: "jake",
+    icon: 'jake',
   },
-  "jakefile.js": {
-    icon: "jake",
+  'jakefile.js': {
+    icon: 'jake',
   },
   janet: {
-    icon: "janet",
+    icon: 'janet',
   },
   jar: {
-    icon: "jar",
+    icon: 'jar',
   },
-  "jasmine.json": {
-    icon: "jasmine",
+  'jasmine.json': {
+    icon: 'jasmine',
   },
   java: {
-    icon: "java",
+    icon: 'java',
   },
   jav: {
-    icon: "java",
+    icon: 'java',
   },
   jbuilder: {
-    icon: "jbuilder",
+    icon: 'jbuilder',
   },
-  "jest.json": {
-    icon: "jest",
+  'jest.json': {
+    icon: 'jest',
   },
-  "jest.config.babel.js": {
-    icon: "jest",
+  'jest.config.babel.js': {
+    icon: 'jest',
   },
   jestrc: {
-    icon: "jest",
+    icon: 'jest',
   },
-  "jestrc.js": {
-    icon: "jest",
+  'jestrc.js': {
+    icon: 'jest',
   },
-  "jestrc.json": {
-    icon: "jest",
+  'jestrc.json': {
+    icon: 'jest',
   },
-  "jest.config.js": {
-    icon: "jest",
+  'jest.config.js': {
+    icon: 'jest',
   },
-  "jest.config.cjs": {
-    icon: "jest",
+  'jest.config.cjs': {
+    icon: 'jest',
   },
-  "jest.config.mjs": {
-    icon: "jest",
+  'jest.config.mjs': {
+    icon: 'jest',
   },
-  "jest.config.json": {
-    icon: "jest",
+  'jest.config.json': {
+    icon: 'jest',
   },
-  "jest.config.ts": {
-    icon: "jest",
+  'jest.config.ts': {
+    icon: 'jest',
   },
-  "jest.config.base.js": {
-    icon: "jest",
+  'jest.config.base.js': {
+    icon: 'jest',
   },
-  "jest.config.base.cjs": {
-    icon: "jest",
+  'jest.config.base.cjs': {
+    icon: 'jest',
   },
-  "jest.config.base.mjs": {
-    icon: "jest",
+  'jest.config.base.mjs': {
+    icon: 'jest',
   },
-  "jest.config.base.json": {
-    icon: "jest",
+  'jest.config.base.json': {
+    icon: 'jest',
   },
-  "jest.config.base.ts": {
-    icon: "jest",
+  'jest.config.base.ts': {
+    icon: 'jest',
   },
-  "jest.config.common.js": {
-    icon: "jest",
+  'jest.config.common.js': {
+    icon: 'jest',
   },
-  "jest.config.common.cjs": {
-    icon: "jest",
+  'jest.config.common.cjs': {
+    icon: 'jest',
   },
-  "jest.config.common.mjs": {
-    icon: "jest",
+  'jest.config.common.mjs': {
+    icon: 'jest',
   },
-  "jest.config.common.json": {
-    icon: "jest",
+  'jest.config.common.json': {
+    icon: 'jest',
   },
-  "jest.config.common.ts": {
-    icon: "jest",
+  'jest.config.common.ts': {
+    icon: 'jest',
   },
-  "jest.config.e2e.js": {
-    icon: "jest",
+  'jest.config.e2e.js': {
+    icon: 'jest',
   },
-  "jest.config.e2e.cjs": {
-    icon: "jest",
+  'jest.config.e2e.cjs': {
+    icon: 'jest',
   },
-  "jest.config.e2e.mjs": {
-    icon: "jest",
+  'jest.config.e2e.mjs': {
+    icon: 'jest',
   },
-  "jest.config.e2e.json": {
-    icon: "jest",
+  'jest.config.e2e.json': {
+    icon: 'jest',
   },
-  "jest.config.e2e.ts": {
-    icon: "jest",
+  'jest.config.e2e.ts': {
+    icon: 'jest',
   },
-  "jest.config.int.js": {
-    icon: "jest",
+  'jest.config.int.js': {
+    icon: 'jest',
   },
-  "jest.config.int.cjs": {
-    icon: "jest",
+  'jest.config.int.cjs': {
+    icon: 'jest',
   },
-  "jest.config.int.mjs": {
-    icon: "jest",
+  'jest.config.int.mjs': {
+    icon: 'jest',
   },
-  "jest.config.int.json": {
-    icon: "jest",
+  'jest.config.int.json': {
+    icon: 'jest',
   },
-  "jest.config.int.ts": {
-    icon: "jest",
+  'jest.config.int.ts': {
+    icon: 'jest',
   },
-  "jest.config.integration.js": {
-    icon: "jest",
+  'jest.config.integration.js': {
+    icon: 'jest',
   },
-  "jest.config.integration.cjs": {
-    icon: "jest",
+  'jest.config.integration.cjs': {
+    icon: 'jest',
   },
-  "jest.config.integration.mjs": {
-    icon: "jest",
+  'jest.config.integration.mjs': {
+    icon: 'jest',
   },
-  "jest.config.integration.json": {
-    icon: "jest",
+  'jest.config.integration.json': {
+    icon: 'jest',
   },
-  "jest.config.integration.ts": {
-    icon: "jest",
+  'jest.config.integration.ts': {
+    icon: 'jest',
   },
-  "jest.config.unit.js": {
-    icon: "jest",
+  'jest.config.unit.js': {
+    icon: 'jest',
   },
-  "jest.config.unit.cjs": {
-    icon: "jest",
+  'jest.config.unit.cjs': {
+    icon: 'jest',
   },
-  "jest.config.unit.mjs": {
-    icon: "jest",
+  'jest.config.unit.mjs': {
+    icon: 'jest',
   },
-  "jest.config.unit.json": {
-    icon: "jest",
+  'jest.config.unit.json': {
+    icon: 'jest',
   },
-  "jest.config.unit.ts": {
-    icon: "jest",
+  'jest.config.unit.ts': {
+    icon: 'jest',
   },
-  "Jest-snap": {
-    icon: "jest_snapshot",
+  'Jest-snap': {
+    icon: 'jest_snapshot',
   },
   jekyll: {
-    icon: "jekyll",
+    icon: 'jekyll',
   },
   jenkins: {
-    icon: "jenkins",
+    icon: 'jenkins',
   },
   jinja: {
-    icon: "jinja",
+    icon: 'jinja',
   },
   jpmignore: {
-    icon: "jpm",
+    icon: 'jpm',
   },
   js: {
-    icon: "js",
+    icon: 'js',
     light: true,
   },
   es6: {
-    icon: "js",
+    icon: 'js',
     light: true,
   },
   mjs: {
-    icon: "js",
+    icon: 'js',
     light: true,
   },
   cjs: {
-    icon: "js",
+    icon: 'js',
     light: true,
   },
   pac: {
-    icon: "js",
+    icon: 'js',
     light: true,
   },
   jsbeautifyrc: {
-    icon: "jsbeautify",
+    icon: 'jsbeautify',
   },
   jsbeautify: {
-    icon: "jsbeautify",
+    icon: 'jsbeautify',
   },
-  "jsconfig.json": {
-    icon: "jsconfig",
+  'jsconfig.json': {
+    icon: 'jsconfig',
     light: true,
   },
-  "jscpd.json": {
-    icon: "jscpd",
+  'jscpd.json': {
+    icon: 'jscpd',
   },
-  "jscpd-report.xml": {
-    icon: "jscpd",
+  'jscpd-report.xml': {
+    icon: 'jscpd',
   },
-  "jscpd-report.json": {
-    icon: "jscpd",
+  'jscpd-report.json': {
+    icon: 'jscpd',
   },
-  "jscpd-report.html": {
-    icon: "jscpd",
+  'jscpd-report.html': {
+    icon: 'jscpd',
   },
   jshintrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   jshintignore: {
-    icon: "jshint",
+    icon: 'jshint',
   },
-  "js.map": {
-    icon: "jsmap",
+  'js.map': {
+    icon: 'jsmap',
     light: true,
   },
-  "cjs.map": {
-    icon: "jsmap",
+  'cjs.map': {
+    icon: 'jsmap',
     light: true,
   },
-  "mjs.map": {
-    icon: "jsmap",
+  'mjs.map': {
+    icon: 'jsmap',
     light: true,
   },
   jsonl: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   ndjson: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   jsonc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
-  "code-workspace": {
-    icon: "json",
+  'code-workspace': {
+    icon: 'json',
     light: true,
   },
-  "language-configuration.json": {
-    icon: "json",
+  'language-configuration.json': {
+    icon: 'json',
     light: true,
   },
-  "icon-theme.json": {
-    icon: "json",
+  'icon-theme.json': {
+    icon: 'json',
     light: true,
   },
-  "color-theme.json": {
-    icon: "json",
+  'color-theme.json': {
+    icon: 'json',
     light: true,
   },
   jsfmtrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   swcrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   hintrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
-  "JSON-tmLanguage": {
-    icon: "json",
+  'JSON-tmLanguage': {
+    icon: 'json',
     light: true,
   },
   json: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
-  "code-profile": {
-    icon: "json",
+  'code-profile': {
+    icon: 'json',
     light: true,
   },
   jscsrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   webmanifest: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
-  "ts.map": {
-    icon: "json",
+  'ts.map': {
+    icon: 'json',
     light: true,
   },
   har: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   jslintrc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   jsonld: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   geojson: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   ipynb: {
-    icon: "jupyter",
+    icon: 'jupyter',
     light: true,
   },
   vuerc: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
   tsbuildinfo: {
-    icon: "json",
+    icon: 'json',
     light: true,
   },
-  "schema.json": {
-    icon: "json_schema",
+  'schema.json': {
+    icon: 'json_schema',
     light: true,
   },
   jsonnet: {
-    icon: "jsonnet",
+    icon: 'jsonnet',
   },
   json5: {
-    icon: "json5",
+    icon: 'json5',
     light: true,
   },
-  "json-ld": {
-    icon: "jsonld",
+  'json-ld': {
+    icon: 'jsonld',
     light: true,
   },
-  "jsr.json": {
-    icon: "jsr",
+  'jsr.json': {
+    icon: 'jsr',
   },
   jss: {
-    icon: "jss",
+    icon: 'jss',
   },
   juice: {
-    icon: "juice",
+    icon: 'juice',
   },
   jl: {
-    icon: "julia",
+    icon: 'julia',
   },
   jmd: {
-    icon: "julia",
+    icon: 'julia',
   },
   justfile: {
-    icon: "just",
+    icon: 'just',
   },
   io: {
-    icon: "io",
+    icon: 'io',
     light: true,
   },
   id: {
-    icon: "iodine",
+    icon: 'iodine',
   },
   k: {
-    icon: "k",
+    icon: 'k',
   },
-  "karma.conf.js": {
-    icon: "karma",
+  'karma.conf.js': {
+    icon: 'karma',
   },
-  "karma.conf.coffee": {
-    icon: "karma",
+  'karma.conf.coffee': {
+    icon: 'karma',
   },
-  "karma.conf.ts": {
-    icon: "karma",
+  'karma.conf.ts': {
+    icon: 'karma',
   },
   key: {
-    icon: "key",
+    icon: 'key',
   },
   pem: {
-    icon: "key",
+    icon: 'key',
   },
   kiteignore: {
-    icon: "kite",
+    icon: 'kite',
     light: true,
   },
-  "kitchen.yml": {
-    icon: "kitchenci",
+  'kitchen.yml': {
+    icon: 'kitchenci',
   },
   kv: {
-    icon: "kivy",
+    icon: 'kivy',
   },
   ks: {
-    icon: "kos",
+    icon: 'kos',
   },
   kt: {
-    icon: "kotlin",
+    icon: 'kotlin',
   },
   ktm: {
-    icon: "kotlin",
+    icon: 'kotlin',
   },
   kusto: {
-    icon: "kusto",
+    icon: 'kusto',
   },
   lat: {
-    icon: "latino",
+    icon: 'latino',
   },
   master: {
-    icon: "layout",
+    icon: 'layout',
   },
-  "layout.html": {
-    icon: "layout",
+  'layout.html': {
+    icon: 'layout',
   },
-  "layout.htm": {
-    icon: "layout",
+  'layout.htm': {
+    icon: 'layout',
   },
   lark: {
-    icon: "lark",
+    icon: 'lark',
     light: true,
   },
-  "lerna.json": {
-    icon: "lerna",
+  'lerna.json': {
+    icon: 'lerna',
     light: true,
   },
   less: {
-    icon: "less",
+    icon: 'less',
   },
   flex: {
-    icon: "lex",
+    icon: 'lex',
   },
   odb: {
-    icon: "libreoffice_base",
+    icon: 'libreoffice_base',
   },
   otb: {
-    icon: "libreoffice_base",
+    icon: 'libreoffice_base',
   },
   ots: {
-    icon: "libreoffice_calc",
+    icon: 'libreoffice_calc',
   },
   odg: {
-    icon: "libreoffice_draw",
+    icon: 'libreoffice_draw',
   },
   otg: {
-    icon: "libreoffice_draw",
+    icon: 'libreoffice_draw',
   },
   odp: {
-    icon: "libreoffice_impress",
+    icon: 'libreoffice_impress',
   },
   otp: {
-    icon: "libreoffice_impress",
+    icon: 'libreoffice_impress',
   },
   odf: {
-    icon: "libreoffice_math",
+    icon: 'libreoffice_math',
   },
   odt: {
-    icon: "libreoffice_writer",
+    icon: 'libreoffice_writer',
   },
   ott: {
-    icon: "libreoffice_writer",
+    icon: 'libreoffice_writer',
   },
   enc: {
-    icon: "license",
+    icon: 'license',
   },
   license: {
-    icon: "license",
+    icon: 'license',
   },
   lic: {
-    icon: "license",
+    icon: 'license',
   },
   licence: {
-    icon: "license",
+    icon: 'license',
   },
   copying: {
-    icon: "license",
+    icon: 'license',
   },
-  "copying.lesser": {
-    icon: "license",
+  'copying.lesser': {
+    icon: 'license',
   },
-  "license-mit": {
-    icon: "license",
+  'license-mit': {
+    icon: 'license',
   },
-  "license-apache": {
-    icon: "license",
+  'license-apache': {
+    icon: 'license',
   },
-  "license.md": {
-    icon: "license",
+  'license.md': {
+    icon: 'license',
   },
-  "license.txt": {
-    icon: "license",
+  'license.txt': {
+    icon: 'license',
   },
-  "licence.md": {
-    icon: "license",
+  'licence.md': {
+    icon: 'license',
   },
-  "licence.txt": {
-    icon: "license",
+  'licence.txt': {
+    icon: 'license',
   },
-  "copying.md": {
-    icon: "license",
+  'copying.md': {
+    icon: 'license',
   },
-  "copying.txt": {
-    icon: "license",
+  'copying.txt': {
+    icon: 'license',
   },
-  "copying.lesser.md": {
-    icon: "license",
+  'copying.lesser.md': {
+    icon: 'license',
   },
-  "copying.lesser.txt": {
-    icon: "license",
+  'copying.lesser.txt': {
+    icon: 'license',
   },
-  "license-mit.md": {
-    icon: "license",
+  'license-mit.md': {
+    icon: 'license',
   },
-  "license-mit.txt": {
-    icon: "license",
+  'license-mit.txt': {
+    icon: 'license',
   },
-  "license-apache.md": {
-    icon: "license",
+  'license-apache.md': {
+    icon: 'license',
   },
-  "license-apache.txt": {
-    icon: "license",
+  'license-apache.txt': {
+    icon: 'license',
   },
   licrc: {
-    icon: "licensebat",
+    icon: 'licensebat',
   },
-  "budget.json": {
-    icon: "lighthouse",
+  'budget.json': {
+    icon: 'lighthouse',
   },
-  "budgets.json": {
-    icon: "lighthouse",
+  'budgets.json': {
+    icon: 'lighthouse',
   },
-  "lighthouserc.cjs": {
-    icon: "lighthouse",
+  'lighthouserc.cjs': {
+    icon: 'lighthouse',
   },
-  "lighthouserc.js": {
-    icon: "lighthouse",
+  'lighthouserc.js': {
+    icon: 'lighthouse',
   },
-  "lighthouserc.json": {
-    icon: "lighthouse",
+  'lighthouserc.json': {
+    icon: 'lighthouse',
   },
-  "lighthouserc.yaml": {
-    icon: "lighthouse",
+  'lighthouserc.yaml': {
+    icon: 'lighthouse',
   },
-  "lighthouserc.yml": {
-    icon: "lighthouse",
+  'lighthouserc.yml': {
+    icon: 'lighthouse',
   },
   ly: {
-    icon: "lilypond",
+    icon: 'lilypond',
   },
   lisp: {
-    icon: "lisp",
+    icon: 'lisp',
   },
   hxp: {
-    icon: "lime",
+    icon: 'lime',
   },
-  "include.xml": {
-    icon: "lime",
+  'include.xml': {
+    icon: 'lime',
   },
   lintstagedrc: {
-    icon: "lintstagedrc",
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.json": {
-    icon: "lintstagedrc",
+  'lintstagedrc.json': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.yaml": {
-    icon: "lintstagedrc",
+  'lintstagedrc.yaml': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.yml": {
-    icon: "lintstagedrc",
+  'lintstagedrc.yml': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.mjs": {
-    icon: "lintstagedrc",
+  'lintstagedrc.mjs': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.mts": {
-    icon: "lintstagedrc",
+  'lintstagedrc.mts': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.js": {
-    icon: "lintstagedrc",
+  'lintstagedrc.js': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.ts": {
-    icon: "lintstagedrc",
+  'lintstagedrc.ts': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.cjs": {
-    icon: "lintstagedrc",
+  'lintstagedrc.cjs': {
+    icon: 'lintstagedrc',
   },
-  "lintstagedrc.cts": {
-    icon: "lintstagedrc",
+  'lintstagedrc.cts': {
+    icon: 'lintstagedrc',
   },
-  "lint-staged.config.mjs": {
-    icon: "lintstagedrc",
+  'lint-staged.config.mjs': {
+    icon: 'lintstagedrc',
   },
-  "lint-staged.config.mts": {
-    icon: "lintstagedrc",
+  'lint-staged.config.mts': {
+    icon: 'lintstagedrc',
   },
-  "lint-staged.config.js": {
-    icon: "lintstagedrc",
+  'lint-staged.config.js': {
+    icon: 'lintstagedrc',
   },
-  "lint-staged.config.ts": {
-    icon: "lintstagedrc",
+  'lint-staged.config.ts': {
+    icon: 'lintstagedrc',
   },
-  "lint-staged.config.cjs": {
-    icon: "lintstagedrc",
+  'lint-staged.config.cjs': {
+    icon: 'lintstagedrc',
   },
-  "lint-staged.config.cts": {
-    icon: "lintstagedrc",
+  'lint-staged.config.cts': {
+    icon: 'lintstagedrc',
   },
   liquid: {
-    icon: "liquid",
+    icon: 'liquid',
   },
   ls: {
-    icon: "livescript",
+    icon: 'livescript',
   },
   lnk: {
-    icon: "lnk",
+    icon: 'lnk',
   },
   log: {
-    icon: "log",
+    icon: 'log',
   },
   tlg: {
-    icon: "log",
+    icon: 'log',
   },
-  "*.log.?": {
-    icon: "log",
+  '*.log.?': {
+    icon: 'log',
   },
   lol: {
-    icon: "lolcode",
+    icon: 'lolcode',
   },
   lsl: {
-    icon: "lsl",
+    icon: 'lsl',
   },
   lua: {
-    icon: "lua",
+    icon: 'lua',
   },
   luau: {
-    icon: "luau",
+    icon: 'luau',
   },
   crec: {
-    icon: "lync",
+    icon: 'lync',
   },
   ocrec: {
-    icon: "lync",
+    icon: 'lync',
   },
-  "mailing.config.json": {
-    icon: "mailing",
+  'mailing.config.json': {
+    icon: 'mailing',
     light: true,
   },
   manifest: {
-    icon: "manifest",
+    icon: 'manifest',
   },
-  "manifest.skip": {
-    icon: "manifest_skip",
+  'manifest.skip': {
+    icon: 'manifest_skip',
   },
-  "manifest.bak": {
-    icon: "manifest_bak",
+  'manifest.bak': {
+    icon: 'manifest_bak',
   },
   map: {
-    icon: "map",
+    icon: 'map',
   },
   md: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   mkd: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   mdwn: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   mdown: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   markdown: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   markdn: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   mdtxt: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   mdtext: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   workbook: {
-    icon: "markdown",
+    icon: 'markdown',
   },
   markdownlintrc: {
-    icon: "markdownlint",
+    icon: 'markdownlint',
   },
-  "markdownlint.json": {
-    icon: "markdownlint",
+  'markdownlint.json': {
+    icon: 'markdownlint',
   },
-  "markdownlint.jsonc": {
-    icon: "markdownlint",
+  'markdownlint.jsonc': {
+    icon: 'markdownlint',
   },
-  "markdownlint.yml": {
-    icon: "markdownlint",
+  'markdownlint.yml': {
+    icon: 'markdownlint',
   },
-  "markdownlint.yaml": {
-    icon: "markdownlint",
+  'markdownlint.yaml': {
+    icon: 'markdownlint',
   },
-  "markdownlint.cjs": {
-    icon: "markdownlint",
+  'markdownlint.cjs': {
+    icon: 'markdownlint',
   },
-  "markdownlint-cli2.json": {
-    icon: "markdownlint",
+  'markdownlint-cli2.json': {
+    icon: 'markdownlint',
   },
-  "markdownlint-cli2.jsonc": {
-    icon: "markdownlint",
+  'markdownlint-cli2.jsonc': {
+    icon: 'markdownlint',
   },
-  "markdownlint-cli2.yml": {
-    icon: "markdownlint",
+  'markdownlint-cli2.yml': {
+    icon: 'markdownlint',
   },
-  "markdownlint-cli2.yaml": {
-    icon: "markdownlint",
+  'markdownlint-cli2.yaml': {
+    icon: 'markdownlint',
   },
-  "markdownlint-cli2.cjs": {
-    icon: "markdownlint",
+  'markdownlint-cli2.cjs': {
+    icon: 'markdownlint',
   },
   markdownlintignore: {
-    icon: "markdownlint_ignore",
+    icon: 'markdownlint_ignore',
   },
   marko: {
-    icon: "marko",
+    icon: 'marko',
   },
-  "marko.js": {
-    icon: "markojs",
+  'marko.js': {
+    icon: 'markojs',
   },
-  "master.js": {
-    icon: "master-co",
+  'master.js': {
+    icon: 'master-co',
   },
-  "master.ts": {
-    icon: "master-co",
+  'master.ts': {
+    icon: 'master-co',
   },
-  "master.mjs": {
-    icon: "master-co",
+  'master.mjs': {
+    icon: 'master-co',
   },
-  "master.json": {
-    icon: "master-co",
+  'master.json': {
+    icon: 'master-co',
   },
-  "master.css.js": {
-    icon: "master-co",
+  'master.css.js': {
+    icon: 'master-co',
   },
-  "master.css.ts": {
-    icon: "master-co",
+  'master.css.ts': {
+    icon: 'master-co',
   },
-  "master.css.mjs": {
-    icon: "master-co",
+  'master.css.mjs': {
+    icon: 'master-co',
   },
-  "master.css.json": {
-    icon: "master-co",
+  'master.css.json': {
+    icon: 'master-co',
   },
   mat: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   fig: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mex: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mexn: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mexrs6: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mn: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mum: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mx: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   mx3: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   rwd: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   slx: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   slddc: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   smv: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   xvc: {
-    icon: "matlab",
+    icon: 'matlab',
   },
   ms: {
-    icon: "maxscript",
+    icon: 'maxscript',
   },
-  "maven.config": {
-    icon: "maven",
+  'maven.config': {
+    icon: 'maven',
   },
-  "pom.xml": {
-    icon: "maven",
+  'pom.xml': {
+    icon: 'maven',
   },
-  "extensions.xml": {
-    icon: "maven",
+  'extensions.xml': {
+    icon: 'maven',
   },
-  "settings.xml": {
-    icon: "maven",
+  'settings.xml': {
+    icon: 'maven',
   },
   mel: {
-    icon: "maya",
+    icon: 'maya',
   },
   mdx: {
-    icon: "mdx",
+    icon: 'mdx',
     light: true,
   },
-  "mdx-components.cjs": {
-    icon: "mdx-components",
+  'mdx-components.cjs': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.cts": {
-    icon: "mdx-components",
+  'mdx-components.cts': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.js": {
-    icon: "mdx-components",
+  'mdx-components.js': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.jsx": {
-    icon: "mdx-components",
+  'mdx-components.jsx': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.mjs": {
-    icon: "mdx-components",
+  'mdx-components.mjs': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.mts": {
-    icon: "mdx-components",
+  'mdx-components.mts': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.ts": {
-    icon: "mdx-components",
+  'mdx-components.ts': {
+    icon: 'mdx-components',
     light: true,
   },
-  "mdx-components.tsx": {
-    icon: "mdx-components",
+  'mdx-components.tsx': {
+    icon: 'mdx-components',
     light: true,
   },
   mediawiki: {
-    icon: "mediawiki",
+    icon: 'mediawiki',
   },
   hgignore: {
-    icon: "mercurial",
+    icon: 'mercurial',
   },
   mmd: {
-    icon: "mermaid",
+    icon: 'mermaid',
   },
-  "meson.build": {
-    icon: "meson",
+  'meson.build': {
+    icon: 'meson',
   },
   mjml: {
-    icon: "mjml",
+    icon: 'mjml',
   },
   pq: {
-    icon: "mlang",
+    icon: 'mlang',
     light: true,
   },
-  "mocha.opts": {
-    icon: "mocha",
+  'mocha.opts': {
+    icon: 'mocha',
   },
-  "mocharc.cjs": {
-    icon: "mocha",
+  'mocharc.cjs': {
+    icon: 'mocha',
   },
-  "mocharc.js": {
-    icon: "mocha",
+  'mocharc.js': {
+    icon: 'mocha',
   },
-  "mocharc.json": {
-    icon: "mocha",
+  'mocharc.json': {
+    icon: 'mocha',
   },
-  "mocharc.jsonc": {
-    icon: "mocha",
+  'mocharc.jsonc': {
+    icon: 'mocha',
   },
-  "mocharc.mjs": {
-    icon: "mocha",
+  'mocharc.mjs': {
+    icon: 'mocha',
   },
-  "mocharc.yaml": {
-    icon: "mocha",
+  'mocharc.yaml': {
+    icon: 'mocha',
   },
-  "mocharc.yml": {
-    icon: "mocha",
+  'mocharc.yml': {
+    icon: 'mocha',
   },
   modernizr: {
-    icon: "modernizr",
+    icon: 'modernizr',
   },
-  "modernizr.js": {
-    icon: "modernizr",
+  'modernizr.js': {
+    icon: 'modernizr',
   },
-  "modernizrrc.js": {
-    icon: "modernizr",
+  'modernizrrc.js': {
+    icon: 'modernizr',
   },
   mojo: {
-    icon: "mojo",
+    icon: 'mojo',
   },
-  "🔥": {
-    icon: "mojo",
+  '🔥': {
+    icon: 'mojo',
   },
   ep: {
-    icon: "mojolicious",
+    icon: 'mojolicious',
   },
-  "moleculer.config.js": {
-    icon: "moleculer",
+  'moleculer.config.js': {
+    icon: 'moleculer',
   },
-  "moleculer.config.json": {
-    icon: "moleculer",
+  'moleculer.config.json': {
+    icon: 'moleculer',
   },
-  "moleculer.config.ts": {
-    icon: "moleculer",
+  'moleculer.config.ts': {
+    icon: 'moleculer',
   },
-  "mql.yaml": {
-    icon: "mondoo",
+  'mql.yaml': {
+    icon: 'mondoo',
   },
-  "mql.yml": {
-    icon: "mondoo",
+  'mql.yml': {
+    icon: 'mondoo',
   },
   mongo: {
-    icon: "mongo",
+    icon: 'mongo',
   },
-  "mtn-ignore": {
-    icon: "monotone",
+  'mtn-ignore': {
+    icon: 'monotone',
   },
-  "motif.json": {
-    icon: "motif",
+  'motif.json': {
+    icon: 'motif',
   },
   mson: {
-    icon: "mson",
+    icon: 'mson',
   },
   mustache: {
-    icon: "mustache",
+    icon: 'mustache',
     light: true,
   },
   mst: {
-    icon: "mustache",
+    icon: 'mustache',
     light: true,
   },
   mcfunction: {
-    icon: "minecraft",
+    icon: 'minecraft',
   },
   mca: {
-    icon: "minecraft",
+    icon: 'minecraft',
   },
   mcmeta: {
-    icon: "minecraft",
+    icon: 'minecraft',
   },
   mv: {
-    icon: "mivascript",
+    icon: 'mivascript',
   },
   mvt: {
-    icon: "mvt",
+    icon: 'mvt',
   },
-  "mypy.ini": {
-    icon: "mypy",
+  'mypy.ini': {
+    icon: 'mypy',
     light: true,
   },
-  "ndst.yaml": {
-    icon: "ndst",
+  'ndst.yaml': {
+    icon: 'ndst',
   },
-  "ndst.yml": {
-    icon: "ndst",
+  'ndst.yml': {
+    icon: 'ndst',
   },
-  "ndst.json": {
-    icon: "ndst",
+  'ndst.json': {
+    icon: 'ndst',
   },
   ne: {
-    icon: "nearly",
+    icon: 'nearly',
   },
   cypher: {
-    icon: "neo4j",
+    icon: 'neo4j',
     light: true,
   },
-  "nest-cli.json": {
-    icon: "nestjs",
+  'nest-cli.json': {
+    icon: 'nestjs',
   },
-  "nestconfig.json": {
-    icon: "nestjs",
+  'nestconfig.json': {
+    icon: 'nestjs',
   },
-  "adapter.js": {
-    icon: "nest_adapter_js",
+  'adapter.js': {
+    icon: 'nest_adapter_js',
   },
-  "adapter.ts": {
-    icon: "nest_adapter_ts",
+  'adapter.ts': {
+    icon: 'nest_adapter_ts',
   },
-  "decorator.js": {
-    icon: "nest_decorator_js",
+  'decorator.js': {
+    icon: 'nest_decorator_js',
   },
-  "decorator.ts": {
-    icon: "nest_decorator_ts",
+  'decorator.ts': {
+    icon: 'nest_decorator_ts',
   },
-  "filter.js": {
-    icon: "nest_filter_js",
+  'filter.js': {
+    icon: 'nest_filter_js',
   },
-  "filter.ts": {
-    icon: "nest_filter_ts",
+  'filter.ts': {
+    icon: 'nest_filter_ts',
   },
-  "gateway.js": {
-    icon: "nest_gateway_js",
+  'gateway.js': {
+    icon: 'nest_gateway_js',
   },
-  "gateway.ts": {
-    icon: "nest_gateway_ts",
+  'gateway.ts': {
+    icon: 'nest_gateway_ts',
   },
-  "middleware.js": {
-    icon: "nest_middleware_js",
+  'middleware.js': {
+    icon: 'nest_middleware_js',
   },
-  "middleware.ts": {
-    icon: "nest_middleware_ts",
+  'middleware.ts': {
+    icon: 'nest_middleware_ts',
   },
-  "netlify.toml": {
-    icon: "netlify",
+  'netlify.toml': {
+    icon: 'netlify',
     light: true,
   },
-  "next.config.js": {
-    icon: "next",
+  'next.config.js': {
+    icon: 'next',
     light: true,
   },
-  "next.config.cjs": {
-    icon: "next",
+  'next.config.cjs': {
+    icon: 'next',
     light: true,
   },
-  "next.config.mjs": {
-    icon: "next",
+  'next.config.mjs': {
+    icon: 'next',
     light: true,
   },
-  "next.config.ts": {
-    icon: "next",
+  'next.config.ts': {
+    icon: 'next',
     light: true,
   },
   nginx: {
-    icon: "nginx",
+    icon: 'nginx',
   },
-  "nginx.conf": {
-    icon: "nginx",
+  'nginx.conf': {
+    icon: 'nginx',
   },
   nim: {
-    icon: "nim",
+    icon: 'nim',
   },
   nimble: {
-    icon: "nimble",
+    icon: 'nimble',
   },
-  "build.ninja": {
-    icon: "ninja",
+  'build.ninja': {
+    icon: 'ninja',
   },
   noc: {
-    icon: "noc",
+    icon: 'noc',
   },
   nix: {
-    icon: "nix",
+    icon: 'nix',
   },
-  "flake.lock": {
-    icon: "nix",
+  'flake.lock': {
+    icon: 'nix',
   },
   njsproj: {
-    icon: "njsproj",
+    icon: 'njsproj',
   },
-  "node-version": {
-    icon: "node",
+  'node-version': {
+    icon: 'node',
   },
   nvmrc: {
-    icon: "node",
+    icon: 'node',
   },
-  "nodemon.json": {
-    icon: "nodemon",
+  'nodemon.json': {
+    icon: 'nodemon',
   },
-  "package-lock.json": {
-    icon: "npm",
+  'package-lock.json': {
+    icon: 'npm',
   },
-  "package.json": {
-    icon: "npm",
+  'package.json': {
+    icon: 'npm',
   },
-  "npm-shrinkwrap.json": {
-    icon: "npm",
+  'npm-shrinkwrap.json': {
+    icon: 'npm',
   },
   npmpackagejsonlintrc: {
-    icon: "npmpackagejsonlint",
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlintrc.cjs": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlintrc.cjs': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlintrc.js": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlintrc.js': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlintrc.json": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlintrc.json': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlintrc.yaml": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlintrc.yaml': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlintrc.yml": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlintrc.yml': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlintrc.mjs": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlintrc.mjs': {
+    icon: 'npmpackagejsonlint',
   },
   npmpackagejsonlintignore: {
-    icon: "npmpackagejsonlint",
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlint.config.cjs": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlint.config.cjs': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlint.config.js": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlint.config.js': {
+    icon: 'npmpackagejsonlint',
   },
-  "npmpackagejsonlint.config.mjs": {
-    icon: "npmpackagejsonlint",
+  'npmpackagejsonlint.config.mjs': {
+    icon: 'npmpackagejsonlint',
   },
   nsi: {
-    icon: "nsi",
+    icon: 'nsi',
   },
   nsrirc: {
-    icon: "nsri",
+    icon: 'nsri',
   },
   nsriignore: {
-    icon: "nsri",
+    icon: 'nsri',
   },
-  "nsri.config.js": {
-    icon: "nsri",
+  'nsri.config.js': {
+    icon: 'nsri',
   },
-  "nsrirc.js": {
-    icon: "nsri",
+  'nsrirc.js': {
+    icon: 'nsri',
   },
-  "nsrirc.json": {
-    icon: "nsri",
+  'nsrirc.json': {
+    icon: 'nsri',
   },
-  "nsrirc.yaml": {
-    icon: "nsri",
+  'nsrirc.yaml': {
+    icon: 'nsri',
   },
-  "nsrirc.yml": {
-    icon: "nsri",
+  'nsrirc.yml': {
+    icon: 'nsri',
   },
-  "integrity.json": {
-    icon: "nsri-integrity",
+  'integrity.json': {
+    icon: 'nsri-integrity',
   },
   nupkg: {
-    icon: "nuget",
+    icon: 'nuget',
   },
   snupkg: {
-    icon: "nuget",
+    icon: 'nuget',
   },
   nuspec: {
-    icon: "nuget",
+    icon: 'nuget',
   },
   psmdcp: {
-    icon: "nuget",
+    icon: 'nuget',
   },
   npy: {
-    icon: "numpy",
+    icon: 'numpy',
   },
   npz: {
-    icon: "numpy",
+    icon: 'numpy',
   },
   nunjucks: {
-    icon: "nunjucks",
+    icon: 'nunjucks',
   },
   nunj: {
-    icon: "nunjucks",
+    icon: 'nunjucks',
   },
   njs: {
-    icon: "nunjucks",
+    icon: 'nunjucks',
   },
   nuxtignore: {
-    icon: "nuxt",
+    icon: 'nuxt',
   },
   nuxtrc: {
-    icon: "nuxt",
+    icon: 'nuxt',
   },
-  "nuxt.config.js": {
-    icon: "nuxt",
+  'nuxt.config.js': {
+    icon: 'nuxt',
   },
-  "nuxt.config.ts": {
-    icon: "nuxt",
+  'nuxt.config.ts': {
+    icon: 'nuxt',
   },
-  "nuxt.config.mjs": {
-    icon: "nuxt",
+  'nuxt.config.mjs': {
+    icon: 'nuxt',
   },
-  "nuxt.js": {
-    icon: "nuxt",
+  'nuxt.js': {
+    icon: 'nuxt',
   },
-  "nuxt.ts": {
-    icon: "nuxt",
+  'nuxt.ts': {
+    icon: 'nuxt',
   },
-  "nuxt.mjs": {
-    icon: "nuxt",
+  'nuxt.mjs': {
+    icon: 'nuxt',
   },
-  "nx.json": {
-    icon: "nx",
+  'nx.json': {
+    icon: 'nx',
     light: true,
   },
   nycrc: {
-    icon: "nyc",
+    icon: 'nyc',
   },
-  "nycrc.json": {
-    icon: "nyc",
+  'nycrc.json': {
+    icon: 'nyc',
   },
   m: {
-    icon: "objectivec",
+    icon: 'objectivec',
   },
   mm: {
-    icon: "objectivecpp",
+    icon: 'objectivecpp',
   },
   objidconfig: {
-    icon: "objidconfig",
+    icon: 'objidconfig',
     light: true,
   },
   ml: {
-    icon: "ocaml",
+    icon: 'ocaml',
   },
   merlin: {
-    icon: "ocaml",
+    icon: 'ocaml',
   },
   mli: {
-    icon: "ocaml_intf",
+    icon: 'ocaml_intf',
   },
   o3: {
-    icon: "ogone",
+    icon: 'ogone',
   },
   one: {
-    icon: "onenote",
+    icon: 'onenote',
   },
   onepkg: {
-    icon: "onenote",
+    icon: 'onenote',
   },
   onetoc: {
-    icon: "onenote",
+    icon: 'onenote',
   },
   onetoc2: {
-    icon: "onenote",
+    icon: 'onenote',
   },
   sig: {
-    icon: "onenote",
+    icon: 'onenote',
   },
   scad: {
-    icon: "openscad",
+    icon: 'openscad',
   },
   cl: {
-    icon: "opencl",
+    icon: 'opencl',
   },
   opencl: {
-    icon: "opencl",
+    icon: 'opencl',
   },
   things: {
-    icon: "openHAB",
+    icon: 'openHAB',
     light: true,
   },
   tofu: {
-    icon: "opentofu",
+    icon: 'opentofu',
   },
-  "tofu.json": {
-    icon: "opentofu",
+  'tofu.json': {
+    icon: 'opentofu',
   },
-  "tofutest.hcl": {
-    icon: "opentofu",
+  'tofutest.hcl': {
+    icon: 'opentofu',
   },
-  "tofutest.json": {
-    icon: "opentofu",
+  'tofutest.json': {
+    icon: 'opentofu',
   },
   org: {
-    icon: "org",
+    icon: 'org',
   },
   pst: {
-    icon: "outlook",
+    icon: 'outlook',
   },
   bcmx: {
-    icon: "outlook",
+    icon: 'outlook',
   },
   otm: {
-    icon: "outlook",
+    icon: 'outlook',
   },
   msg: {
-    icon: "outlook",
+    icon: 'outlook',
   },
   oft: {
-    icon: "outlook",
+    icon: 'outlook',
   },
   ovpn: {
-    icon: "ovpn",
+    icon: 'ovpn',
   },
   oxlintignore: {
-    icon: "oxlint",
+    icon: 'oxlint',
   },
-  "oxlintrc.json": {
-    icon: "oxlint",
+  'oxlintrc.json': {
+    icon: 'oxlint',
   },
   pkg: {
-    icon: "package",
+    icon: 'package',
   },
-  "paket.dependencies": {
-    icon: "paket",
+  'paket.dependencies': {
+    icon: 'paket',
   },
-  "paket.lock": {
-    icon: "paket",
+  'paket.lock': {
+    icon: 'paket',
   },
-  "paket.references": {
-    icon: "paket",
+  'paket.references': {
+    icon: 'paket',
   },
-  "paket.template": {
-    icon: "paket",
+  'paket.template': {
+    icon: 'paket',
   },
-  "paket.local": {
-    icon: "paket",
+  'paket.local': {
+    icon: 'paket',
   },
-  "panda.config.js": {
-    icon: "pandacss",
+  'panda.config.js': {
+    icon: 'pandacss',
   },
-  "panda.config.mjs": {
-    icon: "pandacss",
+  'panda.config.mjs': {
+    icon: 'pandacss',
   },
-  "panda.config.ts": {
-    icon: "pandacss",
+  'panda.config.ts': {
+    icon: 'pandacss',
   },
   pcd: {
-    icon: "pcl",
+    icon: 'pcl',
     light: true,
   },
   pddl: {
-    icon: "pddl",
+    icon: 'pddl',
   },
   plan: {
-    icon: "pddl_plan",
+    icon: 'pddl_plan',
   },
   happenings: {
-    icon: "pddl_happenings",
+    icon: 'pddl_happenings',
   },
   pdf: {
-    icon: "pdf",
+    icon: 'pdf',
   },
-  "pdm-python": {
-    icon: "pdm",
+  'pdm-python': {
+    icon: 'pdm',
   },
-  "pdm.lock": {
-    icon: "pdm",
+  'pdm.lock': {
+    icon: 'pdm',
   },
-  "pdm.toml": {
-    icon: "pdm",
+  'pdm.toml': {
+    icon: 'pdm',
   },
-  "peeky.config.ts": {
-    icon: "peeky",
+  'peeky.config.ts': {
+    icon: 'peeky',
   },
-  "peeky.config.js": {
-    icon: "peeky",
+  'peeky.config.js': {
+    icon: 'peeky',
   },
-  "peeky.config.mjs": {
-    icon: "peeky",
+  'peeky.config.mjs': {
+    icon: 'peeky',
   },
   pl: {
-    icon: "perl",
+    icon: 'perl',
   },
   pm: {
-    icon: "perl",
+    icon: 'perl',
   },
   pod: {
-    icon: "perl",
+    icon: 'perl',
   },
   t: {
-    icon: "perl",
+    icon: 'perl',
   },
   PL: {
-    icon: "perl",
+    icon: 'perl',
   },
   psgi: {
-    icon: "perl",
+    icon: 'perl',
   },
   pl6: {
-    icon: "perl6",
+    icon: 'perl6',
   },
   pgsql: {
-    icon: "pgsql",
+    icon: 'pgsql',
   },
   psd: {
-    icon: "photoshop",
+    icon: 'photoshop',
   },
   php: {
-    icon: "php",
+    icon: 'php',
   },
   php4: {
-    icon: "php",
+    icon: 'php',
   },
   php5: {
-    icon: "php",
+    icon: 'php',
   },
   phtml: {
-    icon: "php",
+    icon: 'php',
   },
   ctp: {
-    icon: "php",
+    icon: 'php',
   },
   php1: {
-    icon: "php",
+    icon: 'php',
   },
   php2: {
-    icon: "php",
+    icon: 'php',
   },
   php3: {
-    icon: "php",
+    icon: 'php',
   },
   php6: {
-    icon: "php",
+    icon: 'php',
   },
   phps: {
-    icon: "php",
+    icon: 'php',
   },
   phpsa: {
-    icon: "php",
+    icon: 'php',
   },
   phpt: {
-    icon: "php",
+    icon: 'php',
   },
   phar: {
-    icon: "php",
+    icon: 'php',
   },
   php_cs: {
-    icon: "phpcsfixer",
+    icon: 'phpcsfixer',
   },
-  "php_cs.dist": {
-    icon: "phpcsfixer",
+  'php_cs.dist': {
+    icon: 'phpcsfixer',
   },
-  "phpstan.neon": {
-    icon: "phpstan",
+  'phpstan.neon': {
+    icon: 'phpstan',
   },
-  "phpstan.dist.neon": {
-    icon: "phpstan",
+  'phpstan.dist.neon': {
+    icon: 'phpstan',
   },
   phpunit: {
-    icon: "phpunit",
+    icon: 'phpunit',
   },
-  "phpunit.xml": {
-    icon: "phpunit",
+  'phpunit.xml': {
+    icon: 'phpunit',
   },
-  "phpunit.xml.dist": {
-    icon: "phpunit",
+  'phpunit.xml.dist': {
+    icon: 'phpunit',
   },
-  "phraseapp.yml": {
-    icon: "phraseapp",
+  'phraseapp.yml': {
+    icon: 'phraseapp',
   },
   pine: {
-    icon: "pine",
+    icon: 'pine',
   },
-  "requirements.txt": {
-    icon: "pip",
+  'requirements.txt': {
+    icon: 'pip',
   },
   pipfile: {
-    icon: "pip",
+    icon: 'pip',
   },
-  "pipfile.lock": {
-    icon: "pip",
+  'pipfile.lock': {
+    icon: 'pip',
   },
   pipeline: {
-    icon: "pipeline",
+    icon: 'pipeline',
   },
   dbgasm: {
-    icon: "platformio",
+    icon: 'platformio',
   },
-  "platformio.ini": {
-    icon: "platformio",
+  'platformio.ini': {
+    icon: 'platformio',
   },
   pu: {
-    icon: "plantuml",
+    icon: 'plantuml',
   },
   plantuml: {
-    icon: "plantuml",
+    icon: 'plantuml',
   },
   iuml: {
-    icon: "plantuml",
+    icon: 'plantuml',
   },
   puml: {
-    icon: "plantuml",
+    icon: 'plantuml',
   },
-  "playwright.config.js": {
-    icon: "playwright",
+  'playwright.config.js': {
+    icon: 'playwright',
   },
-  "playwright.config.ts": {
-    icon: "playwright",
+  'playwright.config.ts': {
+    icon: 'playwright',
   },
-  "playwright.config.mts": {
-    icon: "playwright",
+  'playwright.config.mts': {
+    icon: 'playwright',
   },
-  "playwright.config.mjs": {
-    icon: "playwright",
+  'playwright.config.mjs': {
+    icon: 'playwright',
   },
-  "playwright.config.cts": {
-    icon: "playwright",
+  'playwright.config.cts': {
+    icon: 'playwright',
   },
-  "playwright.config.cjs": {
-    icon: "playwright",
+  'playwright.config.cjs': {
+    icon: 'playwright',
   },
   ddl: {
-    icon: "plsql",
+    icon: 'plsql',
   },
   pck: {
-    icon: "plsql_package",
+    icon: 'plsql_package',
   },
   pkb: {
-    icon: "plsql_package_body",
+    icon: 'plsql_package_body',
   },
   pkh: {
-    icon: "plsql_package_header",
+    icon: 'plsql_package_header',
   },
   pks: {
-    icon: "plsql_package_spec",
+    icon: 'plsql_package_spec',
   },
-  "ecosystem.config.js": {
-    icon: "pm2",
+  'ecosystem.config.js': {
+    icon: 'pm2',
   },
-  "ecosystem.config.cjs": {
-    icon: "pm2",
+  'ecosystem.config.cjs': {
+    icon: 'pm2',
   },
-  "ecosystem.config.json": {
-    icon: "pm2",
+  'ecosystem.config.json': {
+    icon: 'pm2',
   },
-  "ecosystem.config.yaml": {
-    icon: "pm2",
+  'ecosystem.config.yaml': {
+    icon: 'pm2',
   },
-  "ecosystem.config.yml": {
-    icon: "pm2",
+  'ecosystem.config.yml': {
+    icon: 'pm2',
   },
-  "pnpmfile.cjs": {
-    icon: "pnpm",
+  'pnpmfile.cjs': {
+    icon: 'pnpm',
     light: true,
   },
-  "pnpmfile.js": {
-    icon: "pnpm",
+  'pnpmfile.js': {
+    icon: 'pnpm',
     light: true,
   },
-  "pnpm-lock.yaml": {
-    icon: "pnpm",
+  'pnpm-lock.yaml': {
+    icon: 'pnpm',
     light: true,
   },
-  "pnpm-workspace.yaml": {
-    icon: "pnpm",
+  'pnpm-workspace.yaml': {
+    icon: 'pnpm',
     light: true,
   },
   po: {
-    icon: "poedit",
+    icon: 'poedit',
   },
   mo: {
-    icon: "poedit",
+    icon: 'poedit',
   },
-  "poetry.lock": {
-    icon: "poetry",
+  'poetry.lock': {
+    icon: 'poetry',
   },
   polymer: {
-    icon: "polymer",
+    icon: 'polymer',
   },
   pony: {
-    icon: "pony",
+    icon: 'pony',
   },
   pcss: {
-    icon: "postcss",
+    icon: 'postcss',
   },
   postcssrc: {
-    icon: "postcssconfig",
+    icon: 'postcssconfig',
   },
-  "postcssrc.json": {
-    icon: "postcssconfig",
+  'postcssrc.json': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.yaml": {
-    icon: "postcssconfig",
+  'postcssrc.yaml': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.yml": {
-    icon: "postcssconfig",
+  'postcssrc.yml': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.ts": {
-    icon: "postcssconfig",
+  'postcssrc.ts': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.cts": {
-    icon: "postcssconfig",
+  'postcssrc.cts': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.mts": {
-    icon: "postcssconfig",
+  'postcssrc.mts': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.js": {
-    icon: "postcssconfig",
+  'postcssrc.js': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.cjs": {
-    icon: "postcssconfig",
+  'postcssrc.cjs': {
+    icon: 'postcssconfig',
   },
-  "postcssrc.mjs": {
-    icon: "postcssconfig",
+  'postcssrc.mjs': {
+    icon: 'postcssconfig',
   },
-  "postcss.config.ts": {
-    icon: "postcssconfig",
+  'postcss.config.ts': {
+    icon: 'postcssconfig',
   },
-  "postcss.config.cts": {
-    icon: "postcssconfig",
+  'postcss.config.cts': {
+    icon: 'postcssconfig',
   },
-  "postcss.config.mts": {
-    icon: "postcssconfig",
+  'postcss.config.mts': {
+    icon: 'postcssconfig',
   },
-  "postcss.config.js": {
-    icon: "postcssconfig",
+  'postcss.config.js': {
+    icon: 'postcssconfig',
   },
-  "postcss.config.cjs": {
-    icon: "postcssconfig",
+  'postcss.config.cjs': {
+    icon: 'postcssconfig',
   },
-  "postcss.config.mjs": {
-    icon: "postcssconfig",
+  'postcss.config.mjs': {
+    icon: 'postcssconfig',
   },
-  "postman_collection.json": {
-    icon: "postman",
+  'postman_collection.json': {
+    icon: 'postman',
   },
-  "postman_environment.json": {
-    icon: "postman",
+  'postman_environment.json': {
+    icon: 'postman',
   },
-  "postman_globals.json": {
-    icon: "postman",
+  'postman_globals.json': {
+    icon: 'postman',
   },
   pot: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   potx: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   potm: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   pps: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   ppsx: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   ppsm: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   ppt: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   pptx: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   pptm: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   pa: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   ppa: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   ppam: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   sldm: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   sldx: {
-    icon: "powerpoint",
+    icon: 'powerpoint',
   },
   ps1: {
-    icon: "powershell",
+    icon: 'powershell',
   },
   psm1: {
-    icon: "powershell",
+    icon: 'powershell',
   },
   psd1: {
-    icon: "powershell",
+    icon: 'powershell',
   },
   pssc: {
-    icon: "powershell",
+    icon: 'powershell',
   },
   psrc: {
-    icon: "powershell",
+    icon: 'powershell',
   },
-  "format.ps1xml": {
-    icon: "powershell_format",
+  'format.ps1xml': {
+    icon: 'powershell_format',
   },
-  "types.ps1xml": {
-    icon: "powershell_types",
+  'types.ps1xml': {
+    icon: 'powershell_types',
   },
-  "preact.config.js": {
-    icon: "preact",
+  'preact.config.js': {
+    icon: 'preact',
   },
-  "pre-commit-config.yaml": {
-    icon: "precommit",
+  'pre-commit-config.yaml': {
+    icon: 'precommit',
   },
   prettierrc: {
-    icon: "prettier",
+    icon: 'prettier',
     light: true,
   },
   prettierignore: {
-    icon: "prettier",
+    icon: 'prettier',
     light: true,
   },
-  "prettier.config.js": {
-    icon: "prettier",
+  'prettier.config.js': {
+    icon: 'prettier',
     light: true,
   },
-  "prettier.config.cjs": {
-    icon: "prettier",
+  'prettier.config.cjs': {
+    icon: 'prettier',
     light: true,
   },
-  "prettier.config.mjs": {
-    icon: "prettier",
+  'prettier.config.mjs': {
+    icon: 'prettier',
     light: true,
   },
-  "prettier.config.ts": {
-    icon: "prettier",
+  'prettier.config.ts': {
+    icon: 'prettier',
     light: true,
   },
-  "prettier.config.coffee": {
-    icon: "prettier",
+  'prettier.config.coffee': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.js": {
-    icon: "prettier",
+  'prettierrc.js': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.cjs": {
-    icon: "prettier",
+  'prettierrc.cjs': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.mjs": {
-    icon: "prettier",
+  'prettierrc.mjs': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.json": {
-    icon: "prettier",
+  'prettierrc.json': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.json5": {
-    icon: "prettier",
+  'prettierrc.json5': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.yml": {
-    icon: "prettier",
+  'prettierrc.yml': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.yaml": {
-    icon: "prettier",
+  'prettierrc.yaml': {
+    icon: 'prettier',
     light: true,
   },
-  "prettierrc.toml": {
-    icon: "prettier",
+  'prettierrc.toml': {
+    icon: 'prettier',
     light: true,
   },
   prisma: {
-    icon: "prisma",
+    icon: 'prisma',
     light: true,
   },
   procfile: {
-    icon: "procfile",
+    icon: 'procfile',
   },
   w: {
-    icon: "progress",
+    icon: 'progress',
   },
   pro: {
-    icon: "prolog",
+    icon: 'prolog',
   },
   rules: {
-    icon: "prometheus",
+    icon: 'prometheus',
   },
   proto: {
-    icon: "protobuf",
+    icon: 'protobuf',
   },
-  "protractor.conf.js": {
-    icon: "protractor",
+  'protractor.conf.js': {
+    icon: 'protractor',
   },
-  "protractor.conf.coffee": {
-    icon: "protractor",
+  'protractor.conf.coffee': {
+    icon: 'protractor',
   },
-  "protractor.conf.ts": {
-    icon: "protractor",
+  'protractor.conf.ts': {
+    icon: 'protractor',
   },
-  "publiccode.yml": {
-    icon: "publiccode",
+  'publiccode.yml': {
+    icon: 'publiccode',
   },
   pub: {
-    icon: "publisher",
+    icon: 'publisher',
   },
   puz: {
-    icon: "publisher",
+    icon: 'publisher',
   },
   pug: {
-    icon: "pug",
+    icon: 'pug',
   },
   jade: {
-    icon: "pug",
+    icon: 'pug',
   },
-  "jade-lintrc": {
-    icon: "pug",
+  'jade-lintrc': {
+    icon: 'pug',
   },
-  "pug-lintrc": {
-    icon: "pug",
+  'pug-lintrc': {
+    icon: 'pug',
   },
-  "jade-lint.json": {
-    icon: "pug",
+  'jade-lint.json': {
+    icon: 'pug',
   },
-  "pug-lintrc.js": {
-    icon: "pug",
+  'pug-lintrc.js': {
+    icon: 'pug',
   },
-  "pug-lintrc.json": {
-    icon: "pug",
+  'pug-lintrc.json': {
+    icon: 'pug',
   },
-  "Pulumi.yaml": {
-    icon: "pulumi",
+  'Pulumi.yaml': {
+    icon: 'pulumi',
   },
-  "Pulumi.yml": {
-    icon: "pulumi",
+  'Pulumi.yml': {
+    icon: 'pulumi',
   },
-  "Pulumi.dev.yaml": {
-    icon: "pulumi",
+  'Pulumi.dev.yaml': {
+    icon: 'pulumi',
   },
-  "Pulumi.dev.yml": {
-    icon: "pulumi",
+  'Pulumi.dev.yml': {
+    icon: 'pulumi',
   },
-  "Pulumi.prod.yaml": {
-    icon: "pulumi",
+  'Pulumi.prod.yaml': {
+    icon: 'pulumi',
   },
-  "Pulumi.prod.yml": {
-    icon: "pulumi",
+  'Pulumi.prod.yml': {
+    icon: 'pulumi',
   },
   pp: {
-    icon: "puppet",
+    icon: 'puppet',
   },
   purs: {
-    icon: "purescript",
+    icon: 'purescript',
     light: true,
   },
-  "purgecss.config.js": {
-    icon: "purgecss",
+  'purgecss.config.js': {
+    icon: 'purgecss',
   },
   arr: {
-    icon: "pyret",
+    icon: 'pyret',
   },
   rast: {
-    icon: "biome",
+    icon: 'biome',
   },
-  "biome.json": {
-    icon: "biome",
+  'biome.json': {
+    icon: 'biome',
   },
-  "biome.jsonc": {
-    icon: "biome",
+  'biome.jsonc': {
+    icon: 'biome',
   },
-  "python-version": {
-    icon: "pyenv",
+  'python-version': {
+    icon: 'pyenv',
   },
   pyscript: {
-    icon: "pyscript",
+    icon: 'pyscript',
   },
-  "pytest.ini": {
-    icon: "pytest",
+  'pytest.ini': {
+    icon: 'pytest',
   },
   py: {
-    icon: "python",
+    icon: 'python',
   },
   rpy: {
-    icon: "python",
+    icon: 'python',
   },
   pyw: {
-    icon: "python",
+    icon: 'python',
   },
   cpy: {
-    icon: "python",
+    icon: 'python',
   },
   gyp: {
-    icon: "python",
+    icon: 'python',
   },
   gypi: {
-    icon: "python",
+    icon: 'python',
   },
   pyi: {
-    icon: "python",
+    icon: 'python',
   },
   ipy: {
-    icon: "python",
+    icon: 'python',
   },
   pyt: {
-    icon: "python",
+    icon: 'python',
   },
   pyowo: {
-    icon: "pythowo",
+    icon: 'pythowo',
   },
-  "py.typed": {
-    icon: "pytyped",
+  'py.typed': {
+    icon: 'pytyped',
   },
   pyup: {
-    icon: "pyup",
+    icon: 'pyup',
   },
-  "pyup.yml": {
-    icon: "pyup",
+  'pyup.yml': {
+    icon: 'pyup',
   },
   q: {
-    icon: "q",
+    icon: 'q',
   },
   qbs: {
-    icon: "qbs",
+    icon: 'qbs',
   },
   qvs: {
-    icon: "qlikview",
+    icon: 'qlikview',
   },
   qvd: {
-    icon: "qlikview",
+    icon: 'qlikview',
   },
   qvw: {
-    icon: "qlikview",
+    icon: 'qlikview',
   },
   qml: {
-    icon: "qml",
+    icon: 'qml',
   },
   qmldir: {
-    icon: "qmldir",
+    icon: 'qmldir',
   },
   qs: {
-    icon: "qsharp",
+    icon: 'qsharp',
   },
-  "quasar.conf.js": {
-    icon: "quasar",
+  'quasar.conf.js': {
+    icon: 'quasar',
     light: true,
   },
-  "quasar.config.js": {
-    icon: "quasar",
+  'quasar.config.js': {
+    icon: 'quasar',
     light: true,
   },
-  "quasar.config.mjs": {
-    icon: "quasar",
+  'quasar.config.mjs': {
+    icon: 'quasar',
     light: true,
   },
-  "quasar.config.cjs": {
-    icon: "quasar",
+  'quasar.config.cjs': {
+    icon: 'quasar',
     light: true,
   },
-  "quasar.config.ts": {
-    icon: "quasar",
+  'quasar.config.ts': {
+    icon: 'quasar',
     light: true,
   },
   r: {
-    icon: "r",
+    icon: 'r',
   },
   rhistory: {
-    icon: "r",
+    icon: 'r',
   },
   rprofile: {
-    icon: "r",
+    icon: 'r',
   },
   rt: {
-    icon: "r",
+    icon: 'r',
   },
   rkt: {
-    icon: "racket",
+    icon: 'racket',
   },
   rake: {
-    icon: "rake",
+    icon: 'rake',
   },
   rakefile: {
-    icon: "rake",
+    icon: 'rake',
   },
   raku: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   rakumod: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   rakutest: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   rakudoc: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   nqp: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   p6: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   pm6: {
-    icon: "raku",
+    icon: 'raku',
     light: true,
   },
   raml: {
-    icon: "raml",
+    icon: 'raml',
   },
   cshtml: {
-    icon: "razor",
+    icon: 'razor',
   },
   razor: {
-    icon: "razor",
+    icon: 'razor',
   },
-  "razzle.config.js": {
-    icon: "razzle",
+  'razzle.config.js': {
+    icon: 'razzle',
     light: true,
   },
   jsx: {
-    icon: "reactjs",
+    icon: 'reactjs',
   },
-  "react-router.config.js": {
-    icon: "reactrouter",
+  'react-router.config.js': {
+    icon: 'reactrouter',
     light: true,
   },
-  "react-router.config.ts": {
-    icon: "reactrouter",
+  'react-router.config.ts': {
+    icon: 'reactrouter',
     light: true,
   },
   tsx: {
-    icon: "reactts",
+    icon: 'reactts',
   },
   re: {
-    icon: "reason",
+    icon: 'reason',
   },
   red: {
-    icon: "red",
+    icon: 'red',
   },
   reg: {
-    icon: "registry",
+    icon: 'registry',
   },
   rego: {
-    icon: "rego",
+    icon: 'rego',
   },
   rehyperc: {
-    icon: "rehype",
+    icon: 'rehype',
     light: true,
   },
   rehypeignore: {
-    icon: "rehype",
+    icon: 'rehype',
     light: true,
   },
-  "rehyperc.cjs": {
-    icon: "rehype",
+  'rehyperc.cjs': {
+    icon: 'rehype',
     light: true,
   },
-  "rehyperc.js": {
-    icon: "rehype",
+  'rehyperc.js': {
+    icon: 'rehype',
     light: true,
   },
-  "rehyperc.json": {
-    icon: "rehype",
+  'rehyperc.json': {
+    icon: 'rehype',
     light: true,
   },
-  "rehyperc.mjs": {
-    icon: "rehype",
+  'rehyperc.mjs': {
+    icon: 'rehype',
     light: true,
   },
-  "rehyperc.yml": {
-    icon: "rehype",
+  'rehyperc.yml': {
+    icon: 'rehype',
     light: true,
   },
-  "rehyperc.yaml": {
-    icon: "rehype",
+  'rehyperc.yaml': {
+    icon: 'rehype',
     light: true,
   },
   remarkrc: {
-    icon: "remark",
+    icon: 'remark',
     light: true,
   },
   remarkignore: {
-    icon: "remark",
+    icon: 'remark',
     light: true,
   },
-  "remarkrc.cjs": {
-    icon: "remark",
+  'remarkrc.cjs': {
+    icon: 'remark',
     light: true,
   },
-  "remarkrc.js": {
-    icon: "remark",
+  'remarkrc.js': {
+    icon: 'remark',
     light: true,
   },
-  "remarkrc.json": {
-    icon: "remark",
+  'remarkrc.json': {
+    icon: 'remark',
     light: true,
   },
-  "remarkrc.mjs": {
-    icon: "remark",
+  'remarkrc.mjs': {
+    icon: 'remark',
     light: true,
   },
-  "remarkrc.yml": {
-    icon: "remark",
+  'remarkrc.yml': {
+    icon: 'remark',
     light: true,
   },
-  "remarkrc.yaml": {
-    icon: "remark",
+  'remarkrc.yaml': {
+    icon: 'remark',
     light: true,
   },
   renovaterc: {
-    icon: "renovate",
+    icon: 'renovate',
   },
-  "renovaterc.json": {
-    icon: "renovate",
+  'renovaterc.json': {
+    icon: 'renovate',
   },
-  "renovate.json": {
-    icon: "renovate",
+  'renovate.json': {
+    icon: 'renovate',
   },
-  "renovate.json5": {
-    icon: "renovate",
+  'renovate.json5': {
+    icon: 'renovate',
   },
   replit: {
-    icon: "replit",
+    icon: 'replit',
     light: true,
   },
-  "replit.nix": {
-    icon: "replit",
+  'replit.nix': {
+    icon: 'replit',
     light: true,
   },
   res: {
-    icon: "rescript",
+    icon: 'rescript',
   },
   rst: {
-    icon: "rest",
+    icon: 'rest',
   },
   retextrc: {
-    icon: "retext",
+    icon: 'retext',
     light: true,
   },
   retextignore: {
-    icon: "retext",
+    icon: 'retext',
     light: true,
   },
-  "retextrc.cjs": {
-    icon: "retext",
+  'retextrc.cjs': {
+    icon: 'retext',
     light: true,
   },
-  "retextrc.js": {
-    icon: "retext",
+  'retextrc.js': {
+    icon: 'retext',
     light: true,
   },
-  "retextrc.json": {
-    icon: "retext",
+  'retextrc.json': {
+    icon: 'retext',
     light: true,
   },
-  "retextrc.mjs": {
-    icon: "retext",
+  'retextrc.mjs': {
+    icon: 'retext',
     light: true,
   },
-  "retextrc.yml": {
-    icon: "retext",
+  'retextrc.yml': {
+    icon: 'retext',
     light: true,
   },
-  "retextrc.yaml": {
-    icon: "retext",
+  'retextrc.yaml': {
+    icon: 'retext',
     light: true,
   },
   rex: {
-    icon: "rexx",
+    icon: 'rexx',
   },
   tag: {
-    icon: "riot",
+    icon: 'riot',
   },
   rnc: {
-    icon: "rnc",
+    icon: 'rnc',
   },
   robot: {
-    icon: "robotframework",
+    icon: 'robotframework',
   },
-  "robots.txt": {
-    icon: "robots",
+  'robots.txt': {
+    icon: 'robots',
   },
-  "rolldown.config.js": {
-    icon: "rolldown",
+  'rolldown.config.js': {
+    icon: 'rolldown',
   },
-  "rolldown.config.cjs": {
-    icon: "rolldown",
+  'rolldown.config.cjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.mjs": {
-    icon: "rolldown",
+  'rolldown.config.mjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.coffee": {
-    icon: "rolldown",
+  'rolldown.config.coffee': {
+    icon: 'rolldown',
   },
-  "rolldown.config.ts": {
-    icon: "rolldown",
+  'rolldown.config.ts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.mts": {
-    icon: "rolldown",
+  'rolldown.config.mts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.cts": {
-    icon: "rolldown",
+  'rolldown.config.cts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.js": {
-    icon: "rolldown",
+  'rolldown.config.common.js': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.cjs": {
-    icon: "rolldown",
+  'rolldown.config.common.cjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.mjs": {
-    icon: "rolldown",
+  'rolldown.config.common.mjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.coffee": {
-    icon: "rolldown",
+  'rolldown.config.common.coffee': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.ts": {
-    icon: "rolldown",
+  'rolldown.config.common.ts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.mts": {
-    icon: "rolldown",
+  'rolldown.config.common.mts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.common.cts": {
-    icon: "rolldown",
+  'rolldown.config.common.cts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.js": {
-    icon: "rolldown",
+  'rolldown.config.dev.js': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.cjs": {
-    icon: "rolldown",
+  'rolldown.config.dev.cjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.mjs": {
-    icon: "rolldown",
+  'rolldown.config.dev.mjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.coffee": {
-    icon: "rolldown",
+  'rolldown.config.dev.coffee': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.ts": {
-    icon: "rolldown",
+  'rolldown.config.dev.ts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.mts": {
-    icon: "rolldown",
+  'rolldown.config.dev.mts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.dev.cts": {
-    icon: "rolldown",
+  'rolldown.config.dev.cts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.js": {
-    icon: "rolldown",
+  'rolldown.config.prod.js': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.cjs": {
-    icon: "rolldown",
+  'rolldown.config.prod.cjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.mjs": {
-    icon: "rolldown",
+  'rolldown.config.prod.mjs': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.coffee": {
-    icon: "rolldown",
+  'rolldown.config.prod.coffee': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.ts": {
-    icon: "rolldown",
+  'rolldown.config.prod.ts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.mts": {
-    icon: "rolldown",
+  'rolldown.config.prod.mts': {
+    icon: 'rolldown',
   },
-  "rolldown.config.prod.cts": {
-    icon: "rolldown",
+  'rolldown.config.prod.cts': {
+    icon: 'rolldown',
   },
-  "rollup.config.js": {
-    icon: "rollup",
+  'rollup.config.js': {
+    icon: 'rollup',
   },
-  "rollup.config.cjs": {
-    icon: "rollup",
+  'rollup.config.cjs': {
+    icon: 'rollup',
   },
-  "rollup.config.mjs": {
-    icon: "rollup",
+  'rollup.config.mjs': {
+    icon: 'rollup',
   },
-  "rollup.config.coffee": {
-    icon: "rollup",
+  'rollup.config.coffee': {
+    icon: 'rollup',
   },
-  "rollup.config.ts": {
-    icon: "rollup",
+  'rollup.config.ts': {
+    icon: 'rollup',
   },
-  "rollup.config.common.js": {
-    icon: "rollup",
+  'rollup.config.common.js': {
+    icon: 'rollup',
   },
-  "rollup.config.common.cjs": {
-    icon: "rollup",
+  'rollup.config.common.cjs': {
+    icon: 'rollup',
   },
-  "rollup.config.common.mjs": {
-    icon: "rollup",
+  'rollup.config.common.mjs': {
+    icon: 'rollup',
   },
-  "rollup.config.common.coffee": {
-    icon: "rollup",
+  'rollup.config.common.coffee': {
+    icon: 'rollup',
   },
-  "rollup.config.common.ts": {
-    icon: "rollup",
+  'rollup.config.common.ts': {
+    icon: 'rollup',
   },
-  "rollup.config.dev.js": {
-    icon: "rollup",
+  'rollup.config.dev.js': {
+    icon: 'rollup',
   },
-  "rollup.config.dev.cjs": {
-    icon: "rollup",
+  'rollup.config.dev.cjs': {
+    icon: 'rollup',
   },
-  "rollup.config.dev.mjs": {
-    icon: "rollup",
+  'rollup.config.dev.mjs': {
+    icon: 'rollup',
   },
-  "rollup.config.dev.coffee": {
-    icon: "rollup",
+  'rollup.config.dev.coffee': {
+    icon: 'rollup',
   },
-  "rollup.config.dev.ts": {
-    icon: "rollup",
+  'rollup.config.dev.ts': {
+    icon: 'rollup',
   },
-  "rollup.config.prod.js": {
-    icon: "rollup",
+  'rollup.config.prod.js': {
+    icon: 'rollup',
   },
-  "rollup.config.prod.cjs": {
-    icon: "rollup",
+  'rollup.config.prod.cjs': {
+    icon: 'rollup',
   },
-  "rollup.config.prod.mjs": {
-    icon: "rollup",
+  'rollup.config.prod.mjs': {
+    icon: 'rollup',
   },
-  "rollup.config.prod.coffee": {
-    icon: "rollup",
+  'rollup.config.prod.coffee': {
+    icon: 'rollup',
   },
-  "rollup.config.prod.ts": {
-    icon: "rollup",
+  'rollup.config.prod.ts': {
+    icon: 'rollup',
   },
   ron: {
-    icon: "ron",
+    icon: 'ron',
   },
-  "rome.json": {
-    icon: "rome",
+  'rome.json': {
+    icon: 'rome',
     light: true,
   },
   rmd: {
-    icon: "rmd",
+    icon: 'rmd',
   },
   rproj: {
-    icon: "rproj",
+    icon: 'rproj',
   },
   rspec: {
-    icon: "rspec",
+    icon: 'rspec',
   },
   rss: {
-    icon: "rss",
+    icon: 'rss',
   },
-  "rubocop.yml": {
-    icon: "rubocop",
+  'rubocop.yml': {
+    icon: 'rubocop',
     light: true,
   },
-  "rubocop_todo.yml": {
-    icon: "rubocop",
+  'rubocop_todo.yml': {
+    icon: 'rubocop',
     light: true,
   },
   rb: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   rbx: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   rjs: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   gemspec: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   ru: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   podspec: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   rbi: {
-    icon: "ruby",
+    icon: 'ruby',
   },
   rbs: {
-    icon: "ruby",
+    icon: 'ruby',
   },
-  "ruby-version": {
-    icon: "ruby",
+  'ruby-version': {
+    icon: 'ruby',
   },
   rs: {
-    icon: "rust",
+    icon: 'rust',
     light: true,
   },
-  "rust-toolchain": {
-    icon: "rust_toolchain",
+  'rust-toolchain': {
+    icon: 'rust_toolchain',
     light: true,
   },
-  "rust-toolchain.toml": {
-    icon: "rust_toolchain",
+  'rust-toolchain.toml': {
+    icon: 'rust_toolchain',
     light: true,
   },
   sl: {
-    icon: "s-lang",
+    icon: 's-lang',
   },
   slshrc: {
-    icon: "s-lang",
+    icon: 's-lang',
   },
   isisrc: {
-    icon: "s-lang",
+    icon: 's-lang',
   },
   jedrc: {
-    icon: "s-lang",
+    icon: 's-lang',
   },
   safetensors: {
-    icon: "safetensors",
+    icon: 'safetensors',
     light: true,
   },
   sailsrc: {
-    icon: "sails",
+    icon: 'sails',
   },
   sls: {
-    icon: "saltstack",
+    icon: 'saltstack',
   },
   san: {
-    icon: "san",
+    icon: 'san',
   },
-  "sapphirerc.json": {
-    icon: "sapphire_framework_cli",
+  'sapphirerc.json': {
+    icon: 'sapphire_framework_cli',
   },
-  "sapphirerc.yml": {
-    icon: "sapphire_framework_cli",
+  'sapphirerc.yml': {
+    icon: 'sapphire_framework_cli',
   },
   sapphirerc: {
-    icon: "sapphire_framework_cli",
+    icon: 'sapphire_framework_cli',
   },
   sas: {
-    icon: "sas",
+    icon: 'sas',
   },
   sass: {
-    icon: "sass",
+    icon: 'sass',
   },
   sbt: {
-    icon: "sbt",
+    icon: 'sbt',
   },
   scala: {
-    icon: "scala",
+    icon: 'scala',
   },
   wsf: {
-    icon: "script",
+    icon: 'script',
   },
   scss: {
-    icon: "scss",
+    icon: 'scss',
   },
   scssm: {
-    icon: "scss",
+    icon: 'scss',
   },
   sce: {
-    icon: "scilab",
+    icon: 'scilab',
   },
   sdl: {
-    icon: "sdlang",
+    icon: 'sdlang',
   },
-  "code-search": {
-    icon: "search_result",
+  'code-search': {
+    icon: 'search_result',
   },
-  "seedkit.config.js": {
-    icon: "seedkit",
+  'seedkit.config.js': {
+    icon: 'seedkit',
   },
-  "seedkit.config.ts": {
-    icon: "seedkit",
+  'seedkit.config.ts': {
+    icon: 'seedkit',
   },
-  "seedkit.config.mjs": {
-    icon: "seedkit",
+  'seedkit.config.mjs': {
+    icon: 'seedkit',
   },
   sentryclirc: {
-    icon: "sentry",
+    icon: 'sentry',
   },
-  "serverless.yml": {
-    icon: "serverless",
+  'serverless.yml': {
+    icon: 'serverless',
   },
-  "serverless.json": {
-    icon: "serverless",
+  'serverless.json': {
+    icon: 'serverless',
   },
-  "serverless.js": {
-    icon: "serverless",
+  'serverless.js': {
+    icon: 'serverless',
   },
-  "serverless.ts": {
-    icon: "serverless",
+  'serverless.ts': {
+    icon: 'serverless',
   },
   sequelizerc: {
-    icon: "sequelize",
+    icon: 'sequelize',
   },
-  "sequelizerc.js": {
-    icon: "sequelize",
+  'sequelizerc.js': {
+    icon: 'sequelize',
   },
-  "sequelizerc.json": {
-    icon: "sequelize",
+  'sequelizerc.json': {
+    icon: 'sequelize',
   },
   shader: {
-    icon: "shaderlab",
+    icon: 'shaderlab',
     light: true,
   },
   unity: {
-    icon: "shaderlab",
+    icon: 'shaderlab',
     light: true,
   },
   sh: {
-    icon: "shell",
+    icon: 'shell',
   },
   bash: {
-    icon: "shell",
+    icon: 'shell',
   },
   bashrc: {
-    icon: "shell",
+    icon: 'shell',
   },
   bash_aliases: {
-    icon: "shell",
+    icon: 'shell',
   },
   bash_profile: {
-    icon: "shell",
+    icon: 'shell',
   },
   bash_login: {
-    icon: "shell",
+    icon: 'shell',
   },
   ebuild: {
-    icon: "shell",
+    icon: 'shell',
   },
   eclass: {
-    icon: "shell",
+    icon: 'shell',
   },
   profile: {
-    icon: "shell",
+    icon: 'shell',
   },
   bash_logout: {
-    icon: "shell",
+    icon: 'shell',
   },
   xprofile: {
-    icon: "shell",
+    icon: 'shell',
   },
   xsession: {
-    icon: "shell",
+    icon: 'shell',
   },
   xsessionrc: {
-    icon: "shell",
+    icon: 'shell',
   },
   Xsession: {
-    icon: "shell",
+    icon: 'shell',
   },
   zsh: {
-    icon: "shell",
+    icon: 'shell',
   },
   zshrc: {
-    icon: "shell",
+    icon: 'shell',
   },
   zprofile: {
-    icon: "shell",
+    icon: 'shell',
   },
   zlogin: {
-    icon: "shell",
+    icon: 'shell',
   },
   zlogout: {
-    icon: "shell",
+    icon: 'shell',
   },
   zshenv: {
-    icon: "shell",
+    icon: 'shell',
   },
-  "zsh-theme": {
-    icon: "shell",
+  'zsh-theme': {
+    icon: 'shell',
   },
   fish: {
-    icon: "shell",
+    icon: 'shell',
   },
   ksh: {
-    icon: "shell",
+    icon: 'shell',
   },
   csh: {
-    icon: "shell",
+    icon: 'shell',
   },
   cshrc: {
-    icon: "shell",
+    icon: 'shell',
   },
   tcshrc: {
-    icon: "shell",
+    icon: 'shell',
   },
   yashrc: {
-    icon: "shell",
+    icon: 'shell',
   },
   yash_profile: {
-    icon: "shell",
+    icon: 'shell',
   },
   shellcheckrc: {
-    icon: "shellcheck",
+    icon: 'shellcheck',
   },
-  "Shuttle.toml": {
-    icon: "shuttle",
+  'Shuttle.toml': {
+    icon: 'shuttle',
   },
   sy: {
-    icon: "siyuan",
+    icon: 'siyuan',
   },
   sn: {
-    icon: "sino",
+    icon: 'sino',
   },
   sketch: {
-    icon: "sketch",
+    icon: 'sketch',
   },
   slang: {
-    icon: "slang",
+    icon: 'slang',
   },
-  "slash-up.config.js": {
-    icon: "slashup",
+  'slash-up.config.js': {
+    icon: 'slashup',
   },
   ice: {
-    icon: "slice",
+    icon: 'slice',
   },
   slim: {
-    icon: "slim",
+    icon: 'slim',
   },
   slint: {
-    icon: "slint",
+    icon: 'slint',
   },
   sln: {
-    icon: "sln",
+    icon: 'sln',
   },
   slnx: {
-    icon: "sln",
+    icon: 'sln',
   },
   ss: {
-    icon: "silverstripe",
+    icon: 'silverstripe',
   },
   eskip: {
-    icon: "skipper",
+    icon: 'skipper',
   },
   tpl: {
-    icon: "smarty",
+    icon: 'smarty',
   },
   smk: {
-    icon: "snakemake",
+    icon: 'snakemake',
   },
-  "snapcraft.yaml": {
-    icon: "snapcraft",
+  'snapcraft.yaml': {
+    icon: 'snapcraft',
   },
-  "snaplet.config.js": {
-    icon: "snaplet",
+  'snaplet.config.js': {
+    icon: 'snaplet',
   },
-  "snaplet.config.ts": {
-    icon: "snaplet",
+  'snaplet.config.ts': {
+    icon: 'snaplet',
   },
   snort: {
-    icon: "snort",
+    icon: 'snort',
   },
   snyk: {
-    icon: "snyk",
+    icon: 'snyk',
   },
   solidarity: {
-    icon: "solidarity",
+    icon: 'solidarity',
   },
-  "solidarity.json": {
-    icon: "solidarity",
+  'solidarity.json': {
+    icon: 'solidarity',
   },
   sol: {
-    icon: "solidity",
+    icon: 'solidity',
     light: true,
   },
   spe: {
-    icon: "spacengine",
+    icon: 'spacengine',
   },
   rq: {
-    icon: "sparql",
+    icon: 'sparql',
   },
-  "spin.toml": {
-    icon: "spin",
+  'spin.toml': {
+    icon: 'spin',
     light: true,
   },
   sqf: {
-    icon: "sqf",
+    icon: 'sqf',
   },
   locale: {
-    icon: "locale",
+    icon: 'locale',
   },
   sql: {
-    icon: "sql",
+    icon: 'sql',
   },
   dsql: {
-    icon: "sql",
+    icon: 'sql',
   },
   sqlite: {
-    icon: "sqlite",
+    icon: 'sqlite',
   },
   sqlite3: {
-    icon: "sqlite",
+    icon: 'sqlite',
   },
   db3: {
-    icon: "sqlite",
+    icon: 'sqlite',
   },
   nut: {
-    icon: "squirrel",
+    icon: 'squirrel',
   },
   sss: {
-    icon: "sss",
+    icon: 'sss',
   },
-  "sst-env.d.ts": {
-    icon: "sst",
+  'sst-env.d.ts': {
+    icon: 'sst',
   },
-  "sst-env.ts": {
-    icon: "sst",
+  'sst-env.ts': {
+    icon: 'sst',
   },
-  "sst-env.js": {
-    icon: "sst",
+  'sst-env.js': {
+    icon: 'sst',
   },
-  "sst.config.d.ts": {
-    icon: "sst",
+  'sst.config.d.ts': {
+    icon: 'sst',
   },
-  "sst.config.ts": {
-    icon: "sst",
+  'sst.config.ts': {
+    icon: 'sst',
   },
-  "sst.config.js": {
-    icon: "sst",
+  'sst.config.js': {
+    icon: 'sst',
   },
   stan: {
-    icon: "stan",
+    icon: 'stan',
   },
   do: {
-    icon: "stata",
+    icon: 'stata',
   },
   dta: {
-    icon: "stata",
+    icon: 'stata',
   },
-  "html.stencil": {
-    icon: "stencil",
+  'html.stencil': {
+    icon: 'stencil',
   },
   stencil: {
-    icon: "stencil",
+    icon: 'stencil',
   },
-  "stryker.conf.mjs": {
-    icon: "stryker",
+  'stryker.conf.mjs': {
+    icon: 'stryker',
   },
-  "stryker.conf.cjs": {
-    icon: "stryker",
+  'stryker.conf.cjs': {
+    icon: 'stryker',
   },
-  "stryker.conf.js": {
-    icon: "stryker",
+  'stryker.conf.js': {
+    icon: 'stryker',
   },
-  "stryker.conf.conf": {
-    icon: "stryker",
+  'stryker.conf.conf': {
+    icon: 'stryker',
   },
-  "stryker.conf.json": {
-    icon: "stryker",
+  'stryker.conf.json': {
+    icon: 'stryker',
   },
-  "stryker.config.mjs": {
-    icon: "stryker",
+  'stryker.config.mjs': {
+    icon: 'stryker',
   },
-  "stryker.config.cjs": {
-    icon: "stryker",
+  'stryker.config.cjs': {
+    icon: 'stryker',
   },
-  "stryker.config.js": {
-    icon: "stryker",
+  'stryker.config.js': {
+    icon: 'stryker',
   },
-  "stryker.config.conf": {
-    icon: "stryker",
+  'stryker.config.conf': {
+    icon: 'stryker',
   },
-  "stryker.config.json": {
-    icon: "stryker",
+  'stryker.config.json': {
+    icon: 'stryker',
   },
-  "stryker-config.mjs": {
-    icon: "stryker",
+  'stryker-config.mjs': {
+    icon: 'stryker',
   },
-  "stryker-config.cjs": {
-    icon: "stryker",
+  'stryker-config.cjs': {
+    icon: 'stryker',
   },
-  "stryker-config.js": {
-    icon: "stryker",
+  'stryker-config.js': {
+    icon: 'stryker',
   },
-  "stryker-config.conf": {
-    icon: "stryker",
+  'stryker-config.conf': {
+    icon: 'stryker',
   },
-  "stryker-config.json": {
-    icon: "stryker",
+  'stryker-config.json': {
+    icon: 'stryker',
   },
-  "stryker4s.mjs": {
-    icon: "stryker",
+  'stryker4s.mjs': {
+    icon: 'stryker',
   },
-  "stryker4s.cjs": {
-    icon: "stryker",
+  'stryker4s.cjs': {
+    icon: 'stryker',
   },
-  "stryker4s.js": {
-    icon: "stryker",
+  'stryker4s.js': {
+    icon: 'stryker',
   },
-  "stryker4s.conf": {
-    icon: "stryker",
+  'stryker4s.conf': {
+    icon: 'stryker',
   },
-  "stryker4s.json": {
-    icon: "stryker",
+  'stryker4s.json': {
+    icon: 'stryker',
   },
   stylelintrc: {
-    icon: "stylelint",
+    icon: 'stylelint',
     light: true,
   },
   stylelintignore: {
-    icon: "stylelint",
+    icon: 'stylelint',
     light: true,
   },
   stylelintcache: {
-    icon: "stylelint",
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.js": {
-    icon: "stylelint",
+  'stylelint.config.js': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.json": {
-    icon: "stylelint",
+  'stylelint.config.json': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.yaml": {
-    icon: "stylelint",
+  'stylelint.config.yaml': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.yml": {
-    icon: "stylelint",
+  'stylelint.config.yml': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.ts": {
-    icon: "stylelint",
+  'stylelint.config.ts': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.cjs": {
-    icon: "stylelint",
+  'stylelint.config.cjs': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelint.config.mjs": {
-    icon: "stylelint",
+  'stylelint.config.mjs': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.js": {
-    icon: "stylelint",
+  'stylelintrc.js': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.json": {
-    icon: "stylelint",
+  'stylelintrc.json': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.yaml": {
-    icon: "stylelint",
+  'stylelintrc.yaml': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.yml": {
-    icon: "stylelint",
+  'stylelintrc.yml': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.ts": {
-    icon: "stylelint",
+  'stylelintrc.ts': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.cjs": {
-    icon: "stylelint",
+  'stylelintrc.cjs': {
+    icon: 'stylelint',
     light: true,
   },
-  "stylelintrc.mjs": {
-    icon: "stylelint",
+  'stylelintrc.mjs': {
+    icon: 'stylelint',
     light: true,
   },
-  "st.css": {
-    icon: "stylable",
+  'st.css': {
+    icon: 'stylable',
   },
   styled: {
-    icon: "styled",
+    icon: 'styled',
   },
-  "stylish-haskell.yaml": {
-    icon: "stylish_haskell",
+  'stylish-haskell.yaml': {
+    icon: 'stylish_haskell',
   },
   styl: {
-    icon: "stylus",
+    icon: 'stylus',
     light: true,
   },
   storyboard: {
-    icon: "storyboard",
+    icon: 'storyboard',
   },
-  "story.js": {
-    icon: "storybook",
+  'story.js': {
+    icon: 'storybook',
   },
-  "story.jsx": {
-    icon: "storybook",
+  'story.jsx': {
+    icon: 'storybook',
   },
-  "story.ts": {
-    icon: "storybook",
+  'story.ts': {
+    icon: 'storybook',
   },
-  "story.tsx": {
-    icon: "storybook",
+  'story.tsx': {
+    icon: 'storybook',
   },
-  "story.mdx": {
-    icon: "storybook",
+  'story.mdx': {
+    icon: 'storybook',
   },
-  "story.svelte": {
-    icon: "storybook",
+  'story.svelte': {
+    icon: 'storybook',
   },
-  "stories.js": {
-    icon: "storybook",
+  'stories.js': {
+    icon: 'storybook',
   },
-  "stories.jsx": {
-    icon: "storybook",
+  'stories.jsx': {
+    icon: 'storybook',
   },
-  "stories.ts": {
-    icon: "storybook",
+  'stories.ts': {
+    icon: 'storybook',
   },
-  "stories.tsx": {
-    icon: "storybook",
+  'stories.tsx': {
+    icon: 'storybook',
   },
-  "stories.mdx": {
-    icon: "storybook",
+  'stories.mdx': {
+    icon: 'storybook',
   },
-  "stories.svelte": {
-    icon: "storybook",
+  'stories.svelte': {
+    icon: 'storybook',
   },
-  "sublime-project": {
-    icon: "sublime",
+  'sublime-project': {
+    icon: 'sublime',
   },
   svnignore: {
-    icon: "subversion",
+    icon: 'subversion',
   },
   svelte: {
-    icon: "svelte",
+    icon: 'svelte',
   },
-  "svelte.config.js": {
-    icon: "svelteconfig",
+  'svelte.config.js': {
+    icon: 'svelteconfig',
   },
   svg: {
-    icon: "svg",
+    icon: 'svg',
   },
-  "svgo.config.cjs": {
-    icon: "svgo",
+  'svgo.config.cjs': {
+    icon: 'svgo',
   },
-  "svgo.config.js": {
-    icon: "svgo",
+  'svgo.config.js': {
+    icon: 'svgo',
   },
-  "svgo.config.mjs": {
-    icon: "svgo",
+  'svgo.config.mjs': {
+    icon: 'svgo',
   },
   swagger: {
-    icon: "swagger",
+    icon: 'swagger',
   },
   swift: {
-    icon: "swift",
+    icon: 'swift',
   },
-  "package.pins": {
-    icon: "swift",
+  'package.pins': {
+    icon: 'swift',
   },
   swig: {
-    icon: "swig",
+    icon: 'swig',
   },
-  "symfony.lock": {
-    icon: "symfony",
+  'symfony.lock': {
+    icon: 'symfony',
     light: true,
   },
   syncpackrc: {
-    icon: "syncpack",
+    icon: 'syncpack',
   },
-  "syncpackrc.json": {
-    icon: "syncpack",
+  'syncpackrc.json': {
+    icon: 'syncpack',
   },
-  "syncpackrc.yaml": {
-    icon: "syncpack",
+  'syncpackrc.yaml': {
+    icon: 'syncpack',
   },
-  "syncpackrc.yml": {
-    icon: "syncpack",
+  'syncpackrc.yml': {
+    icon: 'syncpack',
   },
-  "syncpackrc.js": {
-    icon: "syncpack",
+  'syncpackrc.js': {
+    icon: 'syncpack',
   },
-  "syncpackrc.cjs": {
-    icon: "syncpack",
+  'syncpackrc.cjs': {
+    icon: 'syncpack',
   },
-  "syncpack.config.js": {
-    icon: "syncpack",
+  'syncpack.config.js': {
+    icon: 'syncpack',
   },
-  "syncpack.config.cjs": {
-    icon: "syncpack",
+  'syncpack.config.cjs': {
+    icon: 'syncpack',
   },
   link: {
-    icon: "systemd",
+    icon: 'systemd',
     light: true,
   },
   sv: {
-    icon: "systemverilog",
+    icon: 'systemverilog',
     light: true,
   },
   tt: {
-    icon: "t4tt",
+    icon: 't4tt',
   },
-  "tamagui.js": {
-    icon: "tamagui",
+  'tamagui.js': {
+    icon: 'tamagui',
   },
-  "tamagui.mjs": {
-    icon: "tamagui",
+  'tamagui.mjs': {
+    icon: 'tamagui',
   },
-  "tamagui.cjs": {
-    icon: "tamagui",
+  'tamagui.cjs': {
+    icon: 'tamagui',
   },
-  "tamagui.ts": {
-    icon: "tamagui",
+  'tamagui.ts': {
+    icon: 'tamagui',
   },
-  "tamagui.mts": {
-    icon: "tamagui",
+  'tamagui.mts': {
+    icon: 'tamagui',
   },
-  "tamagui.cts": {
-    icon: "tamagui",
+  'tamagui.cts': {
+    icon: 'tamagui',
   },
-  "tamagui.config.js": {
-    icon: "tamagui",
+  'tamagui.config.js': {
+    icon: 'tamagui',
   },
-  "tamagui.config.mjs": {
-    icon: "tamagui",
+  'tamagui.config.mjs': {
+    icon: 'tamagui',
   },
-  "tamagui.config.cjs": {
-    icon: "tamagui",
+  'tamagui.config.cjs': {
+    icon: 'tamagui',
   },
-  "tamagui.config.ts": {
-    icon: "tamagui",
+  'tamagui.config.ts': {
+    icon: 'tamagui',
   },
-  "tamagui.config.mts": {
-    icon: "tamagui",
+  'tamagui.config.mts': {
+    icon: 'tamagui',
   },
-  "tamagui.config.cts": {
-    icon: "tamagui",
+  'tamagui.config.cts': {
+    icon: 'tamagui',
   },
-  "tailwind.js": {
-    icon: "tailwind",
+  'tailwind.js': {
+    icon: 'tailwind',
   },
-  "tailwind.cjs": {
-    icon: "tailwind",
+  'tailwind.cjs': {
+    icon: 'tailwind',
   },
-  "tailwind.coffee": {
-    icon: "tailwind",
+  'tailwind.coffee': {
+    icon: 'tailwind',
   },
-  "tailwind.ts": {
-    icon: "tailwind",
+  'tailwind.ts': {
+    icon: 'tailwind',
   },
-  "tailwind.json": {
-    icon: "tailwind",
+  'tailwind.json': {
+    icon: 'tailwind',
   },
-  "tailwind.mjs": {
-    icon: "tailwind",
+  'tailwind.mjs': {
+    icon: 'tailwind',
   },
-  "tailwind.config.js": {
-    icon: "tailwind",
+  'tailwind.config.js': {
+    icon: 'tailwind',
   },
-  "tailwind.config.cjs": {
-    icon: "tailwind",
+  'tailwind.config.cjs': {
+    icon: 'tailwind',
   },
-  "tailwind.config.coffee": {
-    icon: "tailwind",
+  'tailwind.config.coffee': {
+    icon: 'tailwind',
   },
-  "tailwind.config.ts": {
-    icon: "tailwind",
+  'tailwind.config.ts': {
+    icon: 'tailwind',
   },
-  "tailwind.config.json": {
-    icon: "tailwind",
+  'tailwind.config.json': {
+    icon: 'tailwind',
   },
-  "tailwind.config.mjs": {
-    icon: "tailwind",
+  'tailwind.config.mjs': {
+    icon: 'tailwind',
   },
-  "tailwindrc.js": {
-    icon: "tailwind",
+  'tailwindrc.js': {
+    icon: 'tailwind',
   },
-  "tailwindrc.cjs": {
-    icon: "tailwind",
+  'tailwindrc.cjs': {
+    icon: 'tailwind',
   },
-  "tailwindrc.coffee": {
-    icon: "tailwind",
+  'tailwindrc.coffee': {
+    icon: 'tailwind',
   },
-  "tailwindrc.ts": {
-    icon: "tailwind",
+  'tailwindrc.ts': {
+    icon: 'tailwind',
   },
-  "tailwindrc.json": {
-    icon: "tailwind",
+  'tailwindrc.json': {
+    icon: 'tailwind',
   },
-  "tailwindrc.mjs": {
-    icon: "tailwind",
+  'tailwindrc.mjs': {
+    icon: 'tailwind',
   },
-  "taplo.toml": {
-    icon: "taplo",
+  'taplo.toml': {
+    icon: 'taplo',
   },
-  "taskfile.yml": {
-    icon: "taskfile",
+  'taskfile.yml': {
+    icon: 'taskfile',
   },
-  "taskfile.yaml": {
-    icon: "taskfile",
+  'taskfile.yaml': {
+    icon: 'taskfile',
   },
-  "taskfile.dist.yml": {
-    icon: "taskfile",
+  'taskfile.dist.yml': {
+    icon: 'taskfile',
   },
-  "taskfile.dist.yaml": {
-    icon: "taskfile",
+  'taskfile.dist.yaml': {
+    icon: 'taskfile',
   },
-  "tauri.conf.json": {
-    icon: "tauri",
+  'tauri.conf.json': {
+    icon: 'tauri',
   },
   taurignore: {
-    icon: "tauri",
+    icon: 'tauri',
   },
   teal: {
-    icon: "teal",
+    icon: 'teal',
   },
   templ: {
-    icon: "templ",
+    icon: 'templ',
   },
   tt3: {
-    icon: "tt",
+    icon: 'tt',
   },
   tt2: {
-    icon: "tt",
+    icon: 'tt',
   },
   tcl: {
-    icon: "tcl",
+    icon: 'tcl',
   },
   exp: {
-    icon: "tcl",
+    icon: 'tcl',
   },
   tera: {
-    icon: "tera",
+    icon: 'tera',
   },
   tf: {
-    icon: "terraform",
+    icon: 'terraform',
   },
   tfstate: {
-    icon: "terraform",
+    icon: 'terraform',
   },
   tfvars: {
-    icon: "terraform",
+    icon: 'terraform',
   },
-  "tf.json": {
-    icon: "terraform",
+  'tf.json': {
+    icon: 'terraform',
   },
   tm: {
-    icon: "tm",
+    icon: 'tm',
     light: true,
   },
-  "tm.hcl": {
-    icon: "tm",
+  'tm.hcl': {
+    icon: 'tm',
     light: true,
   },
   tst: {
-    icon: "test",
+    icon: 'test',
   },
-  "testcaferc.json": {
-    icon: "testcafe",
+  'testcaferc.json': {
+    icon: 'testcafe',
     light: true,
   },
-  "test.js": {
-    icon: "testjs",
+  'test.js': {
+    icon: 'testjs',
     light: true,
   },
-  "test.jsx": {
-    icon: "testjs",
+  'test.jsx': {
+    icon: 'testjs',
     light: true,
   },
-  "test.mjs": {
-    icon: "testjs",
+  'test.mjs': {
+    icon: 'testjs',
     light: true,
   },
-  "spec.js": {
-    icon: "testjs",
+  'spec.js': {
+    icon: 'testjs',
     light: true,
   },
-  "spec.jsx": {
-    icon: "testjs",
+  'spec.jsx': {
+    icon: 'testjs',
     light: true,
   },
-  "spec.mjs": {
-    icon: "testjs",
+  'spec.mjs': {
+    icon: 'testjs',
     light: true,
   },
-  "testplane.conf.ts": {
-    icon: "testplane",
+  'testplane.conf.ts': {
+    icon: 'testplane',
   },
-  "testplane.conf.js": {
-    icon: "testplane",
+  'testplane.conf.js': {
+    icon: 'testplane',
   },
-  "testplane.conf.cts": {
-    icon: "testplane",
+  'testplane.conf.cts': {
+    icon: 'testplane',
   },
-  "testplane.conf.cjs": {
-    icon: "testplane",
+  'testplane.conf.cjs': {
+    icon: 'testplane',
   },
-  "testplane.config.ts": {
-    icon: "testplane",
+  'testplane.config.ts': {
+    icon: 'testplane',
   },
-  "testplane.config.js": {
-    icon: "testplane",
+  'testplane.config.js': {
+    icon: 'testplane',
   },
-  "testplane.config.cts": {
-    icon: "testplane",
+  'testplane.config.cts': {
+    icon: 'testplane',
   },
-  "testplane.config.cjs": {
-    icon: "testplane",
+  'testplane.config.cjs': {
+    icon: 'testplane',
   },
-  "testplane.ts": {
-    icon: "testplane",
+  'testplane.ts': {
+    icon: 'testplane',
   },
-  "testplane.js": {
-    icon: "testplane",
+  'testplane.js': {
+    icon: 'testplane',
   },
-  "testplane.cts": {
-    icon: "testplane",
+  'testplane.cts': {
+    icon: 'testplane',
   },
-  "testplane.cjs": {
-    icon: "testplane",
+  'testplane.cjs': {
+    icon: 'testplane',
   },
-  "testplane.tsx": {
-    icon: "testplane",
+  'testplane.tsx': {
+    icon: 'testplane',
   },
-  "testplane.jsx": {
-    icon: "testplane",
+  'testplane.jsx': {
+    icon: 'testplane',
   },
-  "test.ts": {
-    icon: "testts",
+  'test.ts': {
+    icon: 'testts',
   },
-  "test.tsx": {
-    icon: "testts",
+  'test.tsx': {
+    icon: 'testts',
   },
-  "test.mts": {
-    icon: "testts",
+  'test.mts': {
+    icon: 'testts',
   },
-  "spec.ts": {
-    icon: "testts",
+  'spec.ts': {
+    icon: 'testts',
   },
-  "spec.tsx": {
-    icon: "testts",
+  'spec.tsx': {
+    icon: 'testts',
   },
-  "spec.mts": {
-    icon: "testts",
+  'spec.mts': {
+    icon: 'testts',
   },
-  "e2e-test.ts": {
-    icon: "testts",
+  'e2e-test.ts': {
+    icon: 'testts',
   },
-  "e2e-test.tsx": {
-    icon: "testts",
+  'e2e-test.tsx': {
+    icon: 'testts',
   },
-  "e2e-test.mts": {
-    icon: "testts",
+  'e2e-test.mts': {
+    icon: 'testts',
   },
-  "e2e-spec.ts": {
-    icon: "testts",
+  'e2e-spec.ts': {
+    icon: 'testts',
   },
-  "e2e-spec.tsx": {
-    icon: "testts",
+  'e2e-spec.tsx': {
+    icon: 'testts',
   },
-  "e2e-spec.mts": {
-    icon: "testts",
+  'e2e-spec.mts': {
+    icon: 'testts',
   },
-  "test-d.ts": {
-    icon: "testts",
+  'test-d.ts': {
+    icon: 'testts',
   },
-  "test-d.tsx": {
-    icon: "testts",
+  'test-d.tsx': {
+    icon: 'testts',
   },
-  "test-d.mts": {
-    icon: "testts",
+  'test-d.mts': {
+    icon: 'testts',
   },
   dtx: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   bib: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   tex: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   ltx: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   ctx: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   sty: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   bbx: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   cbx: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   texi: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   tikz: {
-    icon: "tex",
+    icon: 'tex',
     light: true,
   },
   csv: {
-    icon: "text",
+    icon: 'text',
   },
   tsv: {
-    icon: "text",
+    icon: 'text',
   },
   textile: {
-    icon: "textile",
+    icon: 'textile',
   },
   Tiltfile: {
-    icon: "tiltfile",
+    icon: 'tiltfile',
   },
   tiltignore: {
-    icon: "tiltfile",
+    icon: 'tiltfile',
   },
   tfignore: {
-    icon: "tfs",
+    icon: 'tfs',
   },
-  "tmux.conf": {
-    icon: "tmux",
+  'tmux.conf': {
+    icon: 'tmux',
     light: true,
   },
   todo: {
-    icon: "todo",
+    icon: 'todo',
     light: true,
   },
   toit: {
-    icon: "toit",
+    icon: 'toit',
     light: true,
   },
   toml: {
-    icon: "toml",
+    icon: 'toml',
     light: true,
   },
-  "tox.ini": {
-    icon: "tox",
+  'tox.ini': {
+    icon: 'tox',
   },
-  "travis.yml": {
-    icon: "travis",
+  'travis.yml': {
+    icon: 'travis',
   },
   tree: {
-    icon: "tree",
+    icon: 'tree',
     light: true,
   },
   tres: {
-    icon: "tres",
+    icon: 'tres',
   },
-  "truffle-config.js": {
-    icon: "truffle",
+  'truffle-config.js': {
+    icon: 'truffle',
   },
-  "truffle-config.ts": {
-    icon: "truffle",
+  'truffle-config.ts': {
+    icon: 'truffle',
   },
-  "trunk.yaml": {
-    icon: "trunk",
+  'trunk.yaml': {
+    icon: 'trunk',
   },
   tscn: {
-    icon: "tscn",
+    icon: 'tscn',
   },
-  "tsconfig.json": {
-    icon: "tsconfig",
+  'tsconfig.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.app.json": {
-    icon: "tsconfig",
+  'tsconfig.app.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.base.json": {
-    icon: "tsconfig",
+  'tsconfig.base.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.build.json": {
-    icon: "tsconfig",
+  'tsconfig.build.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.cjs.json": {
-    icon: "tsconfig",
+  'tsconfig.cjs.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.common.json": {
-    icon: "tsconfig",
+  'tsconfig.common.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.dev.json": {
-    icon: "tsconfig",
+  'tsconfig.dev.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.development.json": {
-    icon: "tsconfig",
+  'tsconfig.development.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.e2e.json": {
-    icon: "tsconfig",
+  'tsconfig.e2e.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.eslint.json": {
-    icon: "tsconfig",
+  'tsconfig.eslint.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.esm.json": {
-    icon: "tsconfig",
+  'tsconfig.esm.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.mjs.json": {
-    icon: "tsconfig",
+  'tsconfig.mjs.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.node.json": {
-    icon: "tsconfig",
+  'tsconfig.node.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.prod.json": {
-    icon: "tsconfig",
+  'tsconfig.prod.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.production.json": {
-    icon: "tsconfig",
+  'tsconfig.production.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.server.json": {
-    icon: "tsconfig",
+  'tsconfig.server.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.spec.json": {
-    icon: "tsconfig",
+  'tsconfig.spec.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.staging.json": {
-    icon: "tsconfig",
+  'tsconfig.staging.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.test.json": {
-    icon: "tsconfig",
+  'tsconfig.test.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.types.json": {
-    icon: "tsconfig",
+  'tsconfig.types.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.lib.json": {
-    icon: "tsconfig",
+  'tsconfig.lib.json': {
+    icon: 'tsconfig',
   },
-  "tsconfig.lib.prod.json": {
-    icon: "tsconfig",
+  'tsconfig.lib.prod.json': {
+    icon: 'tsconfig',
   },
-  "tslint.json": {
-    icon: "tslint",
+  'tslint.json': {
+    icon: 'tslint',
   },
-  "tslint.yaml": {
-    icon: "tslint",
+  'tslint.yaml': {
+    icon: 'tslint',
   },
-  "tslint.yml": {
-    icon: "tslint",
+  'tslint.yml': {
+    icon: 'tslint',
   },
   ttcn3: {
-    icon: "ttcn",
+    icon: 'ttcn',
   },
   tuc: {
-    icon: "tuc",
+    icon: 'tuc',
   },
   twig: {
-    icon: "twig",
+    icon: 'twig',
   },
-  "typedoc.cjs": {
-    icon: "typedoc",
+  'typedoc.cjs': {
+    icon: 'typedoc',
   },
-  "typedoc.js": {
-    icon: "typedoc",
+  'typedoc.js': {
+    icon: 'typedoc',
   },
-  "typedoc.json": {
-    icon: "typedoc",
+  'typedoc.json': {
+    icon: 'typedoc',
   },
-  "typedoc.jsonc": {
-    icon: "typedoc",
+  'typedoc.jsonc': {
+    icon: 'typedoc',
   },
-  "typedoc.mjs": {
-    icon: "typedoc",
+  'typedoc.mjs': {
+    icon: 'typedoc',
   },
-  "typedoc.config.cjs": {
-    icon: "typedoc",
+  'typedoc.config.cjs': {
+    icon: 'typedoc',
   },
-  "typedoc.config.js": {
-    icon: "typedoc",
+  'typedoc.config.js': {
+    icon: 'typedoc',
   },
-  "typedoc.config.json": {
-    icon: "typedoc",
+  'typedoc.config.json': {
+    icon: 'typedoc',
   },
-  "typedoc.config.jsonc": {
-    icon: "typedoc",
+  'typedoc.config.jsonc': {
+    icon: 'typedoc',
   },
-  "typedoc.config.mjs": {
-    icon: "typedoc",
+  'typedoc.config.mjs': {
+    icon: 'typedoc',
   },
   ts: {
-    icon: "typescript",
+    icon: 'typescript',
   },
   cts: {
-    icon: "typescript",
+    icon: 'typescript',
   },
   mts: {
-    icon: "typescript",
+    icon: 'typescript',
   },
-  "d.ts": {
-    icon: "typescriptdef",
+  'd.ts': {
+    icon: 'typescriptdef',
   },
-  "d.cts": {
-    icon: "typescriptdef",
+  'd.cts': {
+    icon: 'typescriptdef',
   },
-  "d.mts": {
-    icon: "typescriptdef",
+  'd.mts': {
+    icon: 'typescriptdef',
   },
   typoscript: {
-    icon: "typo3",
+    icon: 'typo3',
   },
   ua: {
-    icon: "uiua",
+    icon: 'uiua',
   },
   unibeautifyrc: {
-    icon: "unibeautify",
+    icon: 'unibeautify',
     light: true,
   },
-  "unibeautify.config.js": {
-    icon: "unibeautify",
+  'unibeautify.config.js': {
+    icon: 'unibeautify',
     light: true,
   },
-  "unibeautifyrc.js": {
-    icon: "unibeautify",
+  'unibeautifyrc.js': {
+    icon: 'unibeautify',
     light: true,
   },
-  "unibeautifyrc.json": {
-    icon: "unibeautify",
+  'unibeautifyrc.json': {
+    icon: 'unibeautify',
     light: true,
   },
-  "unibeautifyrc.yaml": {
-    icon: "unibeautify",
+  'unibeautifyrc.yaml': {
+    icon: 'unibeautify',
     light: true,
   },
-  "unibeautifyrc.yml": {
-    icon: "unibeautify",
+  'unibeautifyrc.yml': {
+    icon: 'unibeautify',
     light: true,
   },
   u: {
-    icon: "unison",
+    icon: 'unison',
   },
   unlicense: {
-    icon: "unlicense",
+    icon: 'unlicense',
   },
   unlicence: {
-    icon: "unlicense",
+    icon: 'unlicense',
   },
-  "unlicense.md": {
-    icon: "unlicense",
+  'unlicense.md': {
+    icon: 'unlicense',
   },
-  "unlicense.txt": {
-    icon: "unlicense",
+  'unlicense.txt': {
+    icon: 'unlicense',
   },
-  "unlicence.md": {
-    icon: "unlicense",
+  'unlicence.md': {
+    icon: 'unlicense',
   },
-  "unlicence.txt": {
-    icon: "unlicense",
+  'unlicence.txt': {
+    icon: 'unlicense',
   },
-  "uno.config.js": {
-    icon: "unocss",
+  'uno.config.js': {
+    icon: 'unocss',
   },
-  "uno.config.mjs": {
-    icon: "unocss",
+  'uno.config.mjs': {
+    icon: 'unocss',
   },
-  "uno.config.ts": {
-    icon: "unocss",
+  'uno.config.ts': {
+    icon: 'unocss',
   },
-  "uno.config.mts": {
-    icon: "unocss",
+  'uno.config.mts': {
+    icon: 'unocss',
   },
-  "unocss.config.js": {
-    icon: "unocss",
+  'unocss.config.js': {
+    icon: 'unocss',
   },
-  "unocss.config.mjs": {
-    icon: "unocss",
+  'unocss.config.mjs': {
+    icon: 'unocss',
   },
-  "unocss.config.ts": {
-    icon: "unocss",
+  'unocss.config.ts': {
+    icon: 'unocss',
   },
-  "unocss.config.mts": {
-    icon: "unocss",
+  'unocss.config.mts': {
+    icon: 'unocss',
   },
   vagrantfile: {
-    icon: "vagrant",
+    icon: 'vagrant',
   },
   vala: {
-    icon: "vala",
+    icon: 'vala',
   },
-  "css.ts": {
-    icon: "vanilla_extract",
+  'css.ts': {
+    icon: 'vanilla_extract',
   },
   vapi: {
-    icon: "vapi",
+    icon: 'vapi',
   },
   vash: {
-    icon: "vash",
+    icon: 'vash',
     light: true,
   },
-  "vapor.yml": {
-    icon: "vapor",
+  'vapor.yml': {
+    icon: 'vapor',
   },
   vb: {
-    icon: "vb",
+    icon: 'vb',
   },
   brs: {
-    icon: "vb",
+    icon: 'vb',
   },
   vbs: {
-    icon: "vb",
+    icon: 'vb',
   },
   bas: {
-    icon: "vb",
+    icon: 'vb',
   },
   vba: {
-    icon: "vba",
+    icon: 'vba',
   },
   vbhtml: {
-    icon: "vbhtml",
+    icon: 'vbhtml',
   },
   vbproj: {
-    icon: "vbproj",
+    icon: 'vbproj',
   },
   vcxproj: {
-    icon: "vcxproj",
+    icon: 'vcxproj',
   },
   vm: {
-    icon: "velocity",
+    icon: 'velocity',
   },
   vto: {
-    icon: "vento",
+    icon: 'vento',
   },
   vento: {
-    icon: "vento",
+    icon: 'vento',
   },
   v: {
-    icon: "verilog",
+    icon: 'verilog',
   },
   vhdl: {
-    icon: "vhdl",
+    icon: 'vhdl',
   },
-  "3g2": {
-    icon: "video",
+  '3g2': {
+    icon: 'video',
   },
-  "3gp": {
-    icon: "video",
+  '3gp': {
+    icon: 'video',
   },
   asf: {
-    icon: "video",
+    icon: 'video',
   },
   amv: {
-    icon: "video",
+    icon: 'video',
   },
   avi: {
-    icon: "video",
+    icon: 'video',
   },
   divx: {
-    icon: "video",
+    icon: 'video',
   },
   qt: {
-    icon: "video",
+    icon: 'video',
   },
   f4a: {
-    icon: "video",
+    icon: 'video',
   },
   f4b: {
-    icon: "video",
+    icon: 'video',
   },
   f4p: {
-    icon: "video",
+    icon: 'video',
   },
   f4v: {
-    icon: "video",
+    icon: 'video',
   },
   flv: {
-    icon: "video",
+    icon: 'video',
   },
   m2v: {
-    icon: "video",
+    icon: 'video',
   },
   m4v: {
-    icon: "video",
+    icon: 'video',
   },
   mkv: {
-    icon: "video",
+    icon: 'video',
   },
   mk3d: {
-    icon: "video",
+    icon: 'video',
   },
   mov: {
-    icon: "video",
+    icon: 'video',
   },
   mp2: {
-    icon: "video",
+    icon: 'video',
   },
   mp4: {
-    icon: "video",
+    icon: 'video',
   },
   mpe: {
-    icon: "video",
+    icon: 'video',
   },
   mpeg: {
-    icon: "video",
+    icon: 'video',
   },
   mpeg2: {
-    icon: "video",
+    icon: 'video',
   },
   mpg: {
-    icon: "video",
+    icon: 'video',
   },
   mpv: {
-    icon: "video",
+    icon: 'video',
   },
   nsv: {
-    icon: "video",
+    icon: 'video',
   },
   ogv: {
-    icon: "video",
+    icon: 'video',
   },
   rm: {
-    icon: "video",
+    icon: 'video',
   },
   rmvb: {
-    icon: "video",
+    icon: 'video',
   },
   svi: {
-    icon: "video",
+    icon: 'video',
   },
   vob: {
-    icon: "video",
+    icon: 'video',
   },
   webm: {
-    icon: "video",
+    icon: 'video',
   },
   wmv: {
-    icon: "video",
+    icon: 'video',
   },
   vim: {
-    icon: "vim",
+    icon: 'vim',
   },
   vimrc: {
-    icon: "vim",
+    icon: 'vim',
   },
   gvimrc: {
-    icon: "vim",
+    icon: 'vim',
   },
-  "vite.config.js": {
-    icon: "vite",
+  'vite.config.js': {
+    icon: 'vite',
   },
-  "vite.config.mjs": {
-    icon: "vite",
+  'vite.config.mjs': {
+    icon: 'vite',
   },
-  "vite.config.ts": {
-    icon: "vite",
+  'vite.config.ts': {
+    icon: 'vite',
   },
-  "vite.config.cjs": {
-    icon: "vite",
+  'vite.config.cjs': {
+    icon: 'vite',
   },
-  "vite.config.mts": {
-    icon: "vite",
+  'vite.config.mts': {
+    icon: 'vite',
   },
-  "vite.config.cts": {
-    icon: "vite",
+  'vite.config.cts': {
+    icon: 'vite',
   },
-  "Vitest-snap": {
-    icon: "vitest",
+  'Vitest-snap': {
+    icon: 'vitest',
   },
-  "vitest.config.js": {
-    icon: "vitest",
+  'vitest.config.js': {
+    icon: 'vitest',
   },
-  "vitest.config.mjs": {
-    icon: "vitest",
+  'vitest.config.mjs': {
+    icon: 'vitest',
   },
-  "vitest.config.ts": {
-    icon: "vitest",
+  'vitest.config.ts': {
+    icon: 'vitest',
   },
-  "vitest.config.cjs": {
-    icon: "vitest",
+  'vitest.config.cjs': {
+    icon: 'vitest',
   },
-  "vitest.config.mts": {
-    icon: "vitest",
+  'vitest.config.mts': {
+    icon: 'vitest',
   },
-  "vitest.config.cts": {
-    icon: "vitest",
+  'vitest.config.cts': {
+    icon: 'vitest',
   },
-  "vitest.workspace.json": {
-    icon: "vitest",
+  'vitest.workspace.json': {
+    icon: 'vitest',
   },
-  "vitest.workspace.js": {
-    icon: "vitest",
+  'vitest.workspace.js': {
+    icon: 'vitest',
   },
-  "vitest.workspace.mjs": {
-    icon: "vitest",
+  'vitest.workspace.mjs': {
+    icon: 'vitest',
   },
-  "vitest.workspace.ts": {
-    icon: "vitest",
+  'vitest.workspace.ts': {
+    icon: 'vitest',
   },
-  "vitest.workspace.cjs": {
-    icon: "vitest",
+  'vitest.workspace.cjs': {
+    icon: 'vitest',
   },
-  "vitest.workspace.mts": {
-    icon: "vitest",
+  'vitest.workspace.mts': {
+    icon: 'vitest',
   },
-  "vitest.workspace.cts": {
-    icon: "vitest",
+  'vitest.workspace.cts': {
+    icon: 'vitest',
   },
-  "vitest.projects.json": {
-    icon: "vitest",
+  'vitest.projects.json': {
+    icon: 'vitest',
   },
-  "vitest.projects.js": {
-    icon: "vitest",
+  'vitest.projects.js': {
+    icon: 'vitest',
   },
-  "vitest.projects.mjs": {
-    icon: "vitest",
+  'vitest.projects.mjs': {
+    icon: 'vitest',
   },
-  "vitest.projects.ts": {
-    icon: "vitest",
+  'vitest.projects.ts': {
+    icon: 'vitest',
   },
-  "vitest.projects.cjs": {
-    icon: "vitest",
+  'vitest.projects.cjs': {
+    icon: 'vitest',
   },
-  "vitest.projects.mts": {
-    icon: "vitest",
+  'vitest.projects.mts': {
+    icon: 'vitest',
   },
-  "vitest.projects.cts": {
-    icon: "vitest",
+  'vitest.projects.cts': {
+    icon: 'vitest',
   },
   vscodeignore: {
-    icon: "vscode",
+    icon: 'vscode',
   },
-  "launch.json": {
-    icon: "vscode",
+  'launch.json': {
+    icon: 'vscode',
   },
-  "tasks.json": {
-    icon: "vscode",
+  'tasks.json': {
+    icon: 'vscode',
   },
-  "vscodeignore.json": {
-    icon: "vscode",
+  'vscodeignore.json': {
+    icon: 'vscode',
   },
-  "code-snippets": {
-    icon: "vscode",
+  'code-snippets': {
+    icon: 'vscode',
   },
-  "vscode-test.js": {
-    icon: "vscode_test",
+  'vscode-test.js': {
+    icon: 'vscode_test',
   },
-  "vscode-test.json": {
-    icon: "vscode_test",
+  'vscode-test.json': {
+    icon: 'vscode_test',
   },
-  "vscode-test.mjs": {
-    icon: "vscode_test",
+  'vscode-test.mjs': {
+    icon: 'vscode_test',
   },
   vsix: {
-    icon: "vsix",
+    icon: 'vsix',
     light: true,
   },
   vsixmanifest: {
-    icon: "vsixmanifest",
+    icon: 'vsixmanifest',
     light: true,
   },
   vue: {
-    icon: "vue",
+    icon: 'vue',
   },
-  "vue.config.js": {
-    icon: "vueconfig",
+  'vue.config.js': {
+    icon: 'vueconfig',
   },
-  "vue.config.cjs": {
-    icon: "vueconfig",
+  'vue.config.cjs': {
+    icon: 'vueconfig',
   },
-  "vue.config.mjs": {
-    icon: "vueconfig",
+  'vue.config.mjs': {
+    icon: 'vueconfig',
   },
   vy: {
-    icon: "vyper",
+    icon: 'vyper',
   },
   vyi: {
-    icon: "vyper",
+    icon: 'vyper',
   },
-  "wallaby.json": {
-    icon: "wallaby",
+  'wallaby.json': {
+    icon: 'wallaby',
   },
-  "wallaby.js": {
-    icon: "wallaby",
+  'wallaby.js': {
+    icon: 'wallaby',
   },
-  "wallaby.ts": {
-    icon: "wallaby",
+  'wallaby.ts': {
+    icon: 'wallaby',
   },
-  "wallaby.coffee": {
-    icon: "wallaby",
+  'wallaby.coffee': {
+    icon: 'wallaby',
   },
-  "wallaby.conf.json": {
-    icon: "wallaby",
+  'wallaby.conf.json': {
+    icon: 'wallaby',
   },
-  "wallaby.conf.js": {
-    icon: "wallaby",
+  'wallaby.conf.js': {
+    icon: 'wallaby',
   },
-  "wallaby.conf.ts": {
-    icon: "wallaby",
+  'wallaby.conf.ts': {
+    icon: 'wallaby',
   },
-  "wallaby.conf.coffee": {
-    icon: "wallaby",
+  'wallaby.conf.coffee': {
+    icon: 'wallaby',
   },
-  "wally.toml": {
-    icon: "wally",
+  'wally.toml': {
+    icon: 'wally',
   },
-  "wally.lock": {
-    icon: "wally",
+  'wally.lock': {
+    icon: 'wally',
   },
   watchmanconfig: {
-    icon: "watchmanconfig",
+    icon: 'watchmanconfig',
   },
   wasm: {
-    icon: "wasm",
+    icon: 'wasm',
   },
-  "wdio.json": {
-    icon: "wdio",
+  'wdio.json': {
+    icon: 'wdio',
   },
-  "wdio.js": {
-    icon: "wdio",
+  'wdio.js': {
+    icon: 'wdio',
   },
-  "wdio.mjs": {
-    icon: "wdio",
+  'wdio.mjs': {
+    icon: 'wdio',
   },
-  "wdio.cjs": {
-    icon: "wdio",
+  'wdio.cjs': {
+    icon: 'wdio',
   },
-  "wdio.ts": {
-    icon: "wdio",
+  'wdio.ts': {
+    icon: 'wdio',
   },
-  "wdio.mts": {
-    icon: "wdio",
+  'wdio.mts': {
+    icon: 'wdio',
   },
-  "wdio.cts": {
-    icon: "wdio",
+  'wdio.cts': {
+    icon: 'wdio',
   },
-  "wdio.conf.json": {
-    icon: "wdio",
+  'wdio.conf.json': {
+    icon: 'wdio',
   },
-  "wdio.conf.js": {
-    icon: "wdio",
+  'wdio.conf.js': {
+    icon: 'wdio',
   },
-  "wdio.conf.mjs": {
-    icon: "wdio",
+  'wdio.conf.mjs': {
+    icon: 'wdio',
   },
-  "wdio.conf.cjs": {
-    icon: "wdio",
+  'wdio.conf.cjs': {
+    icon: 'wdio',
   },
-  "wdio.conf.ts": {
-    icon: "wdio",
+  'wdio.conf.ts': {
+    icon: 'wdio',
   },
-  "wdio.conf.mts": {
-    icon: "wdio",
+  'wdio.conf.mts': {
+    icon: 'wdio',
   },
-  "wdio.conf.cts": {
-    icon: "wdio",
+  'wdio.conf.cts': {
+    icon: 'wdio',
   },
   weblate: {
-    icon: "weblate",
+    icon: 'weblate',
   },
-  "weblate.ini": {
-    icon: "weblate",
+  'weblate.ini': {
+    icon: 'weblate',
   },
-  "webpack.base.conf.js": {
-    icon: "webpack",
+  'webpack.base.conf.js': {
+    icon: 'webpack',
   },
-  "webpack.base.conf.cjs": {
-    icon: "webpack",
+  'webpack.base.conf.cjs': {
+    icon: 'webpack',
   },
-  "webpack.base.conf.mjs": {
-    icon: "webpack",
+  'webpack.base.conf.mjs': {
+    icon: 'webpack',
   },
-  "webpack.base.conf.coffee": {
-    icon: "webpack",
+  'webpack.base.conf.coffee': {
+    icon: 'webpack',
   },
-  "webpack.base.conf.ts": {
-    icon: "webpack",
+  'webpack.base.conf.ts': {
+    icon: 'webpack',
   },
-  "webpack.common.js": {
-    icon: "webpack",
+  'webpack.common.js': {
+    icon: 'webpack',
   },
-  "webpack.common.cjs": {
-    icon: "webpack",
+  'webpack.common.cjs': {
+    icon: 'webpack',
   },
-  "webpack.common.mjs": {
-    icon: "webpack",
+  'webpack.common.mjs': {
+    icon: 'webpack',
   },
-  "webpack.common.coffee": {
-    icon: "webpack",
+  'webpack.common.coffee': {
+    icon: 'webpack',
   },
-  "webpack.common.ts": {
-    icon: "webpack",
+  'webpack.common.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.js": {
-    icon: "webpack",
+  'webpack.config.js': {
+    icon: 'webpack',
   },
-  "webpack.config.cjs": {
-    icon: "webpack",
+  'webpack.config.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.mjs": {
-    icon: "webpack",
+  'webpack.config.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.coffee": {
-    icon: "webpack",
+  'webpack.config.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.ts": {
-    icon: "webpack",
+  'webpack.config.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.base.js": {
-    icon: "webpack",
+  'webpack.config.base.js': {
+    icon: 'webpack',
   },
-  "webpack.config.base.cjs": {
-    icon: "webpack",
+  'webpack.config.base.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.base.mjs": {
-    icon: "webpack",
+  'webpack.config.base.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.base.coffee": {
-    icon: "webpack",
+  'webpack.config.base.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.base.ts": {
-    icon: "webpack",
+  'webpack.config.base.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.build.js": {
-    icon: "webpack",
+  'webpack.config.build.js': {
+    icon: 'webpack',
   },
-  "webpack.config.build.cjs": {
-    icon: "webpack",
+  'webpack.config.build.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.build.mjs": {
-    icon: "webpack",
+  'webpack.config.build.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.build.coffee": {
-    icon: "webpack",
+  'webpack.config.build.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.build.ts": {
-    icon: "webpack",
+  'webpack.config.build.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.common.js": {
-    icon: "webpack",
+  'webpack.config.common.js': {
+    icon: 'webpack',
   },
-  "webpack.config.common.cjs": {
-    icon: "webpack",
+  'webpack.config.common.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.common.mjs": {
-    icon: "webpack",
+  'webpack.config.common.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.common.coffee": {
-    icon: "webpack",
+  'webpack.config.common.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.common.ts": {
-    icon: "webpack",
+  'webpack.config.common.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.js": {
-    icon: "webpack",
+  'webpack.config.dev.js': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.cjs": {
-    icon: "webpack",
+  'webpack.config.dev.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.mjs": {
-    icon: "webpack",
+  'webpack.config.dev.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.coffee": {
-    icon: "webpack",
+  'webpack.config.dev.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.ts": {
-    icon: "webpack",
+  'webpack.config.dev.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.development.js": {
-    icon: "webpack",
+  'webpack.config.development.js': {
+    icon: 'webpack',
   },
-  "webpack.config.development.cjs": {
-    icon: "webpack",
+  'webpack.config.development.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.development.mjs": {
-    icon: "webpack",
+  'webpack.config.development.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.development.coffee": {
-    icon: "webpack",
+  'webpack.config.development.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.development.ts": {
-    icon: "webpack",
+  'webpack.config.development.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.js": {
-    icon: "webpack",
+  'webpack.config.staging.js': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.cjs": {
-    icon: "webpack",
+  'webpack.config.staging.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.mjs": {
-    icon: "webpack",
+  'webpack.config.staging.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.coffee": {
-    icon: "webpack",
+  'webpack.config.staging.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.ts": {
-    icon: "webpack",
+  'webpack.config.staging.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.test.js": {
-    icon: "webpack",
+  'webpack.config.test.js': {
+    icon: 'webpack',
   },
-  "webpack.config.test.cjs": {
-    icon: "webpack",
+  'webpack.config.test.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.test.mjs": {
-    icon: "webpack",
+  'webpack.config.test.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.test.coffee": {
-    icon: "webpack",
+  'webpack.config.test.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.test.ts": {
-    icon: "webpack",
+  'webpack.config.test.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.js": {
-    icon: "webpack",
+  'webpack.config.prod.js': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.cjs": {
-    icon: "webpack",
+  'webpack.config.prod.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.mjs": {
-    icon: "webpack",
+  'webpack.config.prod.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.coffee": {
-    icon: "webpack",
+  'webpack.config.prod.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.ts": {
-    icon: "webpack",
+  'webpack.config.prod.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.production.js": {
-    icon: "webpack",
+  'webpack.config.production.js': {
+    icon: 'webpack',
   },
-  "webpack.config.production.cjs": {
-    icon: "webpack",
+  'webpack.config.production.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.production.mjs": {
-    icon: "webpack",
+  'webpack.config.production.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.production.coffee": {
-    icon: "webpack",
+  'webpack.config.production.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.production.ts": {
-    icon: "webpack",
+  'webpack.config.production.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.babel.js": {
-    icon: "webpack",
+  'webpack.config.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.babel.ts": {
-    icon: "webpack",
+  'webpack.config.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.base.babel.js": {
-    icon: "webpack",
+  'webpack.config.base.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.base.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.base.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.base.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.base.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.base.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.base.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.base.babel.ts": {
-    icon: "webpack",
+  'webpack.config.base.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.common.babel.js": {
-    icon: "webpack",
+  'webpack.config.common.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.common.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.common.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.common.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.common.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.common.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.common.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.common.babel.ts": {
-    icon: "webpack",
+  'webpack.config.common.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.babel.js": {
-    icon: "webpack",
+  'webpack.config.dev.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.dev.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.dev.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.dev.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.dev.babel.ts": {
-    icon: "webpack",
+  'webpack.config.dev.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.development.babel.js": {
-    icon: "webpack",
+  'webpack.config.development.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.development.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.development.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.development.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.development.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.development.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.development.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.development.babel.ts": {
-    icon: "webpack",
+  'webpack.config.development.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.babel.js": {
-    icon: "webpack",
+  'webpack.config.staging.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.staging.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.staging.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.staging.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.staging.babel.ts": {
-    icon: "webpack",
+  'webpack.config.staging.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.test.babel.js": {
-    icon: "webpack",
+  'webpack.config.test.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.test.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.test.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.test.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.test.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.test.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.test.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.test.babel.ts": {
-    icon: "webpack",
+  'webpack.config.test.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.babel.js": {
-    icon: "webpack",
+  'webpack.config.prod.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.prod.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.prod.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.prod.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.prod.babel.ts": {
-    icon: "webpack",
+  'webpack.config.prod.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.config.production.babel.js": {
-    icon: "webpack",
+  'webpack.config.production.babel.js': {
+    icon: 'webpack',
   },
-  "webpack.config.production.babel.cjs": {
-    icon: "webpack",
+  'webpack.config.production.babel.cjs': {
+    icon: 'webpack',
   },
-  "webpack.config.production.babel.mjs": {
-    icon: "webpack",
+  'webpack.config.production.babel.mjs': {
+    icon: 'webpack',
   },
-  "webpack.config.production.babel.coffee": {
-    icon: "webpack",
+  'webpack.config.production.babel.coffee': {
+    icon: 'webpack',
   },
-  "webpack.config.production.babel.ts": {
-    icon: "webpack",
+  'webpack.config.production.babel.ts': {
+    icon: 'webpack',
   },
-  "webpack.dev.js": {
-    icon: "webpack",
+  'webpack.dev.js': {
+    icon: 'webpack',
   },
-  "webpack.dev.cjs": {
-    icon: "webpack",
+  'webpack.dev.cjs': {
+    icon: 'webpack',
   },
-  "webpack.dev.mjs": {
-    icon: "webpack",
+  'webpack.dev.mjs': {
+    icon: 'webpack',
   },
-  "webpack.dev.coffee": {
-    icon: "webpack",
+  'webpack.dev.coffee': {
+    icon: 'webpack',
   },
-  "webpack.dev.ts": {
-    icon: "webpack",
+  'webpack.dev.ts': {
+    icon: 'webpack',
   },
-  "webpack.dev.conf.js": {
-    icon: "webpack",
+  'webpack.dev.conf.js': {
+    icon: 'webpack',
   },
-  "webpack.dev.conf.cjs": {
-    icon: "webpack",
+  'webpack.dev.conf.cjs': {
+    icon: 'webpack',
   },
-  "webpack.dev.conf.mjs": {
-    icon: "webpack",
+  'webpack.dev.conf.mjs': {
+    icon: 'webpack',
   },
-  "webpack.dev.conf.coffee": {
-    icon: "webpack",
+  'webpack.dev.conf.coffee': {
+    icon: 'webpack',
   },
-  "webpack.dev.conf.ts": {
-    icon: "webpack",
+  'webpack.dev.conf.ts': {
+    icon: 'webpack',
   },
-  "webpack.local.js": {
-    icon: "webpack",
+  'webpack.local.js': {
+    icon: 'webpack',
   },
-  "webpack.local.cjs": {
-    icon: "webpack",
+  'webpack.local.cjs': {
+    icon: 'webpack',
   },
-  "webpack.local.mjs": {
-    icon: "webpack",
+  'webpack.local.mjs': {
+    icon: 'webpack',
   },
-  "webpack.local.coffee": {
-    icon: "webpack",
+  'webpack.local.coffee': {
+    icon: 'webpack',
   },
-  "webpack.local.ts": {
-    icon: "webpack",
+  'webpack.local.ts': {
+    icon: 'webpack',
   },
-  "webpack.prod.js": {
-    icon: "webpack",
+  'webpack.prod.js': {
+    icon: 'webpack',
   },
-  "webpack.prod.cjs": {
-    icon: "webpack",
+  'webpack.prod.cjs': {
+    icon: 'webpack',
   },
-  "webpack.prod.mjs": {
-    icon: "webpack",
+  'webpack.prod.mjs': {
+    icon: 'webpack',
   },
-  "webpack.prod.coffee": {
-    icon: "webpack",
+  'webpack.prod.coffee': {
+    icon: 'webpack',
   },
-  "webpack.prod.ts": {
-    icon: "webpack",
+  'webpack.prod.ts': {
+    icon: 'webpack',
   },
-  "webpack.prod.conf.js": {
-    icon: "webpack",
+  'webpack.prod.conf.js': {
+    icon: 'webpack',
   },
-  "webpack.prod.conf.cjs": {
-    icon: "webpack",
+  'webpack.prod.conf.cjs': {
+    icon: 'webpack',
   },
-  "webpack.prod.conf.mjs": {
-    icon: "webpack",
+  'webpack.prod.conf.mjs': {
+    icon: 'webpack',
   },
-  "webpack.prod.conf.coffee": {
-    icon: "webpack",
+  'webpack.prod.conf.coffee': {
+    icon: 'webpack',
   },
-  "webpack.prod.conf.ts": {
-    icon: "webpack",
+  'webpack.prod.conf.ts': {
+    icon: 'webpack',
   },
-  "webpack.main.config.js": {
-    icon: "webpack",
+  'webpack.main.config.js': {
+    icon: 'webpack',
   },
-  "webpack.main.config.cjs": {
-    icon: "webpack",
+  'webpack.main.config.cjs': {
+    icon: 'webpack',
   },
-  "webpack.main.config.mjs": {
-    icon: "webpack",
+  'webpack.main.config.mjs': {
+    icon: 'webpack',
   },
-  "webpack.main.config.coffee": {
-    icon: "webpack",
+  'webpack.main.config.coffee': {
+    icon: 'webpack',
   },
-  "webpack.main.config.ts": {
-    icon: "webpack",
+  'webpack.main.config.ts': {
+    icon: 'webpack',
   },
-  "webpack.mix.js": {
-    icon: "webpack",
+  'webpack.mix.js': {
+    icon: 'webpack',
   },
-  "webpack.mix.cjs": {
-    icon: "webpack",
+  'webpack.mix.cjs': {
+    icon: 'webpack',
   },
-  "webpack.mix.mjs": {
-    icon: "webpack",
+  'webpack.mix.mjs': {
+    icon: 'webpack',
   },
-  "webpack.mix.coffee": {
-    icon: "webpack",
+  'webpack.mix.coffee': {
+    icon: 'webpack',
   },
-  "webpack.mix.ts": {
-    icon: "webpack",
+  'webpack.mix.ts': {
+    icon: 'webpack',
   },
-  "webpack.plugins.js": {
-    icon: "webpack",
+  'webpack.plugins.js': {
+    icon: 'webpack',
   },
-  "webpack.plugins.cjs": {
-    icon: "webpack",
+  'webpack.plugins.cjs': {
+    icon: 'webpack',
   },
-  "webpack.plugins.mjs": {
-    icon: "webpack",
+  'webpack.plugins.mjs': {
+    icon: 'webpack',
   },
-  "webpack.plugins.coffee": {
-    icon: "webpack",
+  'webpack.plugins.coffee': {
+    icon: 'webpack',
   },
-  "webpack.plugins.ts": {
-    icon: "webpack",
+  'webpack.plugins.ts': {
+    icon: 'webpack',
   },
-  "webpack.renderer.config.js": {
-    icon: "webpack",
+  'webpack.renderer.config.js': {
+    icon: 'webpack',
   },
-  "webpack.renderer.config.cjs": {
-    icon: "webpack",
+  'webpack.renderer.config.cjs': {
+    icon: 'webpack',
   },
-  "webpack.renderer.config.mjs": {
-    icon: "webpack",
+  'webpack.renderer.config.mjs': {
+    icon: 'webpack',
   },
-  "webpack.renderer.config.coffee": {
-    icon: "webpack",
+  'webpack.renderer.config.coffee': {
+    icon: 'webpack',
   },
-  "webpack.renderer.config.ts": {
-    icon: "webpack",
+  'webpack.renderer.config.ts': {
+    icon: 'webpack',
   },
-  "webpack.rules.js": {
-    icon: "webpack",
+  'webpack.rules.js': {
+    icon: 'webpack',
   },
-  "webpack.rules.cjs": {
-    icon: "webpack",
+  'webpack.rules.cjs': {
+    icon: 'webpack',
   },
-  "webpack.rules.mjs": {
-    icon: "webpack",
+  'webpack.rules.mjs': {
+    icon: 'webpack',
   },
-  "webpack.rules.coffee": {
-    icon: "webpack",
+  'webpack.rules.coffee': {
+    icon: 'webpack',
   },
-  "webpack.rules.ts": {
-    icon: "webpack",
+  'webpack.rules.ts': {
+    icon: 'webpack',
   },
-  "webpack.test.conf.js": {
-    icon: "webpack",
+  'webpack.test.conf.js': {
+    icon: 'webpack',
   },
-  "webpack.test.conf.cjs": {
-    icon: "webpack",
+  'webpack.test.conf.cjs': {
+    icon: 'webpack',
   },
-  "webpack.test.conf.mjs": {
-    icon: "webpack",
+  'webpack.test.conf.mjs': {
+    icon: 'webpack',
   },
-  "webpack.test.conf.coffee": {
-    icon: "webpack",
+  'webpack.test.conf.coffee': {
+    icon: 'webpack',
   },
-  "webpack.test.conf.ts": {
-    icon: "webpack",
+  'webpack.test.conf.ts': {
+    icon: 'webpack',
   },
   wy: {
-    icon: "wenyan",
+    icon: 'wenyan',
   },
-  "wercker.yml": {
-    icon: "wercker",
+  'wercker.yml': {
+    icon: 'wercker',
   },
   wgsl: {
-    icon: "wgsl",
+    icon: 'wgsl',
   },
   wt: {
-    icon: "wikitext",
+    icon: 'wikitext',
   },
   wikitext: {
-    icon: "wikitext",
+    icon: 'wikitext',
   },
-  "windi.config.ts": {
-    icon: "windi",
+  'windi.config.ts': {
+    icon: 'windi',
   },
-  "windi.config.js": {
-    icon: "windi",
+  'windi.config.js': {
+    icon: 'windi',
   },
   wai: {
-    icon: "wit",
+    icon: 'wit',
   },
   wit: {
-    icon: "wit",
+    icon: 'wit',
   },
   wl: {
-    icon: "wolfram",
+    icon: 'wolfram',
   },
   doc: {
-    icon: "word",
+    icon: 'word',
   },
   docx: {
-    icon: "word",
+    icon: 'word',
   },
   docm: {
-    icon: "word",
+    icon: 'word',
   },
   dotx: {
-    icon: "word",
+    icon: 'word',
   },
   dotm: {
-    icon: "word",
+    icon: 'word',
   },
   wll: {
-    icon: "word",
+    icon: 'word',
   },
-  "wpml-config.xml": {
-    icon: "wpml",
+  'wpml-config.xml': {
+    icon: 'wpml',
   },
   wurst: {
-    icon: "wurst",
+    icon: 'wurst',
   },
   wxml: {
-    icon: "wxml",
+    icon: 'wxml',
   },
   wxss: {
-    icon: "wxss",
+    icon: 'wxss',
   },
-  "wxt.config.ts": {
-    icon: "wxt",
+  'wxt.config.ts': {
+    icon: 'wxt',
   },
   xcodeproj: {
-    icon: "xcode",
+    icon: 'xcode',
   },
   xfl: {
-    icon: "xfl",
+    icon: 'xfl',
     light: true,
   },
   xib: {
-    icon: "xib",
+    icon: 'xib',
   },
   xliff: {
-    icon: "xliff",
+    icon: 'xliff',
   },
   xlf: {
-    icon: "xliff",
+    icon: 'xliff',
   },
-  "xmake.lua": {
-    icon: "xmake",
+  'xmake.lua': {
+    icon: 'xmake',
   },
   xml: {
-    icon: "xml",
+    icon: 'xml',
   },
   xsd: {
-    icon: "xml",
+    icon: 'xml',
   },
   axml: {
-    icon: "xml",
+    icon: 'xml',
   },
   axaml: {
-    icon: "xml",
+    icon: 'xml',
   },
   bpmn: {
-    icon: "xml",
+    icon: 'xml',
   },
   cpt: {
-    icon: "xml",
+    icon: 'xml',
   },
   csl: {
-    icon: "xml",
+    icon: 'xml',
   },
-  "csproj.user": {
-    icon: "xml",
+  'csproj.user': {
+    icon: 'xml',
   },
   dita: {
-    icon: "xml",
+    icon: 'xml',
   },
   ditamap: {
-    icon: "xml",
+    icon: 'xml',
   },
   ent: {
-    icon: "xml",
+    icon: 'xml',
   },
   dtml: {
-    icon: "xml",
+    icon: 'xml',
   },
   fxml: {
-    icon: "xml",
+    icon: 'xml',
   },
   iml: {
-    icon: "xml",
+    icon: 'xml',
   },
   isml: {
-    icon: "xml",
+    icon: 'xml',
   },
   jmx: {
-    icon: "xml",
+    icon: 'xml',
   },
   launch: {
-    icon: "xml",
+    icon: 'xml',
   },
   menu: {
-    icon: "xml",
+    icon: 'xml',
   },
   mxml: {
-    icon: "xml",
+    icon: 'xml',
   },
   opml: {
-    icon: "xml",
+    icon: 'xml',
   },
   owl: {
-    icon: "xml",
+    icon: 'xml',
   },
   proj: {
-    icon: "xml",
+    icon: 'xml',
   },
   props: {
-    icon: "xml",
+    icon: 'xml',
   },
   pt: {
-    icon: "xml",
+    icon: 'xml',
   },
   publishsettings: {
-    icon: "xml",
+    icon: 'xml',
   },
   pubxml: {
-    icon: "xml",
+    icon: 'xml',
   },
-  "pubxml.user": {
-    icon: "xml",
+  'pubxml.user': {
+    icon: 'xml',
   },
   rbxlx: {
-    icon: "xml",
+    icon: 'xml',
   },
   rbxmx: {
-    icon: "xml",
+    icon: 'xml',
   },
   rdf: {
-    icon: "xml",
+    icon: 'xml',
   },
   rng: {
-    icon: "xml",
+    icon: 'xml',
   },
   shproj: {
-    icon: "xml",
+    icon: 'xml',
   },
   targets: {
-    icon: "xml",
+    icon: 'xml',
   },
   tld: {
-    icon: "xml",
+    icon: 'xml',
   },
   tmx: {
-    icon: "xml",
+    icon: 'xml',
   },
-  "vbproj.user": {
-    icon: "xml",
+  'vbproj.user': {
+    icon: 'xml',
   },
-  "vcxproj.filters": {
-    icon: "xml",
+  'vcxproj.filters': {
+    icon: 'xml',
   },
   wsdl: {
-    icon: "xml",
+    icon: 'xml',
   },
   wxi: {
-    icon: "xml",
+    icon: 'xml',
   },
   wxl: {
-    icon: "xml",
+    icon: 'xml',
   },
   wxs: {
-    icon: "xml",
+    icon: 'xml',
   },
   xaml: {
-    icon: "xml",
+    icon: 'xml',
   },
   xbl: {
-    icon: "xml",
+    icon: 'xml',
   },
   xpdl: {
-    icon: "xml",
+    icon: 'xml',
   },
   xul: {
-    icon: "xml",
+    icon: 'xml',
   },
   xoml: {
-    icon: "xml",
+    icon: 'xml',
   },
   pex: {
-    icon: "xml",
+    icon: 'xml',
   },
   tmlanguage: {
-    icon: "xml",
+    icon: 'xml',
   },
-  "xo-config": {
-    icon: "xo",
+  'xo-config': {
+    icon: 'xo',
   },
-  "xo.config.js": {
-    icon: "xo",
+  'xo.config.js': {
+    icon: 'xo',
   },
-  "xo.config.cjs": {
-    icon: "xo",
+  'xo.config.cjs': {
+    icon: 'xo',
   },
-  "xo-config.js": {
-    icon: "xo",
+  'xo-config.js': {
+    icon: 'xo',
   },
-  "xo-config.json": {
-    icon: "xo",
+  'xo-config.json': {
+    icon: 'xo',
   },
-  "xo-config.cjs": {
-    icon: "xo",
+  'xo-config.cjs': {
+    icon: 'xo',
   },
   xcompose: {
-    icon: "xorg",
+    icon: 'xorg',
     light: true,
   },
   xquery: {
-    icon: "xquery",
+    icon: 'xquery',
   },
   xsl: {
-    icon: "xsl",
+    icon: 'xsl',
   },
   xslt: {
-    icon: "xsl",
+    icon: 'xsl',
   },
   bison: {
-    icon: "yacc",
+    icon: 'yacc',
   },
-  "YAML-tmLanguage": {
-    icon: "yaml",
+  'YAML-tmLanguage': {
+    icon: 'yaml',
     light: true,
   },
   eyaml: {
-    icon: "yaml",
+    icon: 'yaml',
     light: true,
   },
   eyml: {
-    icon: "yaml",
+    icon: 'yaml',
     light: true,
   },
   cff: {
-    icon: "yaml",
+    icon: 'yaml',
     light: true,
   },
-  "yaml-tmlanguage": {
-    icon: "yaml",
+  'yaml-tmlanguage': {
+    icon: 'yaml',
     light: true,
   },
-  "yaml-tmpreferences": {
-    icon: "yaml",
+  'yaml-tmpreferences': {
+    icon: 'yaml',
     light: true,
   },
-  "yaml-tmtheme": {
-    icon: "yaml",
+  'yaml-tmtheme': {
+    icon: 'yaml',
     light: true,
   },
   winget: {
-    icon: "yaml",
+    icon: 'yaml',
     light: true,
   },
   yamllint: {
-    icon: "yamllint",
+    icon: 'yamllint',
   },
   yaspellerrc: {
-    icon: "yandex",
+    icon: 'yandex',
   },
-  "yaspeller.json": {
-    icon: "yandex",
+  'yaspeller.json': {
+    icon: 'yandex',
   },
   yang: {
-    icon: "yang",
+    icon: 'yang',
   },
   lock: {
-    icon: "yarn",
+    icon: 'yarn',
   },
-  "yarn.lock": {
-    icon: "yarn",
+  'yarn.lock': {
+    icon: 'yarn',
   },
   yarnrc: {
-    icon: "yarn",
+    icon: 'yarn',
   },
-  "yarnrc.yml": {
-    icon: "yarn",
+  'yarnrc.yml': {
+    icon: 'yarn',
   },
   yarnclean: {
-    icon: "yarn",
+    icon: 'yarn',
   },
-  "yarn-integrity": {
-    icon: "yarn",
+  'yarn-integrity': {
+    icon: 'yarn',
   },
-  "yarn-metadata.json": {
-    icon: "yarn",
+  'yarn-metadata.json': {
+    icon: 'yarn',
   },
-  "yarn-state.yml": {
-    icon: "yarn",
+  'yarn-state.yml': {
+    icon: 'yarn',
   },
   yarnignore: {
-    icon: "yarn",
+    icon: 'yarn',
   },
-  "yo-rc.json": {
-    icon: "yeoman",
+  'yo-rc.json': {
+    icon: 'yeoman',
   },
-  "now.json": {
-    icon: "vercel",
+  'now.json': {
+    icon: 'vercel',
     light: true,
   },
   nowignore: {
-    icon: "vercel",
+    icon: 'vercel',
     light: true,
   },
-  "vercel.json": {
-    icon: "vercel",
+  'vercel.json': {
+    icon: 'vercel',
     light: true,
   },
   vercelignore: {
-    icon: "vercel",
+    icon: 'vercel',
     light: true,
   },
-  "liara.json": {
-    icon: "liara",
+  'liara.json': {
+    icon: 'liara',
   },
   liaraignore: {
-    icon: "liara",
+    icon: 'liara',
   },
   zig: {
-    icon: "zig",
+    icon: 'zig',
   },
-  "turbo.json": {
-    icon: "turbo",
+  'turbo.json': {
+    icon: 'turbo',
     light: true,
   },
-  "doppler.yaml": {
-    icon: "doppler",
+  'doppler.yaml': {
+    icon: 'doppler',
   },
-  "doppler-template.yaml": {
-    icon: "doppler",
+  'doppler-template.yaml': {
+    icon: 'doppler',
   },
   zip: {
-    icon: "zip",
+    icon: 'zip',
   },
   rar: {
-    icon: "zip",
+    icon: 'zip',
   },
-  "7z": {
-    icon: "zip",
+  '7z': {
+    icon: 'zip',
   },
   tar: {
-    icon: "zip",
+    icon: 'zip',
   },
   tgz: {
-    icon: "zip",
+    icon: 'zip',
   },
   bz: {
-    icon: "zip",
+    icon: 'zip',
   },
   gz: {
-    icon: "zip",
+    icon: 'zip',
   },
   bzip2: {
-    icon: "zip",
+    icon: 'zip',
   },
   xz: {
-    icon: "zip",
+    icon: 'zip',
   },
   bz2: {
-    icon: "zip",
+    icon: 'zip',
   },
   whl: {
-    icon: "zip",
+    icon: 'zip',
   },
   zipx: {
-    icon: "zip",
+    icon: 'zip',
   },
   br: {
-    icon: "zip",
+    icon: 'zip',
   },
-  "knip.json": {
-    icon: "knip",
+  'knip.json': {
+    icon: 'knip',
   },
-  "knip.jsonc": {
-    icon: "knip",
+  'knip.jsonc': {
+    icon: 'knip',
   },
-  "knip.ts": {
-    icon: "knip",
+  'knip.ts': {
+    icon: 'knip',
   },
-  "knip.js": {
-    icon: "knip",
+  'knip.js': {
+    icon: 'knip',
   },
-  "knip.config.ts": {
-    icon: "knip",
+  'knip.config.ts': {
+    icon: 'knip',
   },
-  "knip.config.js": {
-    icon: "knip",
+  'knip.config.js': {
+    icon: 'knip',
   },
-};
+}

@@ -11,6 +11,8 @@ import {
   createFile,
   deleteFile,
   exportFile,
+  openNativeFile,
+  createNativeFile,
 } from '@/utils/filePanelOption'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import { Component } from 'vue'
@@ -292,6 +294,10 @@ const createFileCallback = (path: string, repo: string) => {
   openLocalFile(path, repo)
 }
 
+const createNativeCallback = (fileHandle: FileSystemFileHandle) => {
+  openNativeFile(fileHandle)
+}
+
 const deleteFileCallback = () => {
   updateTreeData()
   loading.value = false
@@ -359,9 +365,58 @@ const createDraftMenu = {
   },
 }
 
+// 本地文件右键菜单
+
+const createNativeFileMenu = {
+  label: '文件',
+  onClick: (
+    data: treeItemObject | null,
+    repo: string,
+    type: string,
+    post: boolean = false,
+    draft: boolean = false,
+    _callback: (fileHandle: FileSystemFileHandle) => void = createNativeCallback,
+  ) => {
+    createNativeFile(post, draft, _callback)
+  },
+}
+
+const createNativePostMenu = {
+  label: '新建文章',
+  onClick: (
+    data: treeItemObject | null,
+    repo: string,
+    type: string,
+    post: boolean = true,
+    draft: boolean = false,
+    _callback: (fileHandle: FileSystemFileHandle) => void = createNativeCallback,
+  ) => {
+    createNativeFile(post, draft, _callback)
+  },
+}
+
+const createNativeDraftMenu = {
+  label: '新建草稿',
+  onClick: (
+    data: treeItemObject | null,
+    repo: string,
+    type: string,
+    post: boolean = true,
+    draft: boolean = true,
+    _callback: (fileHandle: FileSystemFileHandle) => void = createNativeCallback,
+  ) => {
+    createNativeFile(post, draft, _callback)
+  },
+}
+
 const createMenu = {
   label: '新建',
   children: [createPostMenu, createDraftMenu, createFileMenu],
+}
+
+const createNativeMenu = {
+  label: '新建(本机)',
+  children: [createNativePostMenu, createNativeDraftMenu, createNativeFileMenu],
 }
 
 const renameMenu = {
@@ -430,6 +485,7 @@ const openNativeFileMenu = {
   onClick: async () => {
     if ('showOpenFilePicker' in window) {
       const [fileHandle] = await window.showOpenFilePicker({ startIn: 'desktop' })
+      openNativeFile(fileHandle)
       console.log(fileHandle)
     } else {
       ElNotification({
@@ -438,13 +494,6 @@ const openNativeFileMenu = {
         type: 'warning',
       })
     }
-  },
-}
-
-const createNativeFileMenu = {
-  label: '创建本机文件',
-  onClick: () => {
-    console.log('新建')
   },
 }
 
@@ -465,50 +514,50 @@ const fileRightClick = (
       if (data.isLeaf) {
         contexmenu = [
           createMenu,
+          createNativeMenu,
           renameMenu,
           copyMenu,
           deleteMenu,
           exportMenu,
-          createNativeFileMenu,
           openNativeFileMenu,
           refreshMenu,
         ]
       } else {
-        contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
+        contexmenu = [createMenu, createNativeMenu, openNativeFileMenu, refreshMenu]
       }
     } else {
-      contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
+      contexmenu = [createMenu, createNativeMenu, openNativeFileMenu, refreshMenu]
     }
   } else if (type === 'local') {
     if (data) {
       if (data.isLeaf) {
         contexmenu = [
           createMenu,
+          createNativeMenu,
           renameMenu,
           copyMenu,
           deleteMenu,
           exportMenu,
-          createNativeFileMenu,
           openNativeFileMenu,
           refreshMenu,
           copyToOtherRepoMenu,
         ]
       } else {
-        contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
+        contexmenu = [createMenu, createNativeMenu, openNativeFileMenu, refreshMenu]
       }
     } else {
-      contexmenu = [createMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
+      contexmenu = [createMenu, createNativeMenu, openNativeFileMenu, refreshMenu]
     }
     repo = localSelectRepoName.value
   } else if (type === 'remote') {
     if (data) {
       if (data.isLeaf) {
-        contexmenu = [exportMenu, createNativeFileMenu, openNativeFileMenu, refreshMenu]
+        contexmenu = [exportMenu, createNativeMenu, openNativeFileMenu, refreshMenu]
       } else {
-        contexmenu = [createNativeFileMenu, openNativeFileMenu, refreshMenu]
+        contexmenu = [createNativeMenu, openNativeFileMenu, refreshMenu]
       }
     } else {
-      contexmenu = [createNativeFileMenu, openNativeFileMenu, refreshMenu]
+      contexmenu = [createNativeMenu, openNativeFileMenu, refreshMenu]
     }
   }
 
