@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref, Ref, watch } from 'vue'
+import { markRaw, ref, Ref, watch } from 'vue'
 import api from '@/utils/api'
 import { generateRandomId } from '@/utils/general'
+import panelsManager from '@/panels'
 
 export const useContexStore = defineStore('contex', () => {
   // 打开的文件
@@ -80,6 +81,123 @@ export const useContexStore = defineStore('contex', () => {
     },
   )
 
+  const savedContextDict: Record<string, Ref<unknown>> = {
+    routerParams,
+    sidebarState,
+    tabs,
+    activeTabId,
+    titleBarText,
+  }
+
+  interface ContextReset {
+    save: () => string
+    load: (data: string) => void
+  }
+
+  const sidebarStateReset: ContextReset = {
+    save: () => {
+      const savedState = { ...sidebarState.value }
+      savedState.ready = false
+      return JSON.stringify(savedState)
+    },
+    load: (data: string) => {
+      try {
+        const parsedData = JSON.parse(data)
+        sidebarState.value = parsedData
+      } catch (e) {
+        console.error('Failed to load sidebarState', e)
+      }
+    },
+  }
+
+  const tabsReset: {
+    save: () => string
+    load: (data: string) => void
+  } = {
+    save: () => {
+      const savedTabs = tabs.value
+        .map((tab) => {
+          const data = tab.data
+          if (tab.panelName === 'nativeFileEditor') {
+            return null
+          }
+          return {
+            id: tab.id,
+            panelName: tab.panelName,
+            icon: tab.icon,
+            title: tab.title,
+            data,
+          }
+        })
+        .filter((tab) => tab !== null)
+
+      return JSON.stringify(savedTabs)
+    },
+    load: (data: string) => {
+      try {
+        const parsedTabs = JSON.parse(data)
+        parsedTabs.forEach((tab: TabItem) => {
+          const newTab: TabItem = {
+            id: tab.id,
+            panelName: tab.panelName,
+            panel: panelsManager.getPanelComponent(tab.panelName)
+              ? markRaw(panelsManager.getPanelComponent(tab.panelName)!)
+              : null,
+            icon: tab.icon,
+            title: tab.title,
+            data: tab.data,
+          }
+
+          tabs.value.push(newTab)
+        })
+      } catch (e) {
+        console.error('Failed to load tabs', e)
+      }
+    },
+  }
+
+  const contextResetsDict: Record<string, ContextReset> = {
+    sidebarState: sidebarStateReset,
+    tabs: tabsReset,
+  }
+
+  const saveContext = () => {
+    const savedValues: Record<string, unknown> = {}
+
+    for (const key in savedContextDict) {
+      if (contextResetsDict[key]) {
+        savedValues[key] = contextResetsDict[key].save()
+        continue
+      }
+      savedValues[key] = savedContextDict[key].value
+    }
+
+    localStorage.setItem('context', JSON.stringify(savedValues))
+  }
+
+  const loadContext = () => {
+    const savedValues = localStorage.getItem('context')
+    if (savedValues) {
+      const parsedValues = JSON.parse(savedValues)
+      for (const key in savedContextDict) {
+        if (parsedValues[key]) {
+          if (contextResetsDict[key]) {
+            contextResetsDict[key].load(parsedValues[key])
+            continue
+          }
+          savedContextDict[key].value = parsedValues[key]
+        }
+      }
+    }
+  }
+
+  loadContext()
+
+  // 开始监听所有需要保存的状态
+  for (const key in savedContextDict) {
+    watch(savedContextDict[key], saveContext, { deep: true })
+  }
+
   return {
     api,
     // openedFiles,
@@ -92,5 +210,7 @@ export const useContexStore = defineStore('contex', () => {
     setActiveTab,
     addTab,
     removeTab,
+    saveContext,
+    loadContext,
   }
 })

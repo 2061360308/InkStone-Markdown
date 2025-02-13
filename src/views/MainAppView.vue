@@ -1,22 +1,17 @@
 <script setup lang="ts">
 import { Ref, ref, onMounted, computed, watch } from 'vue'
-import { useContexStore, useSettingsStore } from '@/stores'
+import { useContexStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { Splitpanes, Pane } from 'splitpanes'
 import { PanelIconPosition } from '@/panels/base'
 import panelsManager from '@/panels'
 import SidebarPanel from '@/components/SidebarPanel.vue'
-import { decryptToken, validateLogin } from '@/utils/general'
-import api from '@/utils/api'
 import { useDark, useMediaQuery } from '@vueuse/core'
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
 import { createNativeFile, openNativeFile } from '@/utils/filePanelOption'
 
 const contexStore = useContexStore()
-const settingsStore = useSettingsStore()
-
-const { sidebarState } = storeToRefs(contexStore)
 
 const titleBarVisible = ref(false)
 
@@ -233,7 +228,7 @@ const menuBarData: Ref<MenubarData> = ref({
 
 const notificationVisible: Ref<boolean> = ref(contexStore.notification.data.length > 0)
 
-const activeMenu = ref(contexStore.sidebarState.current)
+const sidebarState = storeToRefs(contexStore).sidebarState
 
 const topMenuItems = computed(() =>
   panelsManager
@@ -311,45 +306,45 @@ const unpinSideBarPanel = () => {
 const handleMenuSelect = (index: string) => {
   // Set the active menu
   if (!panelsManager.getPanel(index)?.noselect) {
-    if (sidebarPanelFixed.value) {
-      if (index === activeMenu.value) {
-        activeMenu.value = ''
+    if (sidebarState.value.fixed) {
+      if (index === sidebarState.value.current) {
+        sidebarState.value.current = ''
+
+        console.log(sidebarState.value)
         closeSideBarPanel()
+        return
       } else {
         contexStore.sidebarState.opened = true
-        activeMenu.value = index
+        sidebarState.value.current = index
       }
     } else {
-      activeMenu.value = index
+      sidebarState.value.current = index
     }
   }
   panelsManager.activePanel(index)
 }
 
 const handelPinButton = () => {
-  if (sidebarPanelFixed.value) {
+  if (sidebarState.value.fixed) {
     unpinSideBarPanel()
   } else {
     contexStore.sidebarState.fixed = true
   }
 }
 
-const sidebarPanelVisible = computed(() => sidebarState.value.opened)
-const sidebarPanelFixed = computed(() => sidebarState.value.fixed)
-const sidebarPanelSize = computed(() => sidebarState.value.size)
 const sidebarDrawerVisible: Ref<boolean> = ref(false)
 
 let menuBarEnter: boolean = false
 
 const sidebarMenuMouseEnter = () => {
-  if (sidebarPanelFixed.value) return
+  if (sidebarState.value.fixed) return
 
   menuBarEnter = true
   sidebarDrawerVisible.value = true
 }
 
 const sidebarMenuMouseLeave = () => {
-  if (sidebarPanelFixed.value) return
+  if (sidebarState.value.fixed) return
 
   setTimeout(() => {
     if (!menuBarEnter) {
@@ -374,41 +369,7 @@ const truncateTitle = (title: string) => {
  *   验证本地token信息
  */
 
-const validate = async () => {
-  if (api.ready) {
-    contexStore.sidebarState.ready = true
-    console.log('API已经准备好了，无需进行验证')
-    return
-  }
-
-  const start_time = Date.now()
-
-  const access_token = decryptToken(localStorage.getItem('access_token') || '')
-
-  // 如果存在 access_token,进行验证
-  if (access_token) {
-    const { tokenValid, repoValid, hasPushAccess, branchValid, installedApp } = await validateLogin(
-      access_token,
-      settingsStore.settings['基本配置'].repoName,
-      settingsStore.settings['基本配置'].repoBranch,
-    )
-    if (tokenValid && repoValid && hasPushAccess && branchValid) {
-      // 判断登录方式，如果是通过GithubApp自动登录的，需要验证是否安装应用
-      const loginMethodValue = localStorage.getItem('loginMethod')
-      if (loginMethodValue === 'github' && !installedApp) {
-        localStorage.removeItem('access_token')
-      }
-    } else {
-      // 验证失败，清除本地token
-      localStorage.removeItem('access_token')
-    }
-  }
-
-  console.log('验证完成, 耗时：', Date.now() - start_time)
-
-  // 置sidebarPanel的ready为true，让其开始挂载面板组件
-  contexStore.sidebarState.ready = true
-}
+const validate = async () => {}
 
 onMounted(() => {
   titleBarCheck()
@@ -447,7 +408,11 @@ const isDark = useDark()
             v-for="item in topMenuItems"
             :index="item.id"
             :key="item.id"
-            :class="{ active: item.id === activeMenu, item: true, noselect: item.noselect }"
+            :class="{
+              active: item.id === sidebarState.current,
+              item: true,
+              noselect: item.noselect,
+            }"
             @click="handleMenuSelect(item.id)"
           >
             <font-awesome-icon :icon="['fas', item.icon]" size="2xl" />
@@ -472,7 +437,11 @@ const isDark = useDark()
             v-for="item in bottomMenuItems"
             :index="item.id"
             :key="item.id"
-            :class="{ active: item.id === activeMenu, item: true, noselect: item.noselect }"
+            :class="{
+              active: item.id === sidebarState.current,
+              item: true,
+              noselect: item.noselect,
+            }"
             @click="handleMenuSelect(item.id)"
           >
             <font-awesome-icon :icon="['fas', item.icon]" size="2xl" />
@@ -487,30 +456,25 @@ const isDark = useDark()
         :size="isNarrowscreen ? '85%' : 350"
         :modal="isNarrowscreen ? true : false"
         @mouseleave="sidebarMenuMouseLeave"
-        v-if="!sidebarPanelFixed || isNarrowscreen"
+        v-if="!sidebarState.fixed || isNarrowscreen"
       >
         <SidebarPanel @update:pin="handelPinButton" />
       </el-drawer>
       <div class="main-center">
         <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
           <pane
-            v-if="sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen"
-            :size="sidebarPanelSize"
+            v-if="sidebarState.fixed && sidebarState.opened && !isNarrowscreen"
+            :size="sidebarState.size"
           >
             <SidebarPanel @update:pin="handelPinButton" style="width: 100%; height: 100%" />
           </pane>
           <pane
             :size="
-              sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
-                ? 100 - sidebarPanelSize
+              sidebarState.fixed && sidebarState.opened && !isNarrowscreen
+                ? 100 - sidebarState.size
                 : 100
             "
           >
-            <!-- :size="
-            sidebarPanelFixed && sidebarPanelVisible && !isNarrowscreen
-              ? 100 - sidebarPanelSize
-              : 100
-          " -->
             <div class="workspace">
               <el-tabs
                 v-model="contexStore.activeTabId"

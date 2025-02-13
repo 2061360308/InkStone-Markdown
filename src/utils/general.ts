@@ -1,3 +1,4 @@
+import { useSettingsStore } from '@/stores'
 import CryptoJS from 'crypto-js'
 import api from '@/utils/api'
 
@@ -60,38 +61,33 @@ export const validateLogin = async (
   )
 
   return { tokenValid, repoValid, hasPushAccess, branchValid, installedApp }
+}
 
-  // if (!tokenValid) {
-  //   ElMessage.error('Token无效，请重新登录')
-  //   loading.value = false
-  //   return
-  // } else if (!repoValid || !branchValid) {
-  //   ElMessage.error('仓库/分支不存在或无权限')
-  //   chooseRepo.value = true
-  //   const repos = await api.getRepoNames()
-  //   repos.forEach((repo) => {
-  //     repoList.value.push({ label: repo.name, value: repo.name })
-  //   })
-  //   if (repoName.value) {
-  //     updateBranchList(repoName.value)
-  //   }
-  //   loading.value = false
-  //   return
-  // } else if (!hasPushAccess) {
-  //   ElMessage.error('无推送权限，请重新登录')
-  //   loading.value = false
-  //   return
-  // } else if (!installedApp) {
-  //   ElMessage.error('请先安装应用')
-  //   // 重定向到安装应用页面
-  //   window.location.href = `https://github.com/apps/${githubAppName}/installations/new`
-  //   return
-  // }
+export const validateLoginAfter = async () => {
+  const settingsStore = useSettingsStore()
 
-  // // 登录成功
+  const start_time = Date.now()
 
-  // // 同步远程设置
-  // await settingsStore.syncRemoteSettings()
+  const access_token = decryptToken(localStorage.getItem('access_token') || '')
 
-  // return
+  // 如果存在 access_token,进行验证
+  if (access_token) {
+    const { tokenValid, repoValid, hasPushAccess, branchValid, installedApp } = await validateLogin(
+      access_token,
+      settingsStore.settings['基本配置'].repoName,
+      settingsStore.settings['基本配置'].repoBranch,
+    )
+    if (tokenValid && repoValid && hasPushAccess && branchValid) {
+      // 判断登录方式，如果是通过GithubApp自动登录的，需要验证是否安装应用
+      const loginMethodValue = localStorage.getItem('loginMethod')
+      if (loginMethodValue === 'github' && !installedApp) {
+        localStorage.removeItem('access_token')
+      }
+    } else {
+      // 验证失败，清除本地token
+      localStorage.removeItem('access_token')
+    }
+  }
+
+  console.log('API验证完成, 耗时：', Date.now() - start_time, api.ready)
 }

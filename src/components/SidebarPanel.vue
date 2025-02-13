@@ -8,6 +8,7 @@ import { watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
 const emits = defineEmits(['update:pin'])
 
 const contexStore = useContexStore()
@@ -76,7 +77,7 @@ const changeTipLoad = (value: boolean) => {
 
 const goLogin = async () => {
   localStorage.removeItem('jumpLogin') // 清除跳过登录标记
-  router.replace({ name: 'login' })
+  router.push({ name: 'login' })
 }
 
 /**

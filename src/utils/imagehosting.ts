@@ -1,17 +1,17 @@
-import S3ImageHosting from "s3-image-hosting";
-import { Settings, ImageType } from "s3-image-hosting/types/index.d";
+import S3ImageHosting from 's3-image-hosting'
+import { Settings, ImageType } from 's3-image-hosting/types/index.d'
 
 class ImageHosting {
-  static instance: ImageHosting;
-  s3: S3ImageHosting | null = null;
-  ready: boolean = false;
+  static instance: ImageHosting
+  s3: S3ImageHosting | null = null
+  ready: boolean = false
 
   constructor() {
     if (ImageHosting.instance) {
-      return ImageHosting.instance;
+      return ImageHosting.instance
     }
 
-    ImageHosting.instance = this;
+    ImageHosting.instance = this
   }
 
   init = async (
@@ -19,116 +19,112 @@ class ImageHosting {
     endpoint: string,
     region: string,
     accessKeyId: string,
-    secretAccessKey: string
+    secretAccessKey: string,
   ): Promise<boolean> => {
-    let settings: Settings = {
+    const settings: Settings = {
       bucket, // bucket name
       endpoint, // endpoint eg: https://cos.ap-chengdu.myqcloud.com
       region, // region eg: ap-chengdu
       accessKeyId,
       secretAccessKey,
-    };
+    }
 
-    this.s3 = new S3ImageHosting(settings);
+    this.s3 = new S3ImageHosting(settings)
 
-    let result = await this.s3.checkSettingsValid();
+    const result = await this.s3.checkSettingsValid()
 
     if (result) {
-      this.ready = true;
-      return true;
+      this.ready = true
+      return true
     } else {
-      this.ready = true;
-      return false;
+      this.ready = true
+      return false
     }
-  };
+  }
 
   upload = async (
-    files: File[]
+    files: File[],
   ): Promise<{
-    success: Array<{ file: File; hash: string }>;
-    failed: Array<File>;
+    success: Array<{ file: File; hash: string }>
+    failed: Array<File>
   }> => {
-    let failed: Array<File> = [];
-    let success: Array<{ file: File; hash: string }> = [];
+    const failed: Array<File> = []
+    const success: Array<{ file: File; hash: string }> = []
 
     if (!this.ready || !this.s3) {
       return {
         success: [],
         failed: files,
-      };
+      }
     }
 
     for (let i = 0; i < files.length; i++) {
-      let file = files[i];
-      const arrayBuffer = await file.arrayBuffer();
-      const uint8Array = new Uint8Array(arrayBuffer);
+      const file = files[i]
+      const arrayBuffer = await file.arrayBuffer()
+      const uint8Array = new Uint8Array(arrayBuffer)
 
       // 判断文件是否已经存在
-      let hash = await this.s3.calculateHash(uint8Array);
-      let exist = await this.s3.isExistImage(hash);
+      const hash = await this.s3.calculateHash(uint8Array)
+      const exist = await this.s3.isExistImage(hash)
       if (exist) {
         success.push({
           file,
           hash,
-        });
-        continue;
+        })
+        continue
       }
 
-      let current = new Date();
-      const fileExtension = file.name.split(".").pop() || ""; // 文件后缀，标识图片类型的
-      if (
-        !["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"].includes(
-          fileExtension
-        )
-      ) {
-        failed.push(file);
-        continue;
+      const current = new Date()
+      const fileExtension = file.name.split('.').pop() || '' // 文件后缀，标识图片类型的
+      if (!['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileExtension)) {
+        failed.push(file)
+        continue
       }
-      let res = await this.s3.uploadImage(
+      const res = await this.s3.uploadImage(
         uint8Array,
         fileExtension as ImageType,
         current,
         current,
-        "",
-        []
-      );
+        '',
+        [],
+      )
       if (res.success) {
         success.push({
           file,
           hash: res.hash as string,
-        });
+        })
       } else {
-        failed.push(file);
+        failed.push(file)
       }
     }
 
     return {
       success,
       failed,
-    };
-  };
+    }
+  }
 }
 
-const instance = new ImageHosting();
+const instance = new ImageHosting()
 
-export default instance;
+export default instance
 
 export const convertImagesToMarkdownBase64 = async (
-  files: File[]
+  files: File[],
 ): Promise<Array<{ file: File; url: string }>> => {
   const promises = files.map((file) => {
     return new Promise<{ file: File; url: string }>((resolve, reject) => {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = () => {
-        const base64String = reader.result as string;
-        resolve({ file: file, url: base64String });
-      };
+        const base64String = reader.result as string
+        resolve({ file: file, url: base64String })
+      }
       reader.onerror = (error) => {
-        reject(error);
-      };
-      reader.readAsDataURL(file);
-    });
-  });
+        reject(error)
+      }
+      reader.readAsDataURL(file)
+    })
+  })
 
-  return Promise.all(promises);
-};
+  return Promise.all(promises)
+}

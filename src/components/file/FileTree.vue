@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, Component } from 'vue'
+import { defineProps, Component } from 'vue'
 import FileTypeIcon from './FileTypeIcon.vue'
 import { useDark } from '@vueuse/core'
 
@@ -16,7 +16,7 @@ interface treeItemObject {
   children?: treeItemObject[]
 }
 
-const props = defineProps({
+defineProps({
   dataSource: {
     type: Array<treeItemObject>,
     required: true,
@@ -50,9 +50,6 @@ const props = defineProps({
     default: () => {},
   },
 })
-
-const readonly = computed(() => props.readonly)
-console.log(readonly)
 </script>
 
 <template>

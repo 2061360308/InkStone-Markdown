@@ -23,7 +23,7 @@ const props = defineProps({
   },
 })
 
-const file: Ref<null | localFile> = ref(null)
+const file: Ref<null | remoteFile> = ref(null)
 const fileName = ref('')
 const isAllSaved = ref(true)
 let path = ''
@@ -57,24 +57,40 @@ onMounted(async () => {
   console.log('onMounted')
 })
 
+const setContent = (content: string) => {
+  EditorInstanceRef.value?.setContent(content)
+
+  Vditor.preview(markdownPreview.value as HTMLDivElement, content, {
+    speech: {
+      enable: true,
+    },
+    anchor: 1,
+    mode: 'dark',
+  })
+}
+
 const updateContent = (newSha: string | null = null) => {
-  console.log('updateContent', newSha)
   sha.value = newSha || (branch.value as string)
+
+  console.log(file.value?.content)
+  if (sha.value === branch.value && file.value?.content) {
+    setContent(file.value.content)
+    ready.value = true
+    return
+  }
 
   console.log('sha', sha.value)
   showHistoryDrawer.value = false
 
   api.getFileContent(path, sha.value).then((res) => {
     ;(tab?.data.file as remoteFile).content = res.decodedContent
-    EditorInstanceRef.value?.setContent(res.decodedContent)
+    setContent(res.decodedContent)
 
-    Vditor.preview(markdownPreview.value as HTMLDivElement, res.decodedContent, {
-      speech: {
-        enable: true,
-      },
-      anchor: 1,
-      mode: 'dark',
-    })
+    if (sha.value === branch.value) {
+      if (file.value) {
+        file.value.content = res.decodedContent
+      }
+    }
 
     ready.value = true
   })

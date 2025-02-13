@@ -1,5 +1,7 @@
-import { Component } from 'vue'
+import { Component, markRaw } from 'vue'
 import { Panel, PanelIconPosition } from './base'
+import { useContexStore } from '@/stores'
+import panelsManager from '.'
 
 export class SettingsPanel implements Panel {
   id = 'settings'
@@ -16,5 +18,18 @@ export class SettingsPanel implements Panel {
 
   onActive(): void {
     console.log('AboutPanel onActive')
+    const contexStore = useContexStore()
+
+    const settingsTab: TabItem = {
+      id: this.id,
+      panelName: this.id,
+      panel: panelsManager.getPanelComponent(this.id)
+        ? markRaw(panelsManager.getPanelComponent(this.id)!)
+        : null,
+      icon: 'gear',
+      title: this.name,
+      data: {},
+    }
+    contexStore.addTab(settingsTab)
   }
 }

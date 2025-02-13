@@ -30,8 +30,6 @@ const icon: Ref<string> = computed(() => {
       : '/fileTypeIcons/default_folder.svg'
   }
 
-  // console.log('props.name', props.name)
-
   if (!props.name) {
     return '/fileTypeIcons/default_file.svg'
   }
@@ -42,7 +40,6 @@ const icon: Ref<string> = computed(() => {
   let extensionType
   for (let i = 0; i < fileNameChuck.length; i++) {
     const extension = fileNameChuck.slice(i).join('.')
-    console.log(extension)
     if (extension in supportedExtensions) {
       extensionType = supportedExtensions[extension]
     }
@@ -57,7 +54,6 @@ const icon: Ref<string> = computed(() => {
       svgFilePath = `/fileTypeIcons/file_type_${extensionType.icon}.svg`
     }
   }
-  console.log('svgFilePath', svgFilePath)
   return svgFilePath
 })
 </script>
