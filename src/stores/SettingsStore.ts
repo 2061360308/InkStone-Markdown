@@ -285,7 +285,7 @@ export const useSettingsStore = defineStore('settings', () => {
       draft: draft ? 'true' : 'false',
     }
 
-    return replaceTemplate(defaultFrontMatter.value, values)
+    return `---\n${replaceTemplate(defaultFrontMatter.value, values)}\n---\n`
   }
 
   const getImageString = (name: string, url: string) => {

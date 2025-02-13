@@ -67,13 +67,14 @@ const editorReady = async () => {
   console.log('editorReady')
   if (await fs.isExist(path, repo)) {
     const content = (await fs.get(path, repo)) as string
-    EditorInstanceRef.value?.setContent(content)
+    EditorInstanceRef.value?.setContent(content, true)
     ready.value = true
+    console.log('content:', EditorInstanceRef.value?.getContent())
   } else {
     const branch = settingsStore.settings['基本配置'].repoBranch as string
     api.getFileContent(path, branch).then((res) => {
       fs.write(path, res.decodedContent, repo)
-      EditorInstanceRef.value?.setContent(res.decodedContent)
+      EditorInstanceRef.value?.setContent(res.decodedContent, true)
       ready.value = true
     })
   }

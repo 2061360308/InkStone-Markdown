@@ -31,7 +31,7 @@ const appVersion = __APP_VERSION__
   <el-dialog v-model="dialogShow" title="关于 | About" width="750" align-center destroy-on-close>
     <div class="content">
       <div class="info">
-        <el-image class="logo" src="/cover.png" fit="cover" />
+        <div class="logo cover-image"></div>
         <div class="desc">
           <span class="version">版本信息：v{{ appVersion }}</span>
           <span class="author">作者：盧瞳</span>
@@ -166,48 +166,52 @@ const appVersion = __APP_VERSION__
   </el-dialog>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .info {
   display: flex;
   justify-items: space-between;
-}
-.info .logo {
-  height: 150px;
-}
 
-.info .desc {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-items: flex-end;
-  gap: 5px;
-}
+  .logo.cover-image {
+    flex-grow: 1; /* 占满剩余空间 */
+    width: 100%;
+    max-height: 180px;
+  }
 
-.info .desc .version {
-  font-size: 15px;
-  font-weight: bold;
+  .desc {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-end;
+    gap: 5px;
+    width: 210px;
+
+    .version {
+      font-size: 15px;
+      font-weight: bold;
+    }
+  }
 }
 
 .support {
   border: var(--el-border-color) solid 2px;
   border-radius: 5px;
-}
 
-.support .title {
-  font-size: 17px;
-  font-weight: bold;
-  padding: 10px;
-}
+  .title {
+    font-size: 17px;
+    font-weight: bold;
+    padding: 10px;
+  }
 
-.support .panel {
-  padding: 10px;
-  height: 120px;
-}
+  .panel {
+    padding: 10px;
+    // height: 120px;
+  }
 
-.support .operation {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  padding: 10px;
+  .operation {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding: 10px;
+  }
 }
 </style>

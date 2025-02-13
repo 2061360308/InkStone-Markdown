@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, onMounted, computed, watch } from 'vue'
+import { Ref, ref, onMounted, computed, watch, useTemplateRef } from 'vue'
 import { useContexStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { Splitpanes, Pane } from 'splitpanes'
@@ -10,6 +10,7 @@ import { useDark, useMediaQuery } from '@vueuse/core'
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
 import { createNativeFile, openNativeFile } from '@/utils/filePanelOption'
+import internal from 'stream'
 
 const contexStore = useContexStore()
 
@@ -376,6 +377,14 @@ onMounted(() => {
   validate()
 })
 
+const abcd = ref(false)
+
+// 等待3秒后显示
+setTimeout(() => {
+  abcd.value = true
+  console.log('abcd', abcd.value)
+}, 3000)
+
 const isDark = useDark()
 </script>
 
@@ -458,15 +467,27 @@ const isDark = useDark()
         @mouseleave="sidebarMenuMouseLeave"
         v-if="!sidebarState.fixed || isNarrowscreen"
       >
+        <!-- <div class="bcde"></div> -->
         <SidebarPanel @update:pin="handelPinButton" />
       </el-drawer>
+
+      <!-- <Teleport :to="panel2" v-if="abcd">
+        <SidebarPanel @update:pin="handelPinButton" class="aabb" />
+      </Teleport> -->
+
       <div class="main-center">
         <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
           <pane
-            v-if="sidebarState.fixed && sidebarState.opened && !isNarrowscreen"
             :size="sidebarState.size"
+            ref="pin"
+            v-if="sidebarState.fixed && sidebarState.opened && !isNarrowscreen"
           >
-            <SidebarPanel @update:pin="handelPinButton" style="width: 100%; height: 100%" />
+            <div class="abcd"></div>
+            <SidebarPanel
+              ref="sidepanel"
+              @update:pin="handelPinButton"
+              style="width: 100%; height: 100%"
+            />
           </pane>
           <pane
             :size="
@@ -515,7 +536,7 @@ const isDark = useDark()
                 </el-tab-pane>
               </el-tabs>
               <div class="empty-box" v-else>
-                <div class="cover-image"></div>
+                <div class="logo cover-image"></div>
                 <div class="tip-content"><span>请在左侧文件管理器中选择文件打开</span></div>
                 <!-- <el-empty image="cover.png" :image-size="550">
                 <template #description>
@@ -667,13 +688,9 @@ const isDark = useDark()
     justify-content: center;
     align-items: center;
 
-    .cover-image {
+    .logo.cover-image {
       width: 60%;
       height: 30%;
-      background-image: var(--app-cover-image);
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
     }
   }
 }

@@ -9,6 +9,7 @@ import {
   onBeforeUnmount,
   nextTick,
   Ref,
+  VNode,
 } from 'vue'
 
 import { ElMessage } from 'element-plus'
@@ -18,12 +19,11 @@ import imagehosting from '@/utils/imagehosting'
 import { convertImagesToMarkdownBase64 } from '@/utils/imagehosting'
 import { useSettingsStore } from '@/stores'
 import { onMounted } from 'vue'
+import ContextMenu from '@imengyu/vue3-context-menu'
 
 const settingsStore = useSettingsStore()
 
-// 如果是native模式，文件句柄
-// const fileHandle: Ref<FileSystemFileHandle | null> = ref(null)
-
+let fistChangeContent = true
 const loading = ref(false)
 
 const frontMatterString: Ref<string> = ref('') // frontMatter 解析出来的对象
@@ -52,7 +52,7 @@ const isAllSaved = defineModel() // 是否全部保存
 
 let vditorInstance: Vditor | null = null
 
-const setContent = async (content: string) => {
+const setContent = async (content: string, replace: boolean = false) => {
   /**
    * 读取文件内容并设置到编辑器中
    * 会将 frontMatter 的内容分离出来，并设置到 frontMatter 中
@@ -80,7 +80,7 @@ const setContent = async (content: string) => {
   frontMatterString.value = result.yamlContent // 设置 frontMatter 字符串内容
   // 设置正文内容到编辑器中
   if (vditorInstance) {
-    vditorInstance.setValue(result.content, true)
+    vditorInstance.setValue(result.content, replace)
   }
 }
 
@@ -90,7 +90,17 @@ const getContent = () => {
    * 会将 frontMatter 和 content 合并
    */
   const content = (vditorInstance as Vditor).getValue()
-  return frontMatterString.value + content
+
+  // 补全 frontMatter 末尾的换行符
+  if (!frontMatterString.value.endsWith('\n') && !content.startsWith('\n')) {
+    console.log('补全 frontMatter 末尾的换行符')
+    return frontMatterString.value + '\n' + content
+  } else {
+    console.log('不补全 frontMatter 末尾的换行符')
+    console.log('frontMatterString:', frontMatterString.value)
+    console.log('content:', content)
+    return frontMatterString.value + content
+  }
 }
 
 defineExpose({
@@ -264,6 +274,10 @@ const inputHandler = () => {
    * 编辑器内容变化时触发
    * 用于更新编辑器状态栏右下角的字数统计
    */
+  if (fistChangeContent) {
+    fistChangeContent = false
+    return
+  }
   isAllSaved.value = false
 }
 
@@ -342,6 +356,91 @@ const uploadImage = async (files: File[]): Promise<null> => {
   loading.value = false
   return null
 }
+
+interface contextMenuItem {
+  label: string
+  disabled?: boolean
+  icon?: VNode
+  onClick?: () => void
+  children?: Array<contextMenuItem>
+}
+
+const clipMenu: contextMenuItem = {
+  label: '剪贴',
+  disabled: false,
+  onClick: async () => {
+    if (!vditorInstance) {
+      return
+    }
+    await navigator.clipboard.writeText(vditorInstance?.getSelection())
+    vditorInstance.deleteValue()
+  },
+}
+
+const copyMenu: contextMenuItem = {
+  label: '复制',
+  disabled: false,
+  onClick: async () => {
+    if (!vditorInstance) {
+      return
+    }
+    await navigator.clipboard.writeText(vditorInstance?.getSelection())
+  },
+}
+
+const pasteMenu: contextMenuItem = {
+  label: '粘贴',
+  disabled: false,
+  onClick: async () => {
+    if (!vditorInstance) {
+      return
+    }
+    vditorInstance.updateValue(await navigator.clipboard.readText())
+  },
+}
+
+const handleContextMenu = async (event: MouseEvent) => {
+  event.preventDefault()
+  console.log('右键菜单')
+  if (!vditorInstance) {
+    return
+  }
+
+  let contexmenu = []
+
+  const selected = vditorInstance.getSelection()
+
+  const _clipMenu = clipMenu
+  const _copyMenu = copyMenu
+  if (!selected) {
+    _clipMenu.disabled = true
+    _copyMenu.disabled = true
+  } else {
+    _clipMenu.disabled = false
+    _copyMenu.disabled = false
+  }
+
+  contexmenu = [_clipMenu, _copyMenu]
+
+  const clipboardText = await navigator.clipboard.readText()
+
+  const _pasteMenu = pasteMenu
+  if (clipboardText) {
+    _pasteMenu.disabled = false
+  } else {
+    _pasteMenu.disabled = true
+  }
+
+  contexmenu.push(_pasteMenu)
+
+  ContextMenu.showContextMenu({
+    x: event.clientX,
+    y: event.clientY,
+    // theme: 'default dark',
+    items: contexmenu,
+    zIndex: 2017,
+  })
+}
 </script>
 
 <template>
@@ -350,6 +449,7 @@ const uploadImage = async (files: File[]): Promise<null> => {
     @dragover.prevent="handleDragOver"
     @drop.prevent="handleDrop"
     v-loading="loading"
+    @contextmenu="handleContextMenu"
   >
     <div
       class="editor-region"
@@ -393,7 +493,63 @@ const uploadImage = async (files: File[]): Promise<null> => {
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
+.md-editor-box {
+  width: 100%;
+  height: calc(100vh - 40px);
+  /* width: 100%; */
+  overflow: auto;
+
+  .editor-region {
+    margin: auto;
+
+    .md-editor {
+      height: auto !important;
+      min-height: 500px;
+    }
+  }
+}
+
+.editor-status {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
+  height: 20px;
+  padding: 0 10px;
+  background-color: var(--el-color-primary);
+  color: var(--el-color-secondary-text);
+
+  border-radius: 20px 0 0 0;
+
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  font-size: 14px;
+
+  .status-bar-item {
+    display: flex;
+    align-items: center;
+    /* 鼠标指针 */
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 5px;
+    margin: 0 10px;
+    color: var(--el-color-white);
+
+    &:hover {
+      background-color: var(--el-color-primary-light-7);
+      color: var(--el-color-secondary-text);
+    }
+
+    .icon {
+      margin-right: 5px;
+    }
+  }
+}
+</style>
+
+<style lang="scss">
 .vditor {
   border: none !important;
   height: 100% !important;
@@ -413,61 +569,5 @@ const uploadImage = async (files: File[]): Promise<null> => {
 
 .vditor-outline {
   display: none !important;
-}
-</style>
-
-<style scoped>
-.md-editor-box {
-  width: 100%;
-  height: calc(100vh - 40px);
-  /* width: 100%; */
-  overflow: auto;
-}
-
-.editor-region {
-  margin: auto;
-}
-
-.md-editor {
-  height: auto !important;
-  min-height: 500px;
-}
-
-.editor-status {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-
-  height: 20px;
-  padding: 0 10px;
-  background-color: var(--el-color-primary);
-  color: var(--el-color-secondary-text);
-
-  border-radius: 20px 0 0 0;
-
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px;
-  font-size: 14px;
-}
-
-.status-bar-item {
-  display: flex;
-  align-items: center;
-  /* 鼠标指针 */
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0 5px;
-  margin: 0 10px;
-  color: var(--el-color-white);
-}
-
-.status-bar-item:hover {
-  background-color: var(--el-color-primary-light-7);
-  color: var(--el-color-secondary-text);
-}
-
-.status-bar-item .icon {
-  margin-right: 5px;
 }
 </style>

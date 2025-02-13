@@ -58,7 +58,7 @@ onMounted(async () => {
 })
 
 const setContent = (content: string) => {
-  EditorInstanceRef.value?.setContent(content)
+  EditorInstanceRef.value?.setContent(content, true)
 
   Vditor.preview(markdownPreview.value as HTMLDivElement, content, {
     speech: {

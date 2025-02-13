@@ -68,7 +68,7 @@ const editorReady = async () => {
     if (!EditorInstanceRef.value) {
       return
     }
-    EditorInstanceRef.value.setContent(content)
+    EditorInstanceRef.value.setContent(content, true)
     ready.value = true
   })
 }

@@ -279,7 +279,7 @@ export const createFile = async (
       const fileNameWithExtension = path.substring(path.lastIndexOf('/') + 1)
       // 去掉文件后缀
       const fileName = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'))
-      content = `---\n${settingsStore.getfrontMatter(fileName, draft)}\n---\n`
+      content = settingsStore.getfrontMatter(fileName, draft)
     }
 
     fs.write(path, content, repo).then(() => {
@@ -465,7 +465,7 @@ export const createNativeFile = async (
   if (post) {
     // 去掉文件后缀
     const fileName = file.name.split('.').slice(0, -1).join('.')
-    content = `---\n${settingsStore.getfrontMatter(fileName, draft)}\n---\n`
+    content = settingsStore.getfrontMatter(fileName, draft)
   }
 
   const writable = await fileHandle.createWritable()

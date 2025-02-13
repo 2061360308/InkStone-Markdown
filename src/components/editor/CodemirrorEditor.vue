@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watchOnce } from '@vueuse/core'
-import { EditorState } from '@codemirror/state'
+import { EditorState, Transaction } from '@codemirror/state'
 import type { Extension } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
 import {
@@ -31,7 +31,7 @@ import {
 import { lintKeymap } from '@codemirror/lint'
 
 import { defaultHighlightStyle } from '@codemirror/language'
-import { ref, defineProps, defineExpose } from 'vue'
+import { ref, defineProps, defineExpose, onMounted, onBeforeUnmount } from 'vue'
 
 const editorContainer = ref<HTMLElement | null>(null) // 编辑器容器
 
@@ -59,17 +59,20 @@ const props = defineProps({
   },
 })
 
+let fistChangeContent = true // 是否第一次更改内容
 const isAllSaved = defineModel() // 是否全部保存
 
-const setContent = async (content: string) => {
+const setContent = async (content: string, replace: boolean = false) => {
   if (editorView) {
-    editorView.dispatch({
+    const transaction = editorView.state.update({
       changes: {
         from: 0,
         to: editorView.state.doc.length,
         insert: content,
       },
+      annotations: Transaction.addToHistory.of(!replace), // 不记录历史
     })
+    editorView.dispatch(transaction)
   }
 }
 
@@ -86,13 +89,11 @@ defineExpose({
   setContent,
 })
 
-EditorView.updateListener.of((update: { docChanged: boolean }) => {
-  if (update.docChanged) {
-    handelChange()
-  }
-})
-
 const handelChange = () => {
+  if (fistChangeContent) {
+    fistChangeContent = false
+    return
+  }
   isAllSaved.value = false
 }
 
@@ -225,6 +226,12 @@ const initEditor = async () => {
       ...lintKeymap,
     ]),
     EditorState.readOnly.of(props.readOnly),
+    EditorView.updateListener.of((update: { docChanged: boolean }) => {
+      // console.log('update', update)
+      if (update.docChanged) {
+        handelChange()
+      }
+    }),
   ]
 
   if (languageExtension) {
@@ -243,10 +250,96 @@ const initEditor = async () => {
 
   props.editorReady()
 }
+
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault()
+    if (props.saveFile) props.saveFile()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+onBeforeUnmount(() => {
+  /**
+   * 组件销毁时操作
+   * 销毁 Vditor 实例
+   * 清除其在缓存中的数据（Storage）
+   */
+  window.removeEventListener('keydown', handleKeyDown)
+})
+
+interface contextMenuItem {
+  label: string
+  icon?: VNode
+  onClick?: () => void
+  children?: Array<contextMenuItem>
+}
+
+const undoMenu: contextMenuItem = {
+  label: '撤销',
+  onClick: () => {
+    console.log('撤销')
+  },
+}
+
+const redoMenu: contextMenuItem = {
+  label: '重做',
+  onClick: () => {
+    console.log('重做')
+  },
+}
+
+const clipMenu: contextMenuItem = {
+  label: '剪贴',
+  onClick: () => {
+    console.log('剪贴')
+  },
+}
+
+const copyMenu: contextMenuItem = {
+  label: '复制',
+  onClick: () => {
+    console.log('复制')
+  },
+}
+
+const pasteMenu: contextMenuItem = {
+  label: '粘贴',
+  onClick: () => {
+    console.log('粘贴')
+  },
+}
 </script>
 
 <template>
-  <div ref="editorContainer" class="codemirror-editor" :id="editor"></div>
+  <div class="codemirror-editor-box">
+    <div ref="editorContainer" class="codemirror-editor" :id="editor"></div>
+    <div class="editor-status">
+      <div class="status-bar-item">
+        <div class="changes" v-if="isAllSaved">
+          <span class="icon">
+            <font-awesome-icon
+              style="color: var(--el-color-success)"
+              :icon="['fas', 'circle-check']"
+            />
+          </span>
+          <span>已保存</span>
+        </div>
+        <div class="all-saved" v-else>
+          <span class="icon">
+            <font-awesome-icon
+              style="color: var(--el-color-danger)"
+              :icon="['fas', 'circle-exclamation']"
+            />
+          </span>
+          <span>更改未保存</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -257,6 +350,44 @@ const initEditor = async () => {
   white-space: nowrap; /* 确保内容在一行内显示 */
   height: 100%;
   overflow: hidden;
+}
+
+.editor-status {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
+  height: 20px;
+  padding: 0 10px;
+  background-color: var(--el-color-primary);
+  color: var(--el-color-secondary-text);
+
+  border-radius: 20px 0 0 0;
+
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  font-size: 14px;
+
+  .status-bar-item {
+    display: flex;
+    align-items: center;
+    /* 鼠标指针 */
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 5px;
+    margin: 0 10px;
+    color: var(--el-color-white);
+
+    &:hover {
+      background-color: var(--el-color-primary-light-7);
+      color: var(--el-color-secondary-text);
+    }
+
+    .icon {
+      margin-right: 5px;
+    }
+  }
 }
 </style>
 

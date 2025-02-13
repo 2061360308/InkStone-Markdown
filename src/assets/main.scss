@@ -69,3 +69,12 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
 }
+
+.logo.cover-image {
+  width: 500px;
+  height: 400px;
+  background-image: var(--app-cover-image);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
