@@ -92,7 +92,7 @@ const checkLoginState = async (access_token: string) => {
   // 同步远程设置
   await settingsStore.syncRemoteSettings()
 
-  router.push({ name: 'main' })
+  router.push({ name: 'launch' })
   return
 }
 

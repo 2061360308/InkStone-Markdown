@@ -410,28 +410,25 @@ const handleContextMenu = async (event: MouseEvent) => {
 
   const selected = vditorInstance.getSelection()
 
-  const _clipMenu = clipMenu
-  const _copyMenu = copyMenu
   if (!selected) {
-    _clipMenu.disabled = true
-    _copyMenu.disabled = true
+    clipMenu.disabled = true
+    copyMenu.disabled = true
   } else {
-    _clipMenu.disabled = false
-    _copyMenu.disabled = false
+    clipMenu.disabled = false
+    copyMenu.disabled = false
   }
 
-  contexmenu = [_clipMenu, _copyMenu]
+  contexmenu = [clipMenu, copyMenu]
 
   const clipboardText = await navigator.clipboard.readText()
 
-  const _pasteMenu = pasteMenu
   if (clipboardText) {
-    _pasteMenu.disabled = false
+    pasteMenu.disabled = false
   } else {
-    _pasteMenu.disabled = true
+    pasteMenu.disabled = true
   }
 
-  contexmenu.push(_pasteMenu)
+  contexmenu.push(pasteMenu)
 
   ContextMenu.showContextMenu({
     x: event.clientX,

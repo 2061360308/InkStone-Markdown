@@ -20,7 +20,14 @@ import {
   bracketMatching,
   foldKeymap,
 } from '@codemirror/language'
-import { history, defaultKeymap, historyKeymap } from '@codemirror/commands'
+import {
+  history,
+  historyField,
+  undo,
+  redo,
+  defaultKeymap,
+  historyKeymap,
+} from '@codemirror/commands'
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search'
 import {
   closeBrackets,
@@ -31,7 +38,8 @@ import {
 import { lintKeymap } from '@codemirror/lint'
 
 import { defaultHighlightStyle } from '@codemirror/language'
-import { ref, defineProps, defineExpose, onMounted, onBeforeUnmount } from 'vue'
+import { ref, defineProps, defineExpose, onMounted, onBeforeUnmount, VNode, computed } from 'vue'
+import ContextMenu from '@imengyu/vue3-context-menu'
 
 const editorContainer = ref<HTMLElement | null>(null) // 编辑器容器
 
@@ -61,6 +69,8 @@ const props = defineProps({
 
 let fistChangeContent = true // 是否第一次更改内容
 const isAllSaved = defineModel() // 是否全部保存
+
+let editorView: EditorView | null = null
 
 const setContent = async (content: string, replace: boolean = false) => {
   if (editorView) {
@@ -96,8 +106,6 @@ const handelChange = () => {
   }
   isAllSaved.value = false
 }
-
-let editorView: EditorView | null = null
 
 watchOnce(
   () => editorContainer.value,
@@ -227,7 +235,7 @@ const initEditor = async () => {
     ]),
     EditorState.readOnly.of(props.readOnly),
     EditorView.updateListener.of((update: { docChanged: boolean }) => {
-      // console.log('update', update)
+      console.log('update', update)
       if (update.docChanged) {
         handelChange()
       }
@@ -271,51 +279,170 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown)
 })
 
+interface HistoryState {
+  done: Array<Transaction>
+  undone: Array<Transaction>
+}
+
+// 判断是否可以撤销
+const canUndo = computed(() => {
+  const historyState: HistoryState = editorView?.state.field(historyField, false) as HistoryState
+  return historyState ? historyState.done.length > 0 : false
+})
+
+// 判断是否可以重做
+const canRedo = computed(() => {
+  const historyState: HistoryState = editorView?.state.field(historyField, false) as HistoryState
+  return historyState ? historyState.undone.length > 0 : false
+})
+
+// 获取选中内容
+const getSelectedText = () => {
+  if (editorView) {
+    const selection = editorView.state.selection.main
+    return editorView.state.sliceDoc(selection.from, selection.to)
+  }
+  return ''
+}
+
+// 替换选中内容
+const replaceSelectedText = (content: string) => {
+  if (editorView) {
+    const selection = editorView.state.selection.main
+    editorView.dispatch({
+      changes: {
+        from: selection.from,
+        to: selection.to,
+        insert: content,
+      },
+    })
+  }
+}
+
+// 在光标位置插入内容
+// const insertTextAtCursor = (content: string) => {
+//   if (editorView) {
+//     const selection = editorView.state.selection.main
+//     editorView.dispatch({
+//       changes: {
+//         from: selection.from,
+//         to: selection.from,
+//         insert: content,
+//       },
+//     })
+//   }
+// }
+
 interface contextMenuItem {
   label: string
   icon?: VNode
+  disabled: boolean
   onClick?: () => void
   children?: Array<contextMenuItem>
 }
 
 const undoMenu: contextMenuItem = {
   label: '撤销',
+  disabled: false,
   onClick: () => {
-    console.log('撤销')
+    if (editorView) {
+      undo(editorView)
+    }
   },
 }
 
 const redoMenu: contextMenuItem = {
   label: '重做',
+  disabled: false,
   onClick: () => {
-    console.log('重做')
+    if (editorView) {
+      redo(editorView)
+    }
   },
 }
 
 const clipMenu: contextMenuItem = {
   label: '剪贴',
-  onClick: () => {
-    console.log('剪贴')
+  disabled: false,
+  onClick: async () => {
+    const selectedText = getSelectedText()
+    await navigator.clipboard.writeText(selectedText)
+    replaceSelectedText('')
   },
 }
 
 const copyMenu: contextMenuItem = {
   label: '复制',
-  onClick: () => {
-    console.log('复制')
+  disabled: false,
+  onClick: async () => {
+    const selectedText = getSelectedText()
+    await navigator.clipboard.writeText(selectedText)
   },
 }
 
 const pasteMenu: contextMenuItem = {
   label: '粘贴',
-  onClick: () => {
-    console.log('粘贴')
+  disabled: false,
+  onClick: async () => {
+    const clipboardText = await navigator.clipboard.readText()
+    replaceSelectedText(clipboardText)
   },
+}
+
+const handleContextMenu = async (event: MouseEvent) => {
+  event.preventDefault()
+  console.log('右键菜单')
+
+  let contexmenu = []
+
+  if (!getSelectedText()) {
+    clipMenu.disabled = true
+    copyMenu.disabled = true
+  } else {
+    clipMenu.disabled = false
+    copyMenu.disabled = false
+  }
+
+  contexmenu = [clipMenu, copyMenu]
+
+  const clipboardText = await navigator.clipboard.readText()
+
+  if (clipboardText) {
+    pasteMenu.disabled = false
+  } else {
+    pasteMenu.disabled = true
+  }
+
+  contexmenu.push(pasteMenu)
+
+  if (canRedo.value) {
+    redoMenu.disabled = false
+  } else {
+    redoMenu.disabled = true
+  }
+
+  contexmenu.push(redoMenu)
+
+  if (canUndo.value) {
+    undoMenu.disabled = false
+  } else {
+    undoMenu.disabled = true
+  }
+
+  contexmenu.push(undoMenu)
+
+  ContextMenu.showContextMenu({
+    x: event.clientX,
+    y: event.clientY,
+    // theme: 'default dark',
+    items: contexmenu,
+    zIndex: 2017,
+  })
 }
 </script>
 
 <template>
-  <div class="codemirror-editor-box">
+  <div class="codemirror-editor-box" @contextmenu="handleContextMenu">
     <div ref="editorContainer" class="codemirror-editor" :id="editor"></div>
     <div class="editor-status">
       <div class="status-bar-item">

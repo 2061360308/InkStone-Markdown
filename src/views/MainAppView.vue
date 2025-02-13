@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, onMounted, computed, watch, useTemplateRef } from 'vue'
+import { Ref, ref, onMounted, computed, watch } from 'vue'
 import { useContexStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { Splitpanes, Pane } from 'splitpanes'
@@ -10,7 +10,6 @@ import { useDark, useMediaQuery } from '@vueuse/core'
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
 import { createNativeFile, openNativeFile } from '@/utils/filePanelOption'
-import internal from 'stream'
 
 const contexStore = useContexStore()
 
@@ -366,24 +365,9 @@ const truncateTitle = (title: string) => {
   return title
 }
 
-/**
- *   验证本地token信息
- */
-
-const validate = async () => {}
-
 onMounted(() => {
   titleBarCheck()
-  validate()
 })
-
-const abcd = ref(false)
-
-// 等待3秒后显示
-setTimeout(() => {
-  abcd.value = true
-  console.log('abcd', abcd.value)
-}, 3000)
 
 const isDark = useDark()
 </script>
@@ -465,15 +449,10 @@ const isDark = useDark()
         :size="isNarrowscreen ? '85%' : 350"
         :modal="isNarrowscreen ? true : false"
         @mouseleave="sidebarMenuMouseLeave"
-        v-if="!sidebarState.fixed || isNarrowscreen"
+        v-show="!sidebarState.fixed || isNarrowscreen"
       >
-        <!-- <div class="bcde"></div> -->
         <SidebarPanel @update:pin="handelPinButton" />
       </el-drawer>
-
-      <!-- <Teleport :to="panel2" v-if="abcd">
-        <SidebarPanel @update:pin="handelPinButton" class="aabb" />
-      </Teleport> -->
 
       <div class="main-center">
         <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
@@ -482,12 +461,12 @@ const isDark = useDark()
             ref="pin"
             v-if="sidebarState.fixed && sidebarState.opened && !isNarrowscreen"
           >
-            <div class="abcd"></div>
             <SidebarPanel
               ref="sidepanel"
               @update:pin="handelPinButton"
               style="width: 100%; height: 100%"
             />
+            <div class="SidebarPanelBoxPin" ref="SidebarPanelBoxPin"></div>
           </pane>
           <pane
             :size="
