@@ -1,0 +1,36 @@
+name: Deploy stable App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install pnpm
+      run: npm install pnpm -g
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Build project
+      run: pnpm run build
+
+    - name: Deploy to target repository
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.MARKDOWN_REPO_ACCESS_TOKEN }}
+        publish_dir: ./dist
+        publish_branch: main
+        external_repository: 2061360308/Markdown
