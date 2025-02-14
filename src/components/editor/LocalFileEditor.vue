@@ -64,12 +64,12 @@ watch(
 )
 
 const editorReady = async () => {
-  console.log('editorReady')
+  // console.log('editorReady')
   if (await fs.isExist(path, repo)) {
     const content = (await fs.get(path, repo)) as string
     EditorInstanceRef.value?.setContent(content, true)
     ready.value = true
-    console.log('content:', EditorInstanceRef.value?.getContent())
+    // console.log('content:', EditorInstanceRef.value?.getContent())
   } else {
     const branch = settingsStore.settings.repoBranch.value as string
     api.getFileContent(path, branch).then((res) => {
@@ -96,6 +96,36 @@ const saveFile = async () => {
 
   isAllSaved.value = true
 }
+
+const renameFile = async (newName: string): Promise<boolean> => {
+  // console.log('renameFile:', newName)
+  const newPath = path.replace(fileName.value, newName)
+
+  try {
+    await fs.write(newPath, EditorInstanceRef.value?.getContent() || '', repo)
+    try {
+      await fs.delete(path, repo)
+      path = newPath
+      fileName.value = newName
+      isAllSaved.value = true
+      // console.log('rename success')
+
+      return true
+    } catch (deleteError) {
+      console.error('delete failed', deleteError)
+      try {
+        await fs.delete(newPath, repo)
+        return false
+      } catch (deleteNewError) {
+        console.error('delete new failed', deleteNewError)
+        return false
+      }
+    }
+  } catch (writeError) {
+    console.error('write failed', writeError)
+    return false
+  }
+}
 </script>
 
 <template>
@@ -108,6 +138,7 @@ const saveFile = async () => {
       v-model="isAllSaved"
       :editorReady="editorReady"
       :save-file="saveFile"
+      :rename-file="renameFile"
       ref="EditorInstanceRef"
       v-show="ready"
     />

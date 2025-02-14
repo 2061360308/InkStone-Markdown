@@ -246,7 +246,7 @@ export const useSettingsStore = defineStore('settings', () => {
     for (const categoryName in settingsCategory) {
       const group = settingsCategory[categoryName]
       for (const name of group) {
-        data[name] = settings[name].value
+        data[name] = settings[name as keyof SettingsType].value
       }
     }
 

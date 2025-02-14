@@ -17,10 +17,16 @@ import FrontMatterEditor from './FrontMatterEditor.vue'
 
 import imagehosting from '@/utils/imagehosting'
 import { convertImagesToMarkdownBase64 } from '@/utils/imagehosting'
-import { useSettingsStore } from '@/stores'
+import { useContexStore, useSettingsStore } from '@/stores'
 import { onMounted } from 'vue'
 import ContextMenu from '@imengyu/vue3-context-menu'
+import { handleNormalContextMenu } from '@/utils/normalContextMenu'
+import { outlineRender } from '@/utils/outline'
+import { storeToRefs } from 'pinia'
+import { useScrollLock, useScroll, useStyleTag } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
+const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
 
 let fistChangeContent = true
@@ -42,13 +48,21 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  renameFile: {
+    type: Function,
+    required: true,
+  },
   editorReady: {
     type: Function,
     required: true,
   },
 })
 
+const fileName = ref(props.fileName)
+
 const isAllSaved = defineModel() // 是否全部保存
+
+const { activeTabId } = storeToRefs(contexStore) // 大纲树
 
 let vditorInstance: Vditor | null = null
 
@@ -82,6 +96,10 @@ const setContent = async (content: string, replace: boolean = false) => {
   if (vditorInstance) {
     vditorInstance.setValue(result.content, replace)
   }
+
+  if (fistChangeContent) {
+    updateOutline() // 更新大纲
+  }
 }
 
 const getContent = () => {
@@ -105,12 +123,13 @@ defineExpose({
   setContent,
 })
 
-// 最大编辑区域宽度(sv模式不生效)
-const MaxEditRegionWidth = settingsStore.settings.editorMaxWidth
-
 const totalWordsNum = ref(0)
 
 const currentMode = ref(settingsStore.settings.editorDefaultMode)
+
+const previewSourceRef: Ref<HTMLElement | null> = ref(null)
+
+const editorFullscreeState = ref(false)
 
 let modeInerval: ReturnType<typeof setInterval> // 编辑器模式检测定时器
 
@@ -125,7 +144,7 @@ const createVditorInstance = () => {
       value: '# Hello Vditor!\n\n这是编辑器预设内容，如果你看到这段文字代表内容没有被正确显示！',
       mode: currentMode.value,
       height: '100%',
-      typewriterMode: settingsStore.settings.editorTypewriterMode,
+      typewriterMode: true, //settingsStore.settings.editorTypewriterMode,
       input: inputHandler,
       cache: {
         enable: true,
@@ -157,7 +176,6 @@ const createVditorInstance = () => {
         'insert-after',
         '|',
         'upload',
-        'record',
         'table',
         '|',
         'undo',
@@ -167,11 +185,20 @@ const createVditorInstance = () => {
           name: 'save',
           tipPosition: 'ne',
           tip: '保存到本地~',
-          className: 'right',
+          className: 'save',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>',
           click: () => props.saveFile(),
         },
-        'fullscreen',
+        {
+          name: 'fullscreen',
+          tipPosition: 'ne',
+          tip: '全屏编辑',
+          className: 'fullscreen',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><use xlink:href="#vditor-icon-fullscreen"></use></svg>',
+          click: () => {
+            editorFullscreeState.value = !editorFullscreeState.value
+          },
+        },
         'edit-mode',
         {
           name: 'more',
@@ -195,7 +222,7 @@ const createVditorInstance = () => {
         },
       },
       outline: {
-        enable: true,
+        enable: false,
         position: 'left',
       },
       counter: {
@@ -212,6 +239,8 @@ const createVditorInstance = () => {
         // 确保 vditorInstance 完全初始化后再进行操作
         // fileName.value = props.fileName // 设置文件名
         props.editorReady()
+        updatePreviewSourceRef(currentMode.value) // 更新预览区域Ref
+        updateEditorResetElm(currentMode.value) // 更新编辑器重置区域
       },
     })
   })
@@ -225,16 +254,36 @@ watch(
   },
   {
     immediate: true,
+    once: true,
+  },
+)
+
+watch(
+  () => activeTabId.value,
+  (newVal) => {
+    if (newVal !== props.editor) {
+      return
+    }
+
+    updateOutline()
   },
 )
 
 onMounted(() => {
   modeInerval = setInterval(() => {
     if (vditorInstance) {
+      if (vditorInstance.vditor.currentMode === currentMode.value) {
+        return
+      }
       currentMode.value = vditorInstance.vditor.currentMode
+
+      updatePreviewSourceRef(currentMode.value) // 更新预览区域Ref
+      updateOutline() // 更新大纲
+      updateEditorResetElm(currentMode.value) // 更新编辑器重置区域
     }
   }, 1000)
   window.addEventListener('keydown', handleKeyDown)
+  editorBoxElmRef.value?.addEventListener('wheel', wheelEventHandler)
 })
 
 onBeforeUnmount(() => {
@@ -251,7 +300,221 @@ onBeforeUnmount(() => {
 
   clearInterval(modeInerval)
   window.removeEventListener('keydown', handleKeyDown)
+  editorBoxElmRef.value?.removeEventListener('wheel', wheelEventHandler)
+  updateOutline(true) // 清空大纲
 })
+
+/**
+ * 大纲
+ */
+const { outlineTree, outlineSelectId } = storeToRefs(contexStore)
+
+const updatePreviewSourceRef = (mode: string) => {
+  let sourceClass = ''
+  if (mode === 'wysiwyg') {
+    sourceClass = '.vditor-wysiwyg'
+  } else if (mode === 'ir') {
+    sourceClass = '.vditor-ir'
+  } else {
+    sourceClass = '.vditor-preview'
+  }
+
+  previewSourceRef.value = (document.getElementById(props.editor) as HTMLElement).querySelector(
+    sourceClass,
+  ) as HTMLElement
+}
+
+const updateOutline = (clear: boolean = false) => {
+  if (clear) {
+    outlineTree.value = []
+    return
+  }
+
+  if (previewSourceRef.value) {
+    console.log('previewSourceRef:', previewSourceRef.value)
+    outlineTree.value = outlineRender(previewSourceRef.value)
+    console.log('outlineTree:', outlineTree.value)
+  }
+}
+
+// 大纲选中，滚动到对应位置
+
+watch(
+  () => outlineSelectId.value,
+  (newVal) => {
+    const selectItemElm = document.getElementById(newVal)
+    if (selectItemElm) {
+      selectItemElm.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  },
+)
+
+/**
+ * 平滑滚动
+ */
+
+const editorBoxElmRef = useTemplateRef<HTMLElement>('editor-box') // 编辑器外部区域
+const editorResetElmRef: Ref<HTMLElement | null> = ref(null) // vditor reset 区域(内容区域)
+const editorBoxElmIsLocked = useScrollLock(editorBoxElmRef)
+const { y: editorBoxElmY, directions: editorBoxElmD } = useScroll(editorBoxElmRef)
+const editorResetIsLocked = useScrollLock(editorResetElmRef)
+const { y: editorResetY, directions: editorResetD } = useScroll(editorResetElmRef)
+editorResetIsLocked.value = true
+
+watch([editorResetY, editorBoxElmY], () => {
+  handelElmLock()
+})
+
+const handelElmLock = () => {
+  if (editorFullscreeState.value) {
+    // 全屏状态下不处理
+    editorResetIsLocked.value = false
+    return
+  }
+
+  if (!editorBoxElmRef.value || !editorResetElmRef.value) {
+    return
+  }
+
+  // editorBoxElm向下滚动且滚到了底部，锁定editorBoxElm滚动，解锁editorResetElm滚动
+  if (editorBoxElmD.bottom) {
+    if (
+      editorBoxElmRef.value.scrollTop + editorBoxElmRef.value.clientHeight >=
+      editorBoxElmRef.value.scrollHeight
+    ) {
+      editorBoxElmIsLocked.value = true
+      editorResetIsLocked.value = false
+    }
+  }
+
+  // editoResetElm向上滚动且滚到了顶部，锁定editorResetElm滚动，解锁editorBoxElm滚动
+  if (editorResetD.top) {
+    if (editorResetY.value === 0) {
+      editorResetIsLocked.value = true
+      editorBoxElmIsLocked.value = false
+    }
+  }
+
+  // editoResetElm到顶，锁定editorResetElm滚动，解锁editorBoxElm滚动（主要为了初始化状态）
+  if (editorBoxElmY.value === 0) {
+    editorResetIsLocked.value = true
+    editorBoxElmIsLocked.value = false
+  }
+}
+
+// 鼠标滚动事件，让滚动更加平滑（防止滚动区域切换时卡顿现象）
+const wheelEventHandler = (event: WheelEvent) => {
+  if (editorFullscreeState.value) {
+    // 全屏状态下不处理
+    editorResetIsLocked.value = false
+    return
+  }
+
+  if (!editorBoxElmRef.value || !editorResetElmRef.value) {
+    return
+  }
+
+  if (event.deltaY < 0) {
+    // 向上滚动
+    if (editorBoxElmIsLocked.value && !editorResetIsLocked.value && editorResetY.value === 0) {
+      event.preventDefault()
+      editorResetIsLocked.value = true
+      editorBoxElmIsLocked.value = false
+      // editorBoxElmRef.value!.scrollTop =
+      //   (editorBoxElmRef.value!.scrollTop as number) + event.deltaY
+      return
+    }
+
+    if (!editorBoxElmIsLocked.value) {
+      event.preventDefault()
+      editorBoxElmRef.value!.scrollTop = (editorBoxElmRef.value!.scrollTop as number) + event.deltaY
+    }
+
+    if (!editorResetIsLocked.value) {
+      event.preventDefault()
+      editorResetElmRef.value!.scrollTop =
+        (editorResetElmRef.value!.scrollTop as number) + event.deltaY
+    }
+  } else {
+    // 向下滚动
+
+    if (
+      !editorBoxElmIsLocked.value &&
+      editorResetIsLocked.value &&
+      editorBoxElmRef.value.scrollTop + editorBoxElmRef.value.clientHeight >=
+        editorBoxElmRef.value.scrollHeight
+    ) {
+      event.preventDefault()
+      editorBoxElmIsLocked.value = true
+      editorResetIsLocked.value = false
+      return
+    }
+
+    if (!editorBoxElmIsLocked.value) {
+      event.preventDefault()
+      editorBoxElmRef.value!.scrollTop = (editorBoxElmRef.value!.scrollTop as number) + event.deltaY
+    }
+
+    if (!editorResetIsLocked.value) {
+      event.preventDefault()
+      editorResetElmRef.value!.scrollTop =
+        (editorResetElmRef.value!.scrollTop as number) + event.deltaY
+    }
+  }
+}
+
+const updateEditorResetElm = (mode: string) => {
+  if (mode === 'wysiwyg' || mode === 'ir') {
+    if (previewSourceRef.value) {
+      editorResetElmRef.value = previewSourceRef.value.querySelector('.vditor-reset') as HTMLElement
+    }
+  } else {
+    editorResetElmRef.value = previewSourceRef.value = (
+      document.getElementById(props.editor) as HTMLElement
+    ).querySelector('.vditor-sv')
+  }
+
+  handelElmLock()
+}
+
+/**
+ * 设置编辑器最大宽度
+ */
+
+useStyleTag(`
+.md-editor-box .vditor-reset {
+  * {
+    max-width: ${settingsStore.settings.editorMaxWidth}px !important;
+    margin: auto !important;
+  }
+}`)
+
+/**
+ * 编辑器内容变化事件
+ */
+
+const inputHandler = () => {
+  /**
+   * 编辑器内容变化时触发
+   * 用于更新编辑器状态栏右下角的字数统计
+   */
+  updateOutline()
+
+  console.log('inputHandler')
+
+  if (fistChangeContent) {
+    fistChangeContent = false
+    return
+  }
+  isAllSaved.value = false
+}
+
+/**
+ * frontMatter
+ */
 
 const splitFrontMatter = (content: string): Record<string, string> => {
   const yalmPattern = /^---[\s\S]*?---/
@@ -265,18 +528,6 @@ const splitFrontMatter = (content: string): Record<string, string> => {
   }
 }
 
-const inputHandler = () => {
-  /**
-   * 编辑器内容变化时触发
-   * 用于更新编辑器状态栏右下角的字数统计
-   */
-  if (fistChangeContent) {
-    fistChangeContent = false
-    return
-  }
-  isAllSaved.value = false
-}
-
 const frontMatterChange = (value: string) => {
   /**
    * frontMatter 内容变化时触发
@@ -286,12 +537,20 @@ const frontMatterChange = (value: string) => {
   isAllSaved.value = false
 }
 
+/**
+ * 快捷键
+ */
+
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.ctrlKey && event.key === 's') {
     event.preventDefault()
     props.saveFile()
   }
 }
+
+/**
+ * 插入图片
+ */
 
 const handleDragOver = (event: { preventDefault: () => void }) => {
   // 阻止默认行为以允许拖放
@@ -353,6 +612,10 @@ const uploadImage = async (files: File[]): Promise<null> => {
   return null
 }
 
+/**
+ * 右键菜单
+ */
+
 interface contextMenuItem {
   label: string
   disabled?: boolean
@@ -396,7 +659,9 @@ const pasteMenu: contextMenuItem = {
 }
 
 const handleContextMenu = async (event: MouseEvent) => {
-  event.preventDefault()
+  event.stopPropagation() // 停止冒泡
+  event.preventDefault() // 阻止默认事件
+
   if (!vditorInstance) {
     return
   }
@@ -433,6 +698,29 @@ const handleContextMenu = async (event: MouseEvent) => {
     zIndex: 2017,
   })
 }
+
+/**
+ * 重命名文件
+ */
+
+const handelTitleInputBlur = async () => {
+  if (fileName.value !== props.fileName) {
+    const result: boolean = await props.renameFile(fileName.value)
+    console.log('rename result:', result)
+    if (result) {
+      ElMessage({
+        message: '重命名成功',
+        type: 'success',
+      })
+    } else {
+      ElMessage({
+        message: '重命名失败',
+        type: 'error',
+      })
+      fileName.value = props.fileName
+    }
+  }
+}
 </script>
 
 <template>
@@ -442,12 +730,28 @@ const handleContextMenu = async (event: MouseEvent) => {
     @drop.prevent="handleDrop"
     v-loading="loading"
     @contextmenu="handleContextMenu"
+    ref="editor-box"
   >
-    <div
-      class="editor-region"
-      :style="currentMode === 'sv' ? {} : { maxWidth: MaxEditRegionWidth.toString() + 'px' }"
-    >
-      <FrontMatterEditor :frontMatterString="frontMatterString" @change="frontMatterChange" />
+    <div class="editor-region">
+      <!-- :style="currentMode === 'sv' ? {} : { maxWidth: MaxEditRegionWidth.toString() + 'px' }" -->
+      <div class="info-box">
+        <el-input
+          v-model="fileName"
+          autosize
+          type="textarea"
+          placeholder="未命名"
+          class="el-front-matter-custom post-title"
+          style="margin: 20px 0"
+          @contextmenu="
+            (event: MouseEvent) => {
+              event.stopPropagation()
+              handleNormalContextMenu(event)
+            }
+          "
+          @blur="handelTitleInputBlur"
+        />
+        <FrontMatterEditor :frontMatterString="frontMatterString" @change="frontMatterChange" />
+      </div>
       <div :id="editor" class="md-editor"></div>
     </div>
 
@@ -494,10 +798,23 @@ const handleContextMenu = async (event: MouseEvent) => {
 
   .editor-region {
     margin: auto;
+    width: 100%;
+    height: 100%;
+
+    .info-box {
+      padding: 25px;
+
+      .post-title {
+        font-size: 28px;
+        font-weight: bold;
+        font-family: '微软雅黑', Courier, monospace;
+      }
+    }
 
     .md-editor {
-      height: auto !important;
-      min-height: 500px;
+      height: 100%;
+      // height: auto !important;
+      // min-height: 500px;
     }
   }
 }
@@ -542,24 +859,30 @@ const handleContextMenu = async (event: MouseEvent) => {
 </style>
 
 <style lang="scss">
-.vditor {
-  border: none !important;
-  height: 100% !important;
-}
+// .vditor {
+//   border: none !important;
+//   height: 100% !important;
+// }
 
-.vditor-toolbar {
-  padding: 0 !important;
-  /* background-color: inherit !important; */
-}
+// .vditor-toolbar {
+//   padding: 0 !important;
+//   /* background-color: inherit !important; */
+// }
 
-.vditor-reset {
-  overflow: visible !important;
-  padding: 0 40px !important;
-  /* color: inherit !important; */
-  /* background-color: inherit !important; */
-}
+// .vditor-reset {
+//   // overflow: visible !important;
+//   padding: 0 40px !important;
+//   /* color: inherit !important; */
+//   /* background-color: inherit !important; */
+// }
+// .vditor-reset {
+//   * {
+//     max-width: 800px !important;
+//     margin: auto !important;
+//   }
+// }
 
-.vditor-outline {
-  display: none !important;
-}
+// .vditor-outline {
+//   display: none !important;
+// }
 </style>

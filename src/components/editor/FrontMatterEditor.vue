@@ -10,6 +10,7 @@ import {
 } from '@imengyu/vue3-context-menu'
 import { format } from 'date-fns'
 import yaml from 'js-yaml'
+import { handleNormalContextMenu } from '@/utils/normalContextMenu'
 
 const settingsStore = useSettingsStore()
 
@@ -43,9 +44,6 @@ enum fronMatterValueType {
   boolean = 'boolean',
   dateTime = 'dateTime',
 }
-
-// 文章标题
-const fileName = ref('')
 
 // 属性类型选择菜单弹出坐标
 const optionsComponent = ref<{ x: number; y: number }>({ x: 0, y: 0 })
@@ -314,15 +312,15 @@ const frontMatterChange = () => {
 </script>
 
 <template>
-  <div class="front-matter">
-    <el-input
-      v-model="fileName"
-      autosize
-      type="textarea"
-      placeholder="未命名"
-      class="el-front-matter-custom post-title"
-      style="margin: 20px 0"
-    />
+  <div
+    class="front-matter"
+    @contextmenu="
+      (event) => {
+        event.stopPropagation()
+        handleNormalContextMenu(event)
+      }
+    "
+  >
     <div class="front-matter-fold-bar" @click="isFrontMatterFold = !isFrontMatterFold">
       <span class="icon">
         <font-awesome-icon :icon="['fas', 'chevron-right']" v-if="isFrontMatterFold" />

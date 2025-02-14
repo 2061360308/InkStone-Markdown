@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useTabsStore } from '@/stores'
-import { ref, onMounted, defineExpose } from 'vue'
-import { ElMessage } from 'element-plus'
+import { useContexStore } from '@/stores'
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
-const tabsStore = useTabsStore()
+const contexStore = useContexStore()
 
 const outlineBox = ref<HTMLElement | null>(null)
 
@@ -12,141 +12,30 @@ const defaultProps = {
   label: 'label',
 }
 
-const outLineTree = ref<TreeNode[]>([])
-const containerRef = ref<HTMLElement | null>(null)
+const { outlineTree, outlineSelectId } = storeToRefs(contexStore)
 
-const noMarkdown = ref(false)
-
-interface TreeNode {
-  label: string
-  id: string
-  level: string
-  children?: TreeNode[]
+const handleLinkClick = (id: string) => {
+  outlineSelectId.value = id
 }
-
-interface OutlineItem {
-  level: number
-  text: string
-  id: string
-}
-
-const extractOutlineFromElement = (element: HTMLElement): OutlineItem[] => {
-  const outline: OutlineItem[] = []
-
-  function traverse(node: HTMLElement) {
-    for (const child of Array.from(node.children)) {
-      if (child.tagName.match(/^H[1-6]$/)) {
-        const level = parseInt(child.tagName[1])
-        const text = child.textContent?.trim() || ''
-        const id = child.id || ''
-        if (text !== '') {
-          outline.push({ level, text, id })
-        }
-      }
-      traverse(child as HTMLElement)
-    }
-  }
-
-  traverse(element)
-  return outline
-}
-
-const outlineRender = (contentElement: HTMLElement): TreeNode[] => {
-  const outline = extractOutlineFromElement(contentElement)
-  if (outline.length === 0) {
-    return []
-  }
-
-  const buildTree = (outline: OutlineItem[]): TreeNode[] => {
-    const root: TreeNode[] = []
-    const stack: { children: TreeNode[]; level: number }[] = [{ children: root, level: 0 }]
-
-    outline.forEach((item) => {
-      const node: TreeNode = {
-        label: item.text,
-        id: item.id,
-        level: `H${item.level}`,
-        children: [],
-      }
-      while (stack.length > 0 && stack[stack.length - 1].level >= item.level) {
-        stack.pop()
-      }
-      stack[stack.length - 1].children.push(node)
-      stack.push({ children: node.children!, level: item.level })
-    })
-
-    return root
-  }
-
-  return buildTree(outline)
-}
-
-const updateOutline = () => {
-  const current_tab = tabsStore.tabs.filter((tab) => tab.id === tabsStore.activeTabId)[0]
-
-  if (!current_tab || current_tab.type !== tabsStore.TabType.MdFile) {
-    noMarkdown.value = true
-    return
-  } else {
-    noMarkdown.value = false
-  }
-
-  const mode = tabsStore.vditorInstance[tabsStore.activeTabId].getCurrentMode()
-
-  let sourceClass = '.vditor-ir'
-
-  if (mode === 'wysiwyg') {
-    sourceClass = '.vditor-wysiwyg'
-  } else if (mode === 'ir') {
-    sourceClass = '.vditor-ir'
-  } else {
-    sourceClass = '.vditor-preview'
-  }
-
-  const editor_id = current_tab.id
-  containerRef.value = (document.getElementById(editor_id) as HTMLElement).querySelector(
-    sourceClass,
-  ) as HTMLElement
-
-  const outline = outlineRender(containerRef.value)
-  outLineTree.value = outline
-}
-
-// watch(
-//   () => eventStore.fileChanged,
-//   () => {
-//     updateOutline()
-//   },
-// )
-
-const refresh = () => {
-  updateOutline()
-  ElMessage.success('大纲已刷新')
-}
-
-onMounted(() => {
-  updateOutline()
-})
-
-defineExpose({
-  refresh,
-})
 </script>
 <template>
   <div class="outline-panel">
-    <div ref="outlineBox" class="outline-box" v-if="!noMarkdown">
+    <div ref="outlineBox" class="outline-box" v-if="outlineTree.length > 0">
       <el-tree
-        :data="outLineTree"
+        :data="outlineTree"
         :props="defaultProps"
         :default-expand-all="true"
         :expand-on-click-node="false"
       >
         <template #default="{ node, data }">
-          <a :href="`#${data.id}`">
-            <span :class="data.level">
-              {{ node.label.replace(/^#+\s*/, '').trim() }}
-            </span>
-          </a>
+          <span
+            :class="[data.level, 'outline-item']"
+            @click.prevent="handleLinkClick(data.id)"
+            :key="data.id"
+          >
+            {{ node.label.replace(/^#+\s*/, '').trim() }}
+            <span class="level">{{ data.level }}</span>
+          </span>
         </template>
       </el-tree>
     </div>
@@ -160,88 +49,67 @@ a {
   color: var(--el-text-color-primary);
 }
 
-.outlineBox {
-  margin-top: 10px;
-  padding: 15px;
-  height: calc(100% - 50px);
-  overflow: auto;
-}
+// .outlineBox {
+//   margin-top: 10px;
+//   padding: 15px;
+//   height: calc(100% - 50px);
+//   overflow: auto;
+// }
 
-.outline-box .H1,
-.outline-box .H2,
-.outline-box .H3,
-.outline-box .H4,
-.outline-box .H5,
-.outline-box .H6 {
-  font-weight: bold;
-  margin-left: 10px;
-}
+.outline-box {
+  .outline-item {
+    font-weight: bold;
+    margin-left: 10px;
+  }
 
-.outline-box .H1::after,
-.outline-box .H2::after,
-.outline-box .H3::after,
-.outline-box .H4::after,
-.outline-box .H5::after,
-.outline-box .H6::after {
-  float: right;
-  padding-left: 10px;
-  font-weight: normal;
-  color: var(--el-color-primary-light-3);
-  box-sizing: border-box;
-  margin: 0;
-}
+  .H1 {
+    font-size: 18px;
+    .level {
+      font-size: 16px;
+    }
+  }
 
-.outline-box .H1 {
-  font-size: 24px;
-}
+  .H2 {
+    font-size: 16px;
+    .level {
+      font-size: 14px;
+    }
+  }
 
-.outline-box .H1::after {
-  content: 'H1';
-  font-size: 18px;
-}
+  .H3 {
+    font-size: 14px;
+    .level {
+      font-size: 12px;
+    }
+  }
 
-.outline-box .H2 {
-  font-size: 20px;
-}
+  .H4 {
+    font-size: 13px;
+    .level {
+      font-size: 13px;
+    }
+  }
 
-.outline-box .H2::after {
-  content: 'H2';
-  font-size: 16px;
-}
+  .H5 {
+    font-size: 12px;
+    .level {
+      font-size: 12px;
+    }
+  }
 
-.outline-box .H3 {
-  font-size: 16px;
-}
+  .H6 {
+    font-size: 12px;
+    .level {
+      font-size: 12px;
+    }
+  }
 
-.outline-box .H3::after {
-  content: 'H3';
-  font-size: 14px;
-}
-
-.outline-box .H4 {
-  font-size: 12px;
-}
-
-.outline-box .H4::after {
-  content: 'H4';
-  font-size: 12px;
-}
-
-.outline-box .H5 {
-  font-size: 10px;
-}
-
-outline-box .H5::after {
-  content: 'H5';
-  font-size: 10px;
-}
-
-.outline-box .H6 {
-  font-size: 8px;
-}
-
-outline-box .H6::after {
-  content: 'H6';
-  font-size: 8px;
+  .level {
+    padding-left: 10px;
+    font-weight: normal;
+    color: var(--el-color-primary-light-3);
+    box-sizing: border-box;
+    margin: 0;
+  }
 }
 </style>

@@ -455,7 +455,11 @@ html.dark .vditor {
 .vditor-toolbar {
   background-color: var(--toolbar-background-color);
   border-bottom: 1px solid var(--border-color);
-  padding: 0 5px;
+  padding: 5px !important;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-wrap: wrap; /* Allow child elements to wrap */
   line-height: 1;
 }
 .vditor-toolbar--pin {
@@ -630,6 +634,13 @@ html.dark .vditor {
   height: 100vh !important;
   z-index: 90;
   border-radius: 0;
+}
+
+.has-titlebar {
+  .vditor--fullscreen {
+    top: env(titlebar-area-height, 33px) !important;
+    height: calc(100vh - env(titlebar-area-height, 33px)) !important;
+  }
 }
 .vditor-content {
   display: flex;
@@ -920,7 +931,9 @@ html.dark .vditor {
   line-height: 1.5;
   font-size: 16px;
   word-break: break-word;
+  padding: 10px 32px !important;
 }
+
 .vditor-reset--anchor {
   padding-left: 20px;
 }

@@ -504,7 +504,8 @@ const fileRightClick = (
   node: HTMLElement | null = null,
   component: Component | null = null,
 ) => {
-  e.preventDefault()
+  e.stopPropagation() // 停止冒泡
+  e.preventDefault() // 阻止默认事件
 
   console.log('右击', type, data, node, component)
   let contexmenu: contextMenuItemData = []

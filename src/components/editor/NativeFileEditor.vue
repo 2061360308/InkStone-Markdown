@@ -92,6 +92,11 @@ const saveFile = async () => {
 
   isAllSaved.value = true
 }
+
+const renameFile = async (newName: string): Promise<boolean> => {
+  console.warn('请求重命名[本地文件暂不支持]：', newName)
+  return false // TODO 本地文件重命名
+}
 </script>
 
 <template>
@@ -104,6 +109,7 @@ const saveFile = async () => {
       v-model="isAllSaved"
       :editorReady="editorReady"
       :save-file="saveFile"
+      :rename-file="renameFile"
       ref="EditorInstanceRef"
       v-show="ready"
     />

@@ -215,6 +215,7 @@ const logout = () => {
                 settingsStore.settingsInputTypes[settingName] === settingsStore.InputType.lineInput
               "
               :disabled="!settingsStore.settingsUsage[settingName]"
+              spellcheck="false"
             />
             <el-input
               v-model="settingsStore.settings[settingName as keyof SettingsType]"
@@ -224,6 +225,7 @@ const logout = () => {
               v-else-if="
                 settingsStore.settingsInputTypes[settingName] === settingsStore.InputType.textInput
               "
+              spellcheck="false"
               :disabled="!settingsStore.settingsUsage[settingName]"
             />
             <el-input-number

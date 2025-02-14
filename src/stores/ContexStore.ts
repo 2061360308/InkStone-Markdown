@@ -3,6 +3,7 @@ import { markRaw, ref, Ref, watch } from 'vue'
 import api from '@/utils/api'
 import { generateRandomId } from '@/utils/general'
 import panelsManager from '@/panels'
+import { OutlineTreeNode } from '@/utils/outline'
 
 export const useContexStore = defineStore('contex', () => {
   // 打开的文件
@@ -27,6 +28,11 @@ export const useContexStore = defineStore('contex', () => {
 
   // 通知
   const notification: Ref<{ hash: string; data: Array<string> }> = ref({ hash: '', data: [] })
+
+  // Markdown 大纲
+  const outlineTree = ref<OutlineTreeNode[]>([])
+
+  const outlineSelectId = ref('') // 选中的大纲节点id
 
   // 内容状态
 
@@ -230,6 +236,8 @@ export const useContexStore = defineStore('contex', () => {
     titleBarText,
     tabs,
     activeTabId,
+    outlineTree,
+    outlineSelectId,
     setActiveTab,
     addTab,
     removeTab,
