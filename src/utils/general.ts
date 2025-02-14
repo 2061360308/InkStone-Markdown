@@ -74,8 +74,8 @@ export const validateLoginAfter = async () => {
   if (access_token) {
     const { tokenValid, repoValid, hasPushAccess, branchValid, installedApp } = await validateLogin(
       access_token,
-      settingsStore.settings['基本配置'].repoName,
-      settingsStore.settings['基本配置'].repoBranch,
+      settingsStore.settings.repoName,
+      settingsStore.settings.repoBranch,
     )
     if (tokenValid && repoValid && hasPushAccess && branchValid) {
       // 判断登录方式，如果是通过GithubApp自动登录的，需要验证是否安装应用

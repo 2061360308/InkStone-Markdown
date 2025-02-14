@@ -93,12 +93,8 @@ const getContent = () => {
 
   // 补全 frontMatter 末尾的换行符
   if (!frontMatterString.value.endsWith('\n') && !content.startsWith('\n')) {
-    console.log('补全 frontMatter 末尾的换行符')
     return frontMatterString.value + '\n' + content
   } else {
-    console.log('不补全 frontMatter 末尾的换行符')
-    console.log('frontMatterString:', frontMatterString.value)
-    console.log('content:', content)
     return frontMatterString.value + content
   }
 }
@@ -110,11 +106,11 @@ defineExpose({
 })
 
 // 最大编辑区域宽度(sv模式不生效)
-const MaxEditRegionWidth = settingsStore.settings['编辑器配置'].editorMaxWidth
+const MaxEditRegionWidth = settingsStore.settings.editorMaxWidth
 
 const totalWordsNum = ref(0)
 
-const currentMode = ref(settingsStore.settings['编辑器配置'].editorDefaultMode)
+const currentMode = ref(settingsStore.settings.editorDefaultMode)
 
 let modeInerval: ReturnType<typeof setInterval> // 编辑器模式检测定时器
 
@@ -129,7 +125,7 @@ const createVditorInstance = () => {
       value: '# Hello Vditor!\n\n这是编辑器预设内容，如果你看到这段文字代表内容没有被正确显示！',
       mode: currentMode.value,
       height: '100%',
-      typewriterMode: settingsStore.settings['编辑器配置'].editorTypewriterMode,
+      typewriterMode: settingsStore.settings.editorTypewriterMode,
       input: inputHandler,
       cache: {
         enable: true,
@@ -194,8 +190,8 @@ const createVditorInstance = () => {
       ],
       preview: {
         markdown: {
-          autoSpace: settingsStore.settings['编辑器配置'].editorAutoSpace,
-          gfmAutoLink: settingsStore.settings['编辑器配置'].editorGfmAutoLink,
+          autoSpace: settingsStore.settings.editorAutoSpace,
+          gfmAutoLink: settingsStore.settings.editorGfmAutoLink,
         },
       },
       outline: {
@@ -333,7 +329,7 @@ const uploadImage = async (files: File[]): Promise<null> => {
   let content = '\n'
   for (let i = 0; i < success.length; i++) {
     const fileExtension = success[i].file.name.split('.').pop() || ''
-    let rootUrl = settingsStore.settings['图床配置'].rootUrl
+    let rootUrl = settingsStore.settings.rootUrl
     if (!rootUrl.endsWith('/')) {
       rootUrl += '/'
     }
@@ -401,7 +397,6 @@ const pasteMenu: contextMenuItem = {
 
 const handleContextMenu = async (event: MouseEvent) => {
   event.preventDefault()
-  console.log('右键菜单')
   if (!vditorInstance) {
     return
   }

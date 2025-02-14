@@ -13,25 +13,16 @@ const router = useRouter()
 
 const containerRef = ref<HTMLElement | null>(null)
 
-const repoName = computed(() => settingsStore.settings['基本配置'].repoName)
-const branchName = computed(() => settingsStore.settings['基本配置'].repoBranch)
+const repoName = computed(() => settingsStore.settings.repoName)
+const branchName = computed(() => settingsStore.settings.repoBranch)
 
-const groupNames = computed(() => Object.keys(settingsStore.settings))
-const settingNames = computed(() => {
-  const names: Record<string, string[]> = {}
-  for (const groupName in settingsStore.settings) {
-    names[groupName] = Object.keys(settingsStore.settings[groupName])
-  }
-  return names
-})
+const groupNames = Object.keys(settingsStore.settingsCategory)
 
-const imagehostingBucket = computed(() => settingsStore.settings['图床配置'].bucket)
-const imagehostingEndpoint = computed(() => settingsStore.settings['图床配置'].endpoint)
-const imagehostingRegion = computed(() => settingsStore.settings['图床配置'].region)
-const imagehostingAccessKeyId = computed(() => settingsStore.settings['图床配置'].accessKeyId)
-const imagehostingSecretAccessKey = computed(
-  () => settingsStore.settings['图床配置'].secretAccessKey,
-)
+const imagehostingBucket = computed(() => settingsStore.settings.bucket)
+const imagehostingEndpoint = computed(() => settingsStore.settings.endpoint)
+const imagehostingRegion = computed(() => settingsStore.settings.region)
+const imagehostingAccessKeyId = computed(() => settingsStore.settings.accessKeyId)
+const imagehostingSecretAccessKey = computed(() => settingsStore.settings.secretAccessKey)
 
 const imagehostingUseable: Ref<boolean> = ref(imagehosting.ready)
 
@@ -45,15 +36,12 @@ watch(
   ],
   async ([newBucket, newEndpoint, newRegion, newAccessKeyId, newSecretAccessKey]) => {
     const result = await imagehosting.init(
-      newBucket as string,
-      newEndpoint as string,
-      newRegion as string,
-      newAccessKeyId as string,
-      newSecretAccessKey as string,
+      newBucket.value as string,
+      newEndpoint.value as string,
+      newRegion.value as string,
+      newAccessKeyId.value as string,
+      newSecretAccessKey.value as string,
     )
-
-    console.log(newBucket, newEndpoint, newRegion, newAccessKeyId, newSecretAccessKey)
-    console.log('imagehostingUseable', result)
 
     if (!result) {
       imagehostingUseable.value = false
@@ -147,14 +135,14 @@ const updateRepo = async () => {
   await updataBranchesOptions()
 
   // 当前分支不在分支选项中时，自动选择第一个分支
-  const currentBranch = settingsStore.settings['基本配置'].repoBranch
+  const currentBranch = settingsStore.settings.repoBranch.value
 
   if (!(settingsStore.selectInputOptions.repoBranch as unknown as string).includes(currentBranch)) {
     if ((settingsStore.selectInputOptions.repoBranch as unknown as string).length > 0) {
-      settingsStore.settings['基本配置'].repoBranch = (
+      settingsStore.settings.repoBranch.value = (
         settingsStore.selectInputOptions.repoBranch as unknown as string
       )[0]
-      api.branch = settingsStore.settings['基本配置'].repoBranch // 更新api配置
+      api.branch = settingsStore.settings.repoBranch.value // 更新api配置
     }
   }
 
@@ -165,7 +153,7 @@ watch(repoName, updateRepo)
 
 watch(branchName, async () => {
   // 更新api配置
-  api.branch = settingsStore.settings['基本配置'].repoBranch
+  api.branch = settingsStore.settings.repoBranch.value
 })
 
 const handleClick = (e: MouseEvent) => {
@@ -203,7 +191,10 @@ const logout = () => {
           :key="groupName"
         >
           <div class="setting-group-title">{{ groupName }}</div>
-          <el-form-item v-for="settingName in settingNames[groupName]" :key="settingName">
+          <el-form-item
+            v-for="settingName in settingsStore.settingsCategory[groupName]"
+            :key="settingName"
+          >
             <template #label>
               <div>
                 {{ settingsStore.settingsInputLabels[settingName] }}
@@ -219,14 +210,14 @@ const logout = () => {
             </template>
 
             <el-input
-              v-model="settingsStore.settings[groupName][settingName]"
+              v-model="settingsStore.settings[settingName as keyof SettingsType]"
               v-if="
                 settingsStore.settingsInputTypes[settingName] === settingsStore.InputType.lineInput
               "
               :disabled="!settingsStore.settingsUsage[settingName]"
             />
             <el-input
-              v-model="settingsStore.settings[groupName][settingName]"
+              v-model="settingsStore.settings[settingName as keyof SettingsType]"
               autosize
               type="textarea"
               placeholder="Please input"
@@ -236,7 +227,7 @@ const logout = () => {
               :disabled="!settingsStore.settingsUsage[settingName]"
             />
             <el-input-number
-              v-model="settingsStore.settings[groupName][settingName]"
+              v-model="settingsStore.settings[settingName as keyof SettingsType]"
               v-else-if="
                 settingsStore.settingsInputTypes[settingName] ===
                 settingsStore.InputType.numberInput
@@ -244,7 +235,7 @@ const logout = () => {
               :disabled="!settingsStore.settingsUsage[settingName]"
             />
             <el-switch
-              v-model="settingsStore.settings[groupName][settingName]"
+              v-model="settingsStore.settings[settingName as keyof SettingsType]"
               v-else-if="
                 settingsStore.settingsInputTypes[settingName] ===
                 settingsStore.InputType.booleanInput
@@ -252,7 +243,7 @@ const logout = () => {
               :disabled="!settingsStore.settingsUsage[settingName]"
             />
             <el-select
-              v-model="settingsStore.settings[groupName][settingName]"
+              v-model="settingsStore.settings[settingName as keyof SettingsType]"
               v-else-if="
                 settingsStore.settingsInputTypes[settingName] ===
                 settingsStore.InputType.selectInput

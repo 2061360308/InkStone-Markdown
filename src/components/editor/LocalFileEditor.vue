@@ -71,7 +71,7 @@ const editorReady = async () => {
     ready.value = true
     console.log('content:', EditorInstanceRef.value?.getContent())
   } else {
-    const branch = settingsStore.settings['基本配置'].repoBranch as string
+    const branch = settingsStore.settings.repoBranch.value as string
     api.getFileContent(path, branch).then((res) => {
       fs.write(path, res.decodedContent, repo)
       EditorInstanceRef.value?.setContent(res.decodedContent, true)

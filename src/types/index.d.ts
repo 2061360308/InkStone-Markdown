@@ -53,28 +53,22 @@ declare interface TabItem {
 }
 
 declare interface SettingsType {
-  基本配置: {
-    themeName: Ref<string>
-    repoName: Ref<string>
-    repoBranch: Ref<string>
-    repoPath: Ref<string>
-  }
-  编辑器配置: {
-    defaultFrontMatter: Ref<string>
-    dateTimeFormat: Ref<string>
-    editorDefaultMode: Ref<EditorMode>
-    editorMaxWidth: Ref<number>
-    editorTypewriterMode: Ref<boolean>
-    editorAutoSpace: Ref<boolean>
-    editorGfmAutoLink: Ref<boolean>
-  }
-  图床配置: {
-    bucket: Ref<string>
-    endpoint: Ref<string>
-    region: Ref<string>
-    accessKeyId: Ref<string>
-    secretAccessKey: Ref<string>
-    rootUrl: Ref<string>
-    defaultImageLinkString: Ref<string>
-  }
+  themeName: Ref<string>
+  repoName: Ref<string>
+  repoBranch: Ref<string>
+  repoPath: Ref<string>
+  defaultFrontMatter: Ref<string>
+  dateTimeFormat: Ref<string>
+  editorDefaultMode: Ref<EditorMode>
+  editorMaxWidth: Ref<number>
+  editorTypewriterMode: Ref<boolean>
+  editorAutoSpace: Ref<boolean>
+  editorGfmAutoLink: Ref<boolean>
+  bucket: Ref<string>
+  endpoint: Ref<string>
+  region: Ref<string>
+  accessKeyId: Ref<string>
+  secretAccessKey: Ref<string>
+  rootUrl: Ref<string>
+  defaultImageLinkString: Ref<string>
 }

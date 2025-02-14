@@ -22,7 +22,7 @@ const inputToken = ref<string>('')
 const repoList = ref<{ label: string; value: string }[]>([])
 const branchList = ref<{ label: string; value: string }[]>([])
 
-const repoName = computed(() => settingsStore.settings['基本配置'].repoName)
+const repoName = computed(() => settingsStore.settings.repoName)
 
 const updateBranchList = async (repo: string) => {
   api.repo = repo
@@ -47,14 +47,11 @@ let access_token: string
 const checkLoginState = async (access_token: string) => {
   const { tokenValid, repoValid, hasPushAccess, branchValid, installedApp } = await validateLogin(
     access_token,
-    settingsStore.settings['基本配置'].repoName,
-    settingsStore.settings['基本配置'].repoBranch,
+    settingsStore.settings.repoName,
+    settingsStore.settings.repoBranch,
   )
 
-  console.log(
-    settingsStore.settings['基本配置'].repoName,
-    settingsStore.settings['基本配置'].repoBranch,
-  )
+  console.log(settingsStore.settings.repoName, settingsStore.settings.repoBranch)
   console.log(tokenValid, repoValid, hasPushAccess, branchValid, installedApp)
 
   if (tokenValid && remember.value) {
@@ -109,7 +106,7 @@ onMounted(async () => {
 
   // 记录repo Todo: 逻辑移动到LunchView
   // if (route.query.repo) {
-  //   settingsStore.settings['基本配置'].repoName = route.query.repo as string
+  //   settingsStore.settings.repoName = route.query.repo as string
   // }
 
   // 如果存在 access_token,进行验证
@@ -174,7 +171,7 @@ const loginByGithub = async () => {
 
 const setRepoLogin = async () => {
   // 验证
-  console.log('repoName', settingsStore.settings['基本配置'].repoName)
+  console.log('repoName', settingsStore.settings.repoName)
   loading.value = true
   await checkLoginState(access_token as string)
   loading.value = false
@@ -183,7 +180,7 @@ const setRepoLogin = async () => {
 const jumpLogin = () => {
   localStorage.setItem('jumpLogin', 'true') // 添加跳过登录标记
   // 更改设置中当前仓库为 inkstone.local 以便后续存储文件
-  settingsStore.settings['基本配置'].repoName = 'inkstone.local'
+  settingsStore.settings.repoName = 'inkstone.local'
   router.replace({ name: 'main' })
 }
 </script>
@@ -265,7 +262,7 @@ const jumpLogin = () => {
         </div>
         <div>
           <el-select
-            v-model="settingsStore.settings['基本配置'].repoName"
+            v-model="settingsStore.settings.repoName"
             placeholder="请选择将要使用的仓库"
             size="large"
             style="width: 240px"
@@ -279,7 +276,7 @@ const jumpLogin = () => {
           </el-select>
 
           <el-select
-            v-model="settingsStore.settings['基本配置'].repoBranch"
+            v-model="settingsStore.settings.repoBranch"
             placeholder="请选择将要使用的分支"
             size="large"
             style="width: 240px"

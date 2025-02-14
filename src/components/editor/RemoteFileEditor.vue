@@ -11,7 +11,7 @@ import { storeToRefs } from 'pinia'
 const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
 const { tabs } = storeToRefs(contexStore)
-const branch = computed(() => settingsStore.settings['基本配置'].repoBranch)
+const branch = computed(() => settingsStore.settings.repoBranch)
 
 const ready: Ref<boolean> = ref(false)
 
@@ -35,7 +35,7 @@ const mdPreviewMode = ref(false)
 const showHistoryDrawer = ref(false)
 
 // 最大编辑区域宽度,这里用于Markdown预览
-const MaxEditRegionWidth = settingsStore.settings['编辑器配置'].editorMaxWidth
+const MaxEditRegionWidth = settingsStore.settings.editorMaxWidth
 
 const EditorInstanceRef = ref<InstanceType<typeof CodemirrorEditor> | null>(null)
 

@@ -47,12 +47,20 @@ export const backendTasks = async () => {
   /**
    * 图床初始化
    */
+  console.log('图床初始化')
+  console.log(
+    settingsStore.settings.bucket,
+    settingsStore.settings.endpoint,
+    settingsStore.settings.region,
+    settingsStore.settings.accessKeyId,
+    settingsStore.settings.secretAccessKey,
+  )
   await imagehosting.init(
-    settingsStore.settings['图床配置'].bucket,
-    settingsStore.settings['图床配置'].endpoint,
-    settingsStore.settings['图床配置'].region,
-    settingsStore.settings['图床配置'].accessKeyId,
-    settingsStore.settings['图床配置'].secretAccessKey,
+    settingsStore.settings.bucket,
+    settingsStore.settings.endpoint,
+    settingsStore.settings.region,
+    settingsStore.settings.accessKeyId,
+    settingsStore.settings.secretAccessKey,
   )
   print('图床初始化完成')
 }

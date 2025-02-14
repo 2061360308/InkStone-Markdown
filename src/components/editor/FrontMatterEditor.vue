@@ -16,8 +16,14 @@ const settingsStore = useSettingsStore()
 const props = defineProps<{ frontMatterString: string }>()
 const emit = defineEmits(['change'])
 
+interface fronMatterItemType {
+  name: string
+  type: fronMatterValueType
+  value: string | number | Date | boolean | Array<string>
+}
+
 // frontMatter
-const frontMatter = ref<Array<{ name: string; type: fronMatterValueType; value: any }>>([])
+const frontMatter = ref<Array<fronMatterItemType>>([])
 
 // frontMatter的备份数据
 // 如果用户输入的不合法将从此数组中恢复（如果有）
@@ -27,7 +33,7 @@ let frontMatterBack: Array<string> = []
 // frontMatter 原始yaml对象，
 // 无法可视化的数据（复杂嵌套数据），会保存在这里
 // 写回文件时会将这里的数据转换为yaml字符串
-let frontMatterObject = <Record<string, any>>{}
+let frontMatterObject = <Record<string, unknown>>{}
 
 // frontMatter 属性值类型
 enum fronMatterValueType {
@@ -96,7 +102,7 @@ watch(
       frontMatter.value.push({
         name: key,
         type: item_type,
-        value: value,
+        value: value as fronMatterItemType['value'],
       })
     }
 
@@ -125,7 +131,7 @@ const changeAttributeType = (type: fronMatterValueType) => {
     })
       .then(() => {
         // 清空对应的属性值
-        const newValue: any = ''
+        const newValue = ''
         if (type === fronMatterValueType.array) {
           frontMatter.value[currentFrontMatterIndex].value = []
         } else if (type === fronMatterValueType.number) {
@@ -159,7 +165,7 @@ const changeAttributeType = (type: fronMatterValueType) => {
         })
       })
   } else {
-    const newValue: any = ''
+    const newValue = ''
     if (type === fronMatterValueType.array) {
       frontMatter.value[currentFrontMatterIndex].value = []
     } else if (type === fronMatterValueType.number) {
@@ -252,17 +258,17 @@ const attributeValueInputComplate = (index: number) => {
   // 直接更新值就好
   // frontMatterObject[frontMatter.value[index].name] =
   //   frontMatter.value[index].value;
-
+  console.log('frontMatterObject:', frontMatterObject, index)
   frontMatterChange()
 }
 
 const parseFrontMatter = (content: string) => {
-  let parsedYaml = <Record<string, any>>{}
+  let parsedYaml = <Record<string, unknown>>{}
   if (content) {
     try {
       const match = content.match(/---\s*([\s\S]*?)\s*---/)
       if (match && match[1]) {
-        parsedYaml = yaml.load(match[1]) as Record<string, any>
+        parsedYaml = yaml.load(match[1]) as Record<string, unknown>
       } else {
         parsedYaml = {}
       }
@@ -274,14 +280,14 @@ const parseFrontMatter = (content: string) => {
   return parsedYaml
 }
 
-const stringifyFrontMatter = (frontMatter: Record<string, any>) => {
+const stringifyFrontMatter = (frontMatter: Record<string, unknown>) => {
   const timeData: Record<string, string> = {}
 
   for (const key in frontMatter) {
     const value = frontMatter[key]
     if (value instanceof Date) {
       const id = Math.random().toString(36)
-      timeData[id] = format(value, settingsStore.settings['编辑器配置'].dateTimeFormat)
+      timeData[id] = format(value, settingsStore.settings.dateTimeFormat)
       frontMatter[key] = `${id}`
     }
   }
@@ -325,7 +331,7 @@ const frontMatterChange = () => {
       <span>文档属性</span>
     </div>
     <div v-show="!isFrontMatterFold">
-      <div class="front-matter-item" v-for="(item, index) in frontMatter">
+      <div class="front-matter-item" v-for="(item, index) in frontMatter" :key="index">
         <el-input
           v-model="item.name"
           style="width: 240px"
@@ -371,21 +377,21 @@ const frontMatterChange = () => {
           </template>
         </el-input>
         <el-input
-          v-model="item.value"
+          v-model="item.value as string | number"
           placeholder="输入属性值（文本）"
           class="el-front-matter-custom"
           @blur="attributeValueInputComplate(index)"
           v-if="item.type === fronMatterValueType.string"
         />
         <el-input-tag
-          v-model="item.value"
+          v-model="item.value as string[]"
           placeholder="输入属性值（列表），Tip：回车可键入"
           class="el-front-matter-custom"
           @blur="attributeValueInputComplate(index)"
           v-if="item.type === fronMatterValueType.array"
         />
         <el-input-number
-          v-model="item.value"
+          v-model="item.value as number"
           controls-position="right"
           style="width: 100%"
           class="el-front-matter-custom"
@@ -393,7 +399,7 @@ const frontMatterChange = () => {
           v-if="item.type === fronMatterValueType.number"
         />
         <el-switch
-          v-model="item.value"
+          v-model="item.value as boolean"
           style="
             --el-switch-on-color: #13ce66;
             --el-switch-off-color: #ff4949;
@@ -405,7 +411,7 @@ const frontMatterChange = () => {
         />
 
         <el-date-picker
-          v-model="item.value"
+          v-model="item.value as Date"
           type="datetime"
           placeholder="选取日期和时间"
           style="width: 100%"

@@ -41,7 +41,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const editorAutoSpace = ref<boolean>(true) // 自动空格
   const editorGfmAutoLink = ref<boolean>(true) // 自动链接
 
-  // 图床配置
+  // imageHosting
   const bucket = ref<string>('') // bucket name
   const endpoint = ref<string>('') // endpoint eg: https://cos.ap-chengdu.myqcloud.com
   const region = ref<string>('') // region eg: ap-chengdu
@@ -142,31 +142,74 @@ export const useSettingsStore = defineStore('settings', () => {
     defaultImageLinkString: true,
   }
 
+  // const settings: SettingsType = {
+  //   basis: {
+  //     themeName: themeName,
+  //     repoName: repoName,
+  //     repoBranch: repoBranch,
+  //     repoPath: repoPath,
+  //   },
+  //   mdEditor: {
+  //     defaultFrontMatter: defaultFrontMatter,
+  //     dateTimeFormat: dateTimeFormat,
+  //     editorDefaultMode: editorDefaultMode,
+  //     editorMaxWidth: editorMaxWidth,
+  //     editorTypewriterMode: editorTypewriterMode,
+  //     editorAutoSpace: editorAutoSpace,
+  //     editorGfmAutoLink: editorGfmAutoLink,
+  //   },
+  //   imageHosting: {
+  //     bucket: bucket,
+  //     endpoint: endpoint,
+  //     region: region,
+  //     accessKeyId: accessKeyId,
+  //     secretAccessKey: secretAccessKey,
+  //     rootUrl: rootUrl,
+  //     defaultImageLinkString: defaultImageLinkString,
+  //   },
+  // }
+
   const settings: SettingsType = {
-    基本配置: {
-      themeName: themeName,
-      repoName: repoName,
-      repoBranch: repoBranch,
-      repoPath: repoPath,
-    },
-    编辑器配置: {
-      defaultFrontMatter: defaultFrontMatter,
-      dateTimeFormat: dateTimeFormat,
-      editorDefaultMode: editorDefaultMode,
-      editorMaxWidth: editorMaxWidth,
-      editorTypewriterMode: editorTypewriterMode,
-      editorAutoSpace: editorAutoSpace,
-      editorGfmAutoLink: editorGfmAutoLink,
-    },
-    图床配置: {
-      bucket: bucket,
-      endpoint: endpoint,
-      region: region,
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretAccessKey,
-      rootUrl: rootUrl,
-      defaultImageLinkString: defaultImageLinkString,
-    },
+    themeName,
+    repoName,
+    repoBranch,
+    repoPath,
+    defaultFrontMatter,
+    dateTimeFormat,
+    editorDefaultMode,
+    editorMaxWidth,
+    editorTypewriterMode,
+    editorAutoSpace,
+    editorGfmAutoLink,
+    bucket,
+    endpoint,
+    region,
+    accessKeyId,
+    secretAccessKey,
+    rootUrl,
+    defaultImageLinkString,
+  }
+
+  const settingsCategory: Record<string, string[]> = {
+    基础设置: ['themeName', 'repoName', 'repoBranch', 'repoPath'],
+    Markdown编辑器: [
+      'defaultFrontMatter',
+      'dateTimeFormat',
+      'editorDefaultMode',
+      'editorMaxWidth',
+      'editorTypewriterMode',
+      'editorAutoSpace',
+      'editorGfmAutoLink',
+    ],
+    图床设置: [
+      'bucket',
+      'endpoint',
+      'region',
+      'accessKeyId',
+      'secretAccessKey',
+      'rootUrl',
+      'defaultImageLinkString',
+    ],
   }
 
   let uploadTimeout: number | null = null
@@ -200,12 +243,11 @@ export const useSettingsStore = defineStore('settings', () => {
   const saveSettings = () => {
     // 保存设置
     const data: Record<string, unknown> = {}
-    for (const groupname in settings) {
-      const group = settings[groupname as keyof SettingsType]
-      Object.keys(group).forEach((key: string) => {
-        const value = (group as Record<string, Ref<unknown>>)[key].value
-        data[key] = value
-      })
+    for (const categoryName in settingsCategory) {
+      const group = settingsCategory[categoryName]
+      for (const name of group) {
+        data[name] = settings[name].value
+      }
     }
 
     const settingsStr = JSON.stringify(data)
@@ -221,13 +263,13 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const loadSettings = (data: Record<string, unknown>) => {
     // 加载设置
-    for (const groupname in settings) {
-      const group = settings[groupname as keyof SettingsType]
-      Object.keys(group).forEach((key: string) => {
-        if (data[key] !== undefined) {
-          ;(group as Record<string, Ref<unknown>>)[key].value = data[key]
+    for (const categoryName in settingsCategory) {
+      const group = settingsCategory[categoryName]
+      for (const name of group) {
+        if (data[name] !== undefined) {
+          settings[name as keyof SettingsType].value = data[name]
         }
-      })
+      }
     }
   }
 
@@ -252,13 +294,13 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   // 监测设置项变化
-  for (const groupname in settings) {
-    const group = settings[groupname as keyof SettingsType]
-    Object.keys(group).forEach((key: string) => {
-      watch((group as Record<string, Ref<unknown>>)[key], () => {
+  for (const categoryName in settingsCategory) {
+    const group = settingsCategory[categoryName]
+    for (const name of group) {
+      watch(settings[name as keyof SettingsType], () => {
         saveSettings()
       })
-    })
+    }
   }
 
   // 初始化设置
@@ -295,6 +337,7 @@ export const useSettingsStore = defineStore('settings', () => {
   return {
     InputType,
     settings,
+    settingsCategory,
     settingsInputTypes,
     settingsInputLabels,
     settingsInputDescriptions,

@@ -43,7 +43,7 @@ watch(
   },
 )
 
-const repoName = computed(() => settingsStore.settings['基本配置'].repoName)
+const repoName = computed(() => settingsStore.settings.repoName)
 const localSelectRepoName: Ref<string> = ref(repoName.value) // 本地文件树要显示的仓库名
 const localRepoNames: Ref<string[]> = ref([]) // 本地文件树的仓库名列表
 
@@ -262,7 +262,7 @@ const fileSelected = (type: string, node: treeItemObject, treeItem: treeItemObje
   }
 
   const path = treeItem.data.path
-  const branch = settingsStore.settings['基本配置'].repoBranch
+  const branch = settingsStore.settings.repoBranch
 
   if (type === 'mixed') {
     openLocalFile(path, repoName.value)

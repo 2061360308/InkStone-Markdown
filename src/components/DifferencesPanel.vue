@@ -35,7 +35,7 @@ watch(
 
 const isRotating = ref(false)
 const messageInput = ref('')
-const repoName = computed(() => settingsStore.settings['基本配置'].repoName)
+const repoName = computed(() => settingsStore.settings.repoName)
 
 enum FileAction {
   CREATE = 'create',
