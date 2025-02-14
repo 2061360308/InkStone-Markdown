@@ -1,0 +1,42 @@
+author:
+  type: string
+  description: 文章的原作者名称
+link: 
+  type: string
+  description: 文章的原文链接
+imgs:
+  type: string
+  description: 将在 open graph 和 twitter 卡片中使用的图像源链接
+expand:
+  type: boolean
+  description: 是否在首页展开文章内容
+It's means that will redirecting to external links
+extlink:
+  type: string
+  description: 将文章链接重定向到外部链接
+Disabled comment plugins in this post
+comment:
+  type: object
+  description: 禁用评论插件
+  properties:
+    enable: 
+      type: boolean
+      description: 是否禁用评论插件
+toc:
+  type: boolean
+  description: 禁用文章目录
+url:
+  type: string
+  description: 定义文章的绝对链接
+weight:
+  type: number
+  description: 文章置顶权重，数字越小越靠前
+Support Math Formulas render, options: mathjax, katex
+math:
+  type: select
+  description: 数学公式渲染引擎
+  enum: [mathjax, katex]
+  default: mathjax
+mermaid:
+  type: boolean
+  description: 启用 Mermaid 图表渲染
