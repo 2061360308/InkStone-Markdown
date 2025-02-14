@@ -83,7 +83,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 将限制增加到 5 MiB
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 将限制增加到 5 MiB
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2,ttf,eot,otf}'],
       },
     }),
@@ -116,5 +116,30 @@ export default defineConfig({
       `,
       },
     },
+  },
+  build: {
+    rollupOptions: {
+      external: ['node-cache'],
+      output: {
+        manualChunks(id) {
+          // if (id.includes('@imengyu/vue3-context-menu')) {
+          //   return 'vue3-context-menu'
+          // }
+          if (id.includes('element-plus')) {
+            return 'element-plus'
+          }
+          if (id.includes('src/views/MainAppView.vue')) {
+            return 'mainAppView'
+          }
+          if (id.includes('src/utils/fontAwesomeLibrary.ts')) {
+            return 'fontAwesomeLibrary'
+          }
+          if (id.includes('src/utils')) {
+            return 'utils'
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
 })

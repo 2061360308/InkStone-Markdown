@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useContexStore } from '@/stores'
 import { backendTasks } from '@/utils/backendLaunchTasks'
+import { openNativeFile } from '@/utils/filePanelOperation'
 
 const route = useRoute()
 const router = useRouter()
@@ -36,7 +37,7 @@ onMounted(() => {
       }
       for (const fileHandle of launchParams.files) {
         // contexStore.openedFiles.push(fileHandle)
-        console.log('Todo:', fileHandle)
+        openNativeFile(fileHandle)
       }
     })
   } else {
