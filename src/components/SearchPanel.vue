@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { Ref, ref, computed, defineEmits, defineExpose } from 'vue'
 import api from '@/utils/api'
-import { useTabsStore } from '@/stores'
+import { openRemoteFile } from '@/utils/filePanelOperation'
 import { watch } from 'vue'
-
-const tabsStore = useTabsStore()
 
 const emit = defineEmits(['change:loading', 'change:tipLoad'])
 const loading = ref(false)
@@ -29,6 +27,9 @@ watch(
     immediate: true,
   },
 )
+
+const repo = computed(() => api.repo as string)
+const branch = computed(() => api.branch as string)
 
 const keywords = ref('')
 
@@ -69,7 +70,7 @@ defineExpose({
           <div
             class="result-item"
             v-for="node in searchResults"
-            @click="tabsStore.openRemoteFile(node.path)"
+            @click="openRemoteFile(node.path, repo, branch)"
             :key="node.path"
           >
             <el-tooltip effect="dark" :content="node.path" placement="right-start">
@@ -87,3 +88,30 @@ defineExpose({
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.result-item {
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  gap: 10px; /* 子元素之间的间距 */
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: var(--el-border-color) 1px solid;
+
+  &:hover {
+    color: var(--el-color-primary);
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .path {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+  }
+}
+</style>

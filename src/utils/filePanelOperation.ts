@@ -12,7 +12,7 @@ export const openNativeFile = async (fileHandle: FileSystemFileHandle) => {
    **/
   const contexStore = useContexStore()
 
-  const path = `${fileHandle.name} @local`
+  const path = `${fileHandle.name} @native`
   let title = path.split('/').pop() || ''
 
   const panelName = 'nativeFileEditor'
@@ -60,7 +60,9 @@ export const openRemoteFile = async (path: string, repo: string, branch: string)
 
   const panelName = 'remoteFileEditor'
 
-  let title = (path.split('/').pop() || '') + ' @remote'
+  const fileTitle = path.split('/').pop() || ''
+
+  let title = fileTitle + ' @remote'
 
   // 防止重复打开
   for (const tab of contexStore.tabs) {
@@ -99,6 +101,7 @@ export const openRemoteFile = async (path: string, repo: string, branch: string)
         user: '',
         branch,
         content: '',
+        title: fileTitle,
       },
     },
   }
@@ -125,7 +128,9 @@ export const openLocalFile = (path: string, repo: string) => {
     }
   }
 
-  let title = path.split('/').pop() || ''
+  const fileTitle = path.split('/').pop() || ''
+
+  let title = fileTitle
 
   // 如果有路径文件，标题加上repo
   for (const tab of contexStore.tabs) {
@@ -174,6 +179,7 @@ export const openLocalFile = (path: string, repo: string) => {
       file: {
         path,
         repo,
+        title: fileTitle,
       },
     },
   }

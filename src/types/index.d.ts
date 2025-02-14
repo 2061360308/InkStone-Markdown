@@ -13,12 +13,14 @@ declare const __APP_VERSION__: string
 declare interface localFile {
   path: string
   repo: string
+  title?: string
 }
 
 declare interface remoteFile {
   path: string
   repo: string
   content: string
+  title?: string
 }
 
 declare type nativeFile = FileSystemFileHandle

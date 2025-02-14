@@ -13,7 +13,7 @@ import {
   exportFile,
   openNativeFile,
   createNativeFile,
-} from '@/utils/filePanelOption'
+} from '@/utils/filePanelOperation'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import { Component } from 'vue'
 

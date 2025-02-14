@@ -118,16 +118,16 @@ export const useContexStore = defineStore('contex', () => {
       const savedTabs = tabs.value
         .map((tab) => {
           const data = tab.data
-          if (tab.panelName === 'nativeFileEditor') {
-            return null
+          if (tab.panelName === 'localFileEditor' || tab.panelName === 'remoteFileEditor') {
+            return {
+              id: tab.id,
+              panelName: tab.panelName,
+              icon: tab.icon,
+              title: tab.title,
+              data,
+            }
           }
-          return {
-            id: tab.id,
-            panelName: tab.panelName,
-            icon: tab.icon,
-            title: tab.title,
-            data,
-          }
+          return null
         })
         .filter((tab) => tab !== null)
 
@@ -156,9 +156,32 @@ export const useContexStore = defineStore('contex', () => {
     },
   }
 
+  const activeTabIdReset: ContextReset = {
+    save: () => {
+      const currentTab = tabs.value.find((tab) => tab.id === activeTabId.value)
+      if (
+        currentTab?.panelName === 'localFileEditor' ||
+        currentTab?.panelName === 'remoteFileEditor'
+      ) {
+        return currentTab.id as string
+      } else {
+        for (const tab of tabs.value) {
+          if (tab.panelName === 'localFileEditor' || tab.panelName === 'remoteFileEditor') {
+            return tab.id as string
+          }
+        }
+        return ''
+      }
+    },
+    load: (data: string) => {
+      activeTabId.value = data
+    },
+  }
+
   const contextResetsDict: Record<string, ContextReset> = {
     sidebarState: sidebarStateReset,
     tabs: tabsReset,
+    activeTabId: activeTabIdReset,
   }
 
   const saveContext = () => {

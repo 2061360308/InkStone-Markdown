@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Ref, ref, onMounted, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useContexStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { Splitpanes, Pane } from 'splitpanes'
@@ -9,9 +10,12 @@ import SidebarPanel from '@/components/SidebarPanel.vue'
 import { useDark, useMediaQuery } from '@vueuse/core'
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
-import { createNativeFile, openNativeFile } from '@/utils/filePanelOption'
+import { createNativeFile, openNativeFile } from '@/utils/filePanelOperation'
+import { backendTasks } from '@/utils/backendLaunchTasks'
 
 const contexStore = useContexStore()
+const route = useRoute()
+const router = useRouter()
 
 const titleBarVisible = ref(false)
 
@@ -328,7 +332,8 @@ const handelPinButton = () => {
   if (sidebarState.value.fixed) {
     unpinSideBarPanel()
   } else {
-    contexStore.sidebarState.fixed = true
+    contexStore.sidebarState.fixed = true // 置侧边栏状态为固定
+    sidebarDrawerVisible.value = false // 关闭抽屉
   }
 }
 
@@ -366,10 +371,47 @@ const truncateTitle = (title: string) => {
 }
 
 onMounted(() => {
+  if (route.query.from !== 'launch') {
+    if (Object.keys(route.query).length > 0) {
+      router.replace({ name: 'launch', query: route.query })
+    } else {
+      // 直接启动后台启动任务
+      backendTasks()
+    }
+  }
+
+  router.replace({ query: {} }) // 清空路由参数
+
   titleBarCheck()
 })
 
 const isDark = useDark()
+
+const getTabItemTitle = (item: TabItem): string => {
+  if (item.panelName === 'remoteFileEditor') {
+    if (item.data.file) {
+      if ((item.data.file as remoteFile).title) {
+        return (item.data.file as remoteFile).title as string
+      } else {
+        return item.title.replace(' @remote', '')
+      }
+    }
+  } else if (item.panelName === 'nativeFileEditor') {
+    if (item.data.file) {
+      return (item.data.file as nativeFile).name
+    }
+  } else if (item.panelName === 'localFileEditor') {
+    if (item.data.file) {
+      if ((item.data.file as localFile).title) {
+        return (item.data.file as localFile).title as string
+      } else {
+        return item.title
+      }
+    }
+  }
+
+  return item.title
+}
 </script>
 
 <template>
@@ -441,18 +483,20 @@ const isDark = useDark()
           </div>
         </div>
       </div>
-      <el-drawer
-        modal-class="sidebar-drawer"
-        v-model="sidebarDrawerVisible"
-        direction="ltr"
-        :with-header="false"
-        :size="isNarrowscreen ? '85%' : 350"
-        :modal="isNarrowscreen ? true : false"
-        @mouseleave="sidebarMenuMouseLeave"
-        v-show="!sidebarState.fixed || isNarrowscreen"
-      >
-        <SidebarPanel @update:pin="handelPinButton" />
-      </el-drawer>
+      <div v-show="!sidebarState.fixed || isNarrowscreen">
+        <el-drawer
+          modal-class="sidebar-drawer"
+          v-model="sidebarDrawerVisible"
+          direction="ltr"
+          :with-header="false"
+          :size="isNarrowscreen ? '85%' : 350"
+          :modal="isNarrowscreen ? true : false"
+          @mouseleave="sidebarMenuMouseLeave"
+        >
+          <!-- v-show="!sidebarState.fixed || isNarrowscreen" -->
+          <SidebarPanel @update:pin="handelPinButton" />
+        </el-drawer>
+      </div>
 
       <div class="main-center">
         <splitpanes style="width: 100%; height: 100%" @resize="sidebarState.size = $event[0].size">
@@ -498,8 +542,20 @@ const isDark = useDark()
                         remote: item.panel === 'remoteFile',
                       }"
                     >
-                      <!-- <font-awesome-icon :icon="['fas', item.icon]" style="padding-right: 2px" /> -->
-                      <FileTypeIcon :name="item.title" :light="!isDark" />
+                      <FileTypeIcon
+                        :name="getTabItemTitle(item)"
+                        :light="!isDark"
+                        v-if="
+                          item.panelName === 'localFileEditor' ||
+                          item.panelName === 'remoteFileEditor' ||
+                          item.panelName === 'nativeFileEditor'
+                        "
+                      />
+                      <font-awesome-icon
+                        :icon="['fas', item.icon]"
+                        v-else
+                        style="margin-right: 4px"
+                      />
                       <el-tooltip
                         :class="{ 'panel-tab': true, native: item.panel === 'nativeFile' }"
                         effect="dark"
