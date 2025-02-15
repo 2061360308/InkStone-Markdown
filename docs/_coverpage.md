@@ -1,4 +1,4 @@
-<img src="images/cover.png" alt="logo" height="200" style="width:auto;"><small>1.0</small>
+<small>1.0</small>
 
 > 为**静态博客**作者精细设计的在线文章管理器
 
@@ -11,7 +11,6 @@
 [在线Demo](https://app.inkstone.work/)
 [快速开始](getting-started)
 
-
 <!-- background image -->
 
-![](images/bg.svg)
+![](images/cover_bg.png)

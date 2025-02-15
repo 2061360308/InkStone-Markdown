@@ -643,7 +643,7 @@ const fileRightClick = (
         />
       </div>
     </div>
-    <div :class="{ current: activeTreeMode === 'remote', item: true }">
+    <div :class="{ current: activeTreeMode === 'remote', item: true }" v-if="api.ready">
       <div class="title" @click="activeTreeMode = 'remote'">
         远程仓库文件（只读）
         <div class="icon">
@@ -740,7 +740,7 @@ const fileRightClick = (
 
 .file-tree-box.noLogin {
   .item.current {
-    height: calc(100% - 40px);
+    height: calc(100%);
     .content {
       height: calc(100% - 40px);
     }

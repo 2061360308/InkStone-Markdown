@@ -13,7 +13,8 @@
 
 《砚台》是一款由 Vue 开发的在线 Markdown 编辑器，特意为 Hexo、Hugo 等静态站点生成器设计，支持同步到 Github，可视化编辑 yaml front matter 等贴心功能。《砚台》完全运行在浏览器，可以和静态站点一起发布。
 
-![展示图](images/屏幕截图%202025-01-15%20232457.png)
+![展示图](images/cover.png)
+
 <div style="text-align: center;">
     <a href="#screenshots">@更多截图</a>
 </div>

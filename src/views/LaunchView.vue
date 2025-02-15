@@ -46,6 +46,11 @@ onMounted(() => {
 
   backendTasks()
 
+  // const style = document.createElement('style')
+  // style.textContent = themeCss
+  // document.head.appendChild(style)
+  // console.log('style', style)
+
   router.push({ name: 'main', query: { from: 'launch' } })
 })
 </script>

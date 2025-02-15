@@ -144,7 +144,7 @@ const createVditorInstance = () => {
       value: '# Hello Vditor!\n\n这是编辑器预设内容，如果你看到这段文字代表内容没有被正确显示！',
       mode: currentMode.value,
       height: '100%',
-      typewriterMode: true, //settingsStore.settings.editorTypewriterMode,
+      typewriterMode: settingsStore.settings.editorTypewriterMode,
       input: inputHandler,
       cache: {
         enable: true,

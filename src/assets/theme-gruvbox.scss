@@ -1,0 +1,132 @@
+:root {
+  --app-theme-red: #9d0006;
+  --app-theme-green: #79740e;
+  --app-theme-yellow: #b57614;
+  --app-theme-blue: #076678;
+  --app-theme-purple: #8f3f71;
+  --app-theme-aqua: #427b58;
+  --app-theme-orange: #af3a03;
+  --app-theme-gray: #928374;
+
+  --app-theme-bg1: #ebdbb2;
+  --app-theme-bg2: #d5c4a1;
+  --app-theme-bg3: #bdae93;
+  --app-theme-bg4: #a89984;
+
+  --app-theme-fg: #282828;
+  --app-theme-fg1: #3c3836;
+  --app-theme-fg2: #504945;
+  --app-theme-fg3: #665c54;
+  --app-theme-fg4: #7c6764;
+}
+
+html.dark {
+  --app-theme-red: #fb4934;
+  --app-theme-green: #b8bb26;
+  --app-theme-yellow: #fabd2f;
+  --app-theme-blue: #83a598;
+  --app-theme-purple: #d3869b;
+  --app-theme-aqua: #8ec07c;
+  --app-theme-orange: #fe8019;
+  --app-theme-gray: #928374;
+
+  --app-theme-bg1: #3c3836;
+  --app-theme-bg2: #504945;
+  --app-theme-bg3: #665c54;
+  --app-theme-bg4: #7c6764;
+
+  --app-theme-fg: #fbf1c7;
+  --app-theme-fg1: #ebdbb2;
+  --app-theme-fg2: #d5c4a1;
+  --app-theme-fg3: #bdae93;
+  --app-theme-fg4: #a89984;
+}
+
+:root,
+html.dark {
+  --el-color-white: #000000;
+  --el-color-black: #efefef;
+
+  --el-color-primary: var(--app-theme-blue);
+  --el-color-primary-light-3: #{lighten(#076678, 30%)};
+  --el-color-primary-light-5: #{lighten(#076678, 50%)};
+  --el-color-primary-light-7: #{lighten(#076678, 70%)};
+  --el-color-primary-light-8: #{lighten(#076678, 80%)};
+  --el-color-primary-light-9: #{lighten(#076678, 90%)};
+  --el-color-primary-dark-2: #{darken(#076678, 20%)};
+  --el-color-success: var(--app-theme-green);
+  --el-color-success-light-3: rgb(148.6, 212.3, 117.1);
+  --el-color-success-light-5: rgb(179, 224.5, 156.5);
+  --el-color-success-light-7: rgb(209.4, 236.7, 195.9);
+  --el-color-success-light-8: rgb(224.6, 242.8, 215.6);
+  --el-color-success-light-9: rgb(239.8, 248.9, 235.3);
+  --el-color-success-dark-2: rgb(82.4, 155.2, 46.4);
+  --el-color-warning: var(--app-theme-yellow);
+  --el-color-warning-light-3: rgb(237.5, 189.9, 118.5);
+  --el-color-warning-light-5: rgb(242.5, 208.5, 157.5);
+  --el-color-warning-light-7: rgb(247.5, 227.1, 196.5);
+  --el-color-warning-light-8: rgb(250, 236.4, 216);
+  --el-color-warning-light-9: rgb(252.5, 245.7, 235.5);
+  --el-color-warning-dark-2: rgb(184, 129.6, 48);
+  --el-color-danger: var(--app-theme-red);
+  --el-color-danger-light-3: rgb(248, 152.1, 152.1);
+  --el-color-danger-light-5: rgb(250, 181.5, 181.5);
+  --el-color-danger-light-7: rgb(252, 210.9, 210.9);
+  --el-color-danger-light-8: rgb(253, 225.6, 225.6);
+  --el-color-danger-light-9: rgb(254, 240.3, 240.3);
+  --el-color-danger-dark-2: rgb(196, 86.4, 86.4);
+  --el-color-error: var(--app-theme-aqua);
+  --el-color-error-light-3: rgb(248, 152.1, 152.1);
+  --el-color-error-light-5: rgb(250, 181.5, 181.5);
+  --el-color-error-light-7: rgb(252, 210.9, 210.9);
+  --el-color-error-light-8: rgb(253, 225.6, 225.6);
+  --el-color-error-light-9: rgb(254, 240.3, 240.3);
+  --el-color-error-dark-2: rgb(196, 86.4, 86.4);
+  --el-color-info: var(--app-theme-gray);
+  --el-color-info-light-3: rgb(177.3, 179.4, 183.6);
+  --el-color-info-light-5: rgb(199.5, 201, 204);
+  --el-color-info-light-7: rgb(221.7, 222.6, 224.4);
+  --el-color-info-light-8: rgb(232.8, 233.4, 234.6);
+  --el-color-info-light-9: rgb(243.9, 244.2, 244.8);
+  --el-color-info-dark-2: rgb(115.2, 117.6, 122.4);
+  --el-bg-color: var(--app-theme-bg1);
+  --el-bg-color-page: var(--app-theme-bg2);
+  --el-bg-color-overlay: var(--app-theme-bg3);
+  --el-text-color-primary: var(--app-theme-fg);
+  --el-text-color-regular: var(--app-theme-fg1);
+  --el-text-color-secondary: var(--app-theme-fg2);
+  --el-text-color-placeholder: var(--app-theme-fg3);
+  --el-text-color-disabled: var(--app-theme-fg4);
+  --el-border-color: var(--app-theme-bg4);
+  --el-border-color-light: #e4e7ed;
+  --el-border-color-lighter: #ebeef5;
+  --el-border-color-extra-light: #f2f6fc;
+  --el-border-color-dark: #d4d7de;
+  --el-border-color-darker: #cdd0d6;
+  --el-fill-color: #f0f2f5;
+  --el-fill-color-light: #f5f7fa;
+  --el-fill-color-lighter: #fafafa;
+  --el-fill-color-extra-light: #fafcff;
+  --el-fill-color-dark: #ebedf0;
+  --el-fill-color-darker: #e6e8eb;
+  --el-fill-color-blank: #ffffff;
+  --el-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, 0.04), 0px 8px 20px rgba(0, 0, 0, 0.08);
+  --el-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, 0.12);
+  --el-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, 0.12);
+  --el-box-shadow-dark:
+    0px 16px 48px 16px rgba(0, 0, 0, 0.08), 0px 12px 32px rgba(0, 0, 0, 0.12),
+    0px 8px 16px -8px rgba(0, 0, 0, 0.16);
+  --el-disabled-bg-color: var(--el-fill-color-light);
+  --el-disabled-text-color: var(--el-text-color-placeholder);
+  --el-disabled-border-color: var(--el-border-color-light);
+  --el-overlay-color: rgba(0, 0, 0, 0.8);
+  --el-overlay-color-light: rgba(0, 0, 0, 0.7);
+  --el-overlay-color-lighter: rgba(0, 0, 0, 0.5);
+  --el-mask-color: rgba(255, 255, 255, 0.9);
+  --el-mask-color-extra-light: rgba(255, 255, 255, 0.3);
+  --el-border-width: 1px;
+  --el-border-style: solid;
+  --el-border-color-hover: var(--el-text-color-disabled);
+  --el-border: var(--el-border-width) var(--el-border-style) var(--el-border-color);
+  --el-svg-monochrome-grey: var(--el-border-color);
+}

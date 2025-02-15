@@ -50,159 +50,141 @@
  * SOFTWARE.
  *
  */
-.vditor {
-  --border-color: #d1d5da;
+.vditor,
+html.dark .vditor {
+  --border-color: var(--el-border-color);
   --second-color: rgba(88, 96, 105, 0.36);
   --panel-background-color: var(--el-bg-color-page);
-  --panel-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --toolbar-background-color: #f6f8fa;
-  --toolbar-icon-color: #586069;
-  --toolbar-icon-hover-color: #4285f4;
+  --panel-shadow: var(--el-box-shadow);
+  --toolbar-background-color: var(--el-bg-color-overlay);
+  --toolbar-icon-color: var(--el-text-color-secondary);
+  --toolbar-icon-hover-color: var(--el-color-primary);
   --toolbar-height: 35px;
   --toolbar-divider-margin-top: 8px;
-  --textarea-background-color: #fafbfc;
-  --textarea-text-color: #24292e;
+  --textarea-background-color: var(--el-bg-color-page);
+  --textarea-text-color: var(--el-text-color-secondary);
   --resize-icon-color: var(--toolbar-icon-color);
   --resize-background-color: var(--toolbar-background-color);
   --resize-hover-icon-color: var(--panel-background-color);
   --resize-hover-background-color: var(--toolbar-icon-hover-color);
-  --count-background-color: rgba(27, 31, 35, 0.05);
-  --heading-border-color: #eaecef;
-  --blockquote-color: #6a737d;
-  --ir-heading-color: #660e7a;
-  --ir-title-color: #808080;
-  --ir-bi-color: #0033b3;
-  --ir-link-color: #008000;
-  --ir-bracket-color: #0000ff;
-  --ir-paren-color: #008000;
-}
+  --count-background-color: var(--el-bg-color-page);
+  --heading-border-color: var(--el-border-color);
+  --blockquote-color: var(--el-color-info);
+  --ir-heading-color: var(--el-color-warning);
+  --ir-title-color: var(--el-color-info);
+  --ir-bi-color: var(--el-color-primary);
+  --ir-link-color: var(--el-color-success);
+  --ir-bracket-color: var(--el-color-primary);
+  --ir-paren-color: var(--el-color-success);
 
-html.dark .vditor {
-  --border-color: #141414;
-  --second-color: rgba(185, 185, 185, 0.36);
-  --panel-background-color: var(--el-bg-color-page);
-  --panel-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
-  --toolbar-background-color: #1d2125;
-  --toolbar-icon-color: #b9b9b9;
-  --toolbar-icon-hover-color: #fff;
-  --textarea-background-color: #2f363d;
-  --textarea-text-color: #d1d5da;
-  --resize-icon-color: var(--border-color);
-  --resize-background-color: var(--second-color);
-  --resize-hover-icon-color: var(--toolbar-icon-hover-color);
-  --resize-hover-background-color: rgba(185, 185, 185, 0.86);
-  --count-background-color: rgba(66, 133, 244, 0.36);
-  --heading-border-color: var(--textarea-text-color);
-  --blockquote-color: var(--toolbar-icon-color);
-  --ir-heading-color: #9876aa;
-  --ir-title-color: #808080;
-  --ir-bi-color: #cc7832;
-  --ir-link-color: #ffc66d;
-  --ir-bracket-color: #287bde;
-  --ir-paren-color: #6a8759;
+  .hljs {
+    color: var(--textarea-text-color);
+    background: var(--textarea-background-color);
+  }
 
   .vditor-reset {
-    color: #d1d5da;
-  }
-
-  .vditor-reset a,
-  .vditor-ir__link {
-    color: #4285f4;
-  }
-
-  .vditor-reset h1,
-  .vditor-reset h2 {
-    padding-bottom: 0.3em;
-    border-bottom: 1px solid #d1d5da;
-  }
-
-  .vditor-reset hr {
-    background-color: #d1d5da;
-  }
-
-  .vditor-reset blockquote {
-    padding: 0 1em;
-    color: #b9b9b9;
-    border-left: 0.25em solid #d1d5da;
-  }
-
-  .vditor-reset iframe {
-    border: 1px solid #141414;
-  }
-
-  .vditor-reset table tr {
-    background-color: #2f363d;
-  }
-
-  .vditor-reset table td,
-  .vditor-reset table th {
-    border: 1px solid #dfe2e5;
-  }
-
-  .vditor-reset table tbody tr:nth-child(2n) {
-    background-color: #24292e;
-  }
-
-  .vditor-reset code:not(.hljs):not(.highlight-chroma) {
-    background-color: rgba(66, 133, 244, 0.36);
-  }
-
-  .vditor-reset .language-abc svg,
-  .vditor-reset .language-abc path {
-    fill: currentColor;
-    color: #d1d5da;
-  }
-
-  .language-graphviz polygon {
-    fill: rgba(66, 133, 244, 0.36);
-  }
-
-  .vditor-reset kbd {
-    color: #d1d5da;
-    background-color: #2f363d;
-    border: 1px solid #141414;
-    box-shadow: inset 0 -1px 0 #141414;
-  }
-
-  .vditor-copy svg {
-    color: #b9b9b9;
-  }
-
-  .vditor-speech {
-    background-color: #1d2125;
-    border: 1px solid #141414;
-    color: #b9b9b9;
-  }
-
-  .vditor-speech--current,
-  .vditor-speech:hover {
-    color: #fff;
-  }
-
-  .vditor-linkcard a {
-    background-color: #1d2125;
-  }
-
-  .vditor-linkcard a:visited .vditor-linkcard__abstract {
-    color: hsla(0, 0%, 72.5%, 0.36);
-  }
-
-  .vditor-linkcard__title {
-    color: #d1d5da;
-  }
-
-  .vditor-linkcard__abstract {
-    color: #b9b9b9;
-  }
-
-  .vditor-linkcard__site {
-    color: #fff;
-  }
-
-  .vditor-linkcard__image {
-    background-color: hsla(0, 0%, 72.5%, 0.36);
+    color: var(--textarea-text-color);
   }
 }
+
+// html.dark .vditor {
+//   .vditor-reset {
+//     color: var(--el-text-color-primary);
+//   }
+
+//   .vditor-reset h1,
+//   .vditor-reset h2 {
+//     padding-bottom: 0.3em;
+//     border-bottom: 1px solid #d1d5da;
+//   }
+
+//   .vditor-reset hr {
+//     background-color: #d1d5da;
+//   }
+
+//   .vditor-reset blockquote {
+//     padding: 0 1em;
+//     color: #b9b9b9;
+//     border-left: 0.25em solid #d1d5da;
+//   }
+
+//   .vditor-reset iframe {
+//     border: 1px solid #141414;
+//   }
+
+//   .vditor-reset table tr {
+//     background-color: #2f363d;
+//   }
+
+//   .vditor-reset table td,
+//   .vditor-reset table th {
+//     border: 1px solid #dfe2e5;
+//   }
+
+//   .vditor-reset table tbody tr:nth-child(2n) {
+//     background-color: #24292e;
+//   }
+
+//   .vditor-reset code:not(.hljs):not(.highlight-chroma) {
+//     background-color: rgba(66, 133, 244, 0.36);
+//   }
+
+//   .vditor-reset .language-abc svg,
+//   .vditor-reset .language-abc path {
+//     fill: currentColor;
+//     color: #d1d5da;
+//   }
+
+//   .language-graphviz polygon {
+//     fill: rgba(66, 133, 244, 0.36);
+//   }
+
+//   .vditor-reset kbd {
+//     color: #d1d5da;
+//     background-color: #2f363d;
+//     border: 1px solid #141414;
+//     box-shadow: inset 0 -1px 0 #141414;
+//   }
+
+//   .vditor-copy svg {
+//     color: #b9b9b9;
+//   }
+
+//   .vditor-speech {
+//     background-color: #1d2125;
+//     border: 1px solid #141414;
+//     color: #b9b9b9;
+//   }
+
+//   .vditor-speech--current,
+//   .vditor-speech:hover {
+//     color: #fff;
+//   }
+
+//   .vditor-linkcard a {
+//     background-color: #1d2125;
+//   }
+
+//   .vditor-linkcard a:visited .vditor-linkcard__abstract {
+//     color: hsla(0, 0%, 72.5%, 0.36);
+//   }
+
+//   .vditor-linkcard__title {
+//     color: #d1d5da;
+//   }
+
+//   .vditor-linkcard__abstract {
+//     color: #b9b9b9;
+//   }
+
+//   .vditor-linkcard__site {
+//     color: #fff;
+//   }
+
+//   .vditor-linkcard__image {
+//     background-color: hsla(0, 0%, 72.5%, 0.36);
+//   }
+// }
 /**
    * tool tip.
    *
@@ -622,9 +604,10 @@ html.dark .vditor {
   border: 1px solid var(--border-color);
   border-radius: 3px;
   box-sizing: border-box;
-  font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', 'Microsoft Yahei',
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol',
-    'Android Emoji', 'EmojiSymbols';
+  font-family:
+    'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji',
+    'EmojiSymbols';
 }
 .vditor--fullscreen {
   position: fixed;
@@ -923,9 +906,10 @@ html.dark .vditor {
 .vditor-reset {
   color: #24292e;
   font-variant-ligatures: no-common-ligatures;
-  font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', 'Microsoft Yahei',
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol',
-    'Android Emoji', 'EmojiSymbols';
+  font-family:
+    'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji',
+    'EmojiSymbols';
   word-wrap: break-word;
   overflow: auto;
   line-height: 1.5;
@@ -1093,9 +1077,9 @@ html.dark .vditor {
   margin: 0;
   font-size: 85%;
   border-radius: 3px;
-  font-family: mononoki, Consolas, 'Liberation Mono', Menlo, Courier, monospace,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji',
-    'EmojiSymbols';
+  font-family:
+    mononoki, Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols';
   word-break: break-word;
   background-size: 20px 20px;
   white-space: pre-wrap;
@@ -1111,9 +1095,9 @@ html.dark .vditor {
   display: block;
   overflow: auto;
   white-space: pre;
-  font-family: mononoki, Consolas, 'Liberation Mono', Menlo, Courier, monospace,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji',
-    'EmojiSymbols';
+  font-family:
+    mononoki, Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols';
   background-size: 20px 20px;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8AgMAAABHkjHhAAAACVBMVEWAgIBaWlo+Pj7rTFvWAAAAA3RSTlMHCAw+VhR4AAAA+klEQVQoz4WSMW7EQAhFPxKWNh2FCx+HkaZI6RRb5DYbyVfIJXLKDCFoMbaTKSw/8ZnPAPjaH2xgZcUNUDADD7D9LtDBCLZ45fbkvo/30K8yeI64pPwl6znd/3n/Oe93P3ho9qeh72btTFzqkz0rsJle8Zr81OLEwZ1dv/713uWqvu2pl+k0fy7MWtj9r/tN5q/02z89qa/L4Dc2LvM93kezPfXlME/O86EbY/V9GB9ePX8G1/6W+/9h1dq/HGfTfzT3j/xNo7522Bfnqe5jO/fvhVthlfk434v3iO9zG/UOphyPeinPl1J8Gtaa7xPTa/Dk+RIs4deMvwGvcGsmsCvJ0AAAAABJRU5ErkJggg==);
   word-break: initial;
@@ -1839,9 +1823,10 @@ html.dark .vditor {
   }
 }
 .vditor-sv {
-  font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', 'Microsoft Yahei',
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol',
-    'Android Emoji', 'EmojiSymbols';
+  font-family:
+    'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji',
+    'EmojiSymbols';
   margin: 0 1px 0 0;
   overflow: auto;
   width: 100%;

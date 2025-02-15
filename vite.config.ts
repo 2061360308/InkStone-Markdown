@@ -83,8 +83,51 @@ export default defineConfig({
         ],
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 将限制增加到 5 MiB
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2,ttf,eot,otf}'],
+        globPatterns: [
+          '**/*.{js,css,html}',
+          '**/*.{ico,png,svg,jpg,jpeg,webp}',
+          '**/*.{woff,woff2,ttf,eot,otf}',
+          '**/*.{json,xml,webmanifest}',
+          '**/*.wasm', // 若有 WebAssembly 文件
+        ],
+        // 扩大扫描范围（关键配置！）
+        globDirectory: 'dist',
+        globFollow: true, // 遵循符号链接
+        globStrict: true, // 严格模式
+        globIgnores: [
+          '**/node_modules/**',
+          '**/sw.js', // 忽略 Service Worker 自身
+        ],
+        maximumFileSizeToCacheInBytes: 20 * 1024 * 1024, // 将限制增加到 20 MiB
+        manifestTransforms: [
+          async (originalManifest) => {
+            const manifest = originalManifest.map((entry) => {
+              if (entry.url.includes('assets/')) {
+                entry.revision = entry.url.split('.').slice(-2, -1)[0]
+              }
+              return entry
+            })
+            return { manifest }
+          },
+        ],
+        runtimeCaching: [
+          {
+            // 匹配该 CDN 的特定版本所有资源
+            urlPattern: /^https:\/\/unpkg\.com\/vditor@3\.10\.9\/.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'vditor-cdn-v3.10.9',
+              expiration: {
+                maxEntries: 30, // 最多缓存 30 个文件
+                maxAgeSeconds: 90 * 24 * 60 * 60, // 90 天
+              },
+              cacheableResponse: {
+                statuses: [0, 200], // 包含 opaque 响应（跨域请求）
+              },
+            },
+          },
+        ],
+        // globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2,ttf,eot,otf}'],
       },
     }),
     vueDevTools(),
@@ -112,7 +155,6 @@ export default defineConfig({
       scss: {
         additionalData: `
         @use "@/assets/variables.scss" as *;
-        @use "@/assets/element-variables.scss" as *;
       `,
       },
     },
@@ -121,6 +163,12 @@ export default defineConfig({
     rollupOptions: {
       external: ['node-cache'],
       output: {
+        // 主入口文件
+        entryFileNames: 'assets/[name].[hash].js',
+        // 动态导入的 chunk 文件
+        chunkFileNames: 'assets/[name].[hash].js',
+        // 静态资源（图片、字体等）
+        assetFileNames: 'assets/[name].[hash].[ext]',
         manualChunks(id) {
           // if (id.includes('@imengyu/vue3-context-menu')) {
           //   return 'vue3-context-menu'

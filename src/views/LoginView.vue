@@ -76,7 +76,7 @@ const checkLoginState = async (access_token: string) => {
   } else if (!hasPushAccess) {
     ElMessage.error('无推送权限，请重新登录')
     return
-  } else if (!installedApp) {
+  } else if (!installedApp && loginMethod.value === 'github') {
     ElMessage.error('请先安装应用')
     // 重定向到安装应用页面
     window.location.href = `https://github.com/apps/${githubAppName}/installations/new`
@@ -125,7 +125,7 @@ const changeRemember = (e: unknown) => {
 }
 
 const loginByToken = async () => {
-  localStorage.setItem('loginMethod', loginMethod.value)
+  localStorage.setItem('loginMethod', 'token')
   if (!inputToken.value) {
     ElMessage.error('请输入Token')
     return
@@ -143,7 +143,7 @@ const loginByToken = async () => {
 }
 
 const loginByGithub = async () => {
-  localStorage.setItem('loginMethod', loginMethod.value)
+  localStorage.setItem('loginMethod', 'github')
   // 获取当前查询参数
   const params = new URLSearchParams(
     Object.entries(route.query).map(([key, value]) => [key, value as string]),

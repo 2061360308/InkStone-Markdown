@@ -1,5 +1,3 @@
-import './assets/main.scss'
-
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -17,3 +15,5 @@ app.use(ContextMenu)
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 
 app.mount('#app')
+
+import './assets/main.scss'
