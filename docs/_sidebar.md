@@ -11,7 +11,6 @@
   * [2.对象存储cos](tcpz.md#对象存储cos)
   * [3.InkStone图床配置](tcpz.md#InkStone图床配置)
 
-
 * [插件安装](cjaz.md)
 * [截图展示](screenshots.md)
 * [特色功能](unique.md)
