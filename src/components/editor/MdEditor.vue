@@ -150,7 +150,7 @@ const createVditorInstance = () => {
         enable: true,
         id: props.editor,
       },
-      theme: 'dark',
+      cdn: '/vditor',
       toolbarConfig: {
         pin: true,
       },
@@ -216,6 +216,12 @@ const createVditorInstance = () => {
         },
       ],
       preview: {
+        url: '/vditor/preview',
+        theme: {
+          current: 'preview-theme',
+          list: { 'preview-theme': 'preview-theme' },
+          path: '/vditor/dist/css',
+        },
         markdown: {
           autoSpace: settingsStore.settings.editorAutoSpace,
           gfmAutoLink: settingsStore.settings.editorGfmAutoLink,
