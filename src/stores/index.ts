@@ -1,2 +1,2 @@
-export { useContexStore } from '@/stores/ContexStore'
-export { useSettingsStore } from '@/stores/SettingsStore'
+export { useContexStore } from '@/stores/contexStore'
+export { useSettingsStore } from '@/stores/settingsStore'
