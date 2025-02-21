@@ -27,7 +27,15 @@
 
 ### 体验地址
 
-[Vercel](https://dev.inkstone.work)
+[稳定版 https://app.inkstone.work](https://app.inkstone.work)
+
+[开发版 https://dev.inkstone.work](https://dev.inkstone.work)
+
+> 开发板用于体验最新的功能，此版本不保证稳定性。
+> 
+> 当前开发版本可加载外部主题（[示例主题Gruvbox](https://github.com/2061360308/inkstone-theme-gruvbox/)）
+> 
+> 当前开发版设置中更改仓库功能已被移除
 
 ## ✨ 特性
 
