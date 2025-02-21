@@ -128,7 +128,7 @@
     blockquote {
       padding: 0 1em;
       color: var(--blockquote-color);
-      border-left: 0.25em solid var(--reset-background-color);
+      border-left: 0.25em solid var(--blockquote-color);
       margin: 0 0 16px 0;
 
       & > :first-child {
