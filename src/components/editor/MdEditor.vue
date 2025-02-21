@@ -23,8 +23,9 @@ import ContextMenu from '@imengyu/vue3-context-menu'
 import { handleNormalContextMenu } from '@/utils/normalContextMenu'
 import { outlineRender } from '@/utils/outline'
 import { storeToRefs } from 'pinia'
-import { useScrollLock, useScroll, useStyleTag } from '@vueuse/core'
+import { useScrollLock, useScroll, useStyleTag, useDark } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
+import { getHighlightTheme } from '@/utils/theme'
 
 const contexStore = useContexStore()
 const settingsStore = useSettingsStore()
@@ -217,6 +218,11 @@ const createVditorInstance = () => {
       ],
       preview: {
         url: '/vditor/preview',
+        hljs: {
+          enable: true,
+          lineNumber: true,
+          style: 'algol',
+        },
         theme: {
           current: 'preview-theme',
           list: { 'preview-theme': 'preview-theme' },
@@ -245,11 +251,38 @@ const createVditorInstance = () => {
         // 确保 vditorInstance 完全初始化后再进行操作
         // fileName.value = props.fileName // 设置文件名
         props.editorReady()
+        changeTheme()
         updatePreviewSourceRef(currentMode.value) // 更新预览区域Ref
         updateEditorResetElm(currentMode.value) // 更新编辑器重置区域
       },
     })
   })
+}
+
+const dark = useDark()
+const { themeName } = storeToRefs(settingsStore)
+let themeCssLink = document.getElementById('heightlight-theme-css') as HTMLLinkElement
+
+watch([dark, themeName], () => {
+  console.log('changeTheme')
+  changeTheme()
+})
+
+const changeTheme = async () => {
+  /**
+   * 切换编辑器主题
+   */
+  const codeThemeName = await getHighlightTheme(dark.value)
+  // 动态创建/更改css link
+  if (!themeCssLink) {
+    // 如果不存在，则创建一个新的 link 标签
+    themeCssLink = document.createElement('link')
+    themeCssLink.id = 'highlight-theme-css'
+    themeCssLink.rel = 'stylesheet'
+    document.body.appendChild(themeCssLink)
+  }
+
+  themeCssLink.href = `/vditor/dist/js/highlight.js/styles/${codeThemeName}.min.css`
 }
 
 // 等待编辑器 id 准备好后再创建 Vditor 实例

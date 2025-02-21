@@ -1,23 +1,24 @@
 import { Component, markRaw } from 'vue'
-import { Panel, PanelIconPosition } from './base'
+import { Panel } from './base'
 import { useContexStore } from '@/stores'
 import panelsManager from '.'
 
-export class SettingsPanel implements Panel {
-  id = 'settings'
-  name = '设置'
-  icon = 'gear'
-  position = PanelIconPosition.bottom
-  index = 1
-  noselect = true
+export class ThemePanel implements Panel {
+  id = 'theme'
+  name = '主题管理'
+  icon = 'shirt'
+  // position = PanelIconPosition.bottom
+  // index = 2
+  // noselect = true
+  noSidebar = true
 
   async component(): Promise<Component> {
-    const m = await import('@/components/SettingsPanel.vue')
+    const m = await import('@/components/themePanel.vue')
     return m.default as Component
   }
 
   onActive(): void {
-    console.log('SettingsPanel onActive')
+    console.log('ThemePanel onActive')
     const contexStore = useContexStore()
 
     const settingsTab: TabItem = {
@@ -26,7 +27,7 @@ export class SettingsPanel implements Panel {
       panel: panelsManager.getPanelComponent(this.id)
         ? markRaw(panelsManager.getPanelComponent(this.id)!)
         : null,
-      icon: 'gear',
+      icon: this.icon,
       title: this.name,
       data: {},
     }

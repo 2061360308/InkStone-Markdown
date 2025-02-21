@@ -16,6 +16,8 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElCollapse: typeof import('element-plus/es')['ElCollapse']
+    ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
@@ -37,6 +39,7 @@ declare module 'vue' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     FilePanel: typeof import('./src/components/file/FilePanel.vue')['default']
     FileTree: typeof import('./src/components/file/FileTree.vue')['default']
     FileTypeIcon: typeof import('./src/components/file/FileTypeIcon.vue')['default']
@@ -49,8 +52,10 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchPanel: typeof import('./src/components/SearchPanel.vue')['default']
+    SettingsItem: typeof import('./src/components/SettingsItem.vue')['default']
     SettingsPanel: typeof import('./src/components/SettingsPanel.vue')['default']
     SidebarPanel: typeof import('./src/components/SidebarPanel.vue')['default']
+    ThemePanel: typeof import('./src/components/themePanel.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

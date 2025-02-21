@@ -1,14 +1,14 @@
 @use './base.scss';
 @use 'splitpanes/dist/splitpanes.css';
 @use 'element-plus/theme-chalk/dark/css-vars.css';
-@use './vditor.scss';
+@use './vditor/index.scss';
 @use './contex-menu.scss';
-@use './codemirror.scss';
+// @use './codemirror.scss';
 
 .splitpanes__splitter {
   width: 1px;
   padding: 0 2px;
-  background-color: var(--el-border-color-dark);
+  background-color: var(--el-border-color);
   position: relative;
 }
 

@@ -44,6 +44,7 @@ import {
   faPenRuler,
   faPlus,
   faRotateLeft,
+  faShirt,
   faSquareCheck,
   faSquarePen,
   faSquareXmark,
@@ -53,6 +54,7 @@ import {
   faThumbtackSlash,
   faTrash,
   faU,
+  faUpload,
   faWonSign,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -99,6 +101,7 @@ export const initFontAwesomeIcons = () => {
     faPenRuler,
     faPlus,
     faRotateLeft,
+    faShirt,
     faSquareCheck,
     faSquarePen,
     faSquareXmark,
@@ -109,6 +112,7 @@ export const initFontAwesomeIcons = () => {
     faTrash,
     faTumblr,
     faU,
+    faUpload,
     faWonSign,
   )
 }

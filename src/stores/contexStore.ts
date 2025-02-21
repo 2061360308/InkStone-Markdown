@@ -4,6 +4,7 @@ import api from '@/utils/api'
 import { generateRandomId } from '@/utils/general'
 import panelsManager from '@/panels'
 import { OutlineTreeNode } from '@/utils/outline'
+import { useMediaQuery } from '@vueuse/core'
 
 export const useContexStore = defineStore('contex', () => {
   // 打开的文件
@@ -25,6 +26,9 @@ export const useContexStore = defineStore('contex', () => {
     current: 'files',
     ready: false,
   })
+
+  // 是否是窄屏
+  const isNarrowscreen = useMediaQuery('(max-width: 650px)')
 
   // 通知
   const notification: Ref<{ hash: string; data: Array<string> }> = ref({ hash: '', data: [] })
@@ -232,6 +236,7 @@ export const useContexStore = defineStore('contex', () => {
     // openedFiles,
     routerParams,
     sidebarState,
+    isNarrowscreen,
     notification,
     titleBarText,
     tabs,

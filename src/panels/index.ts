@@ -5,6 +5,7 @@ import { OutlinePanel } from './outline'
 import { SearchPanel } from './search'
 import { AboutPanel } from './about'
 import { SettingsPanel } from './settings'
+import { ThemePanel } from './theme'
 import { LocalFileEditorPanel } from './localFileEditor'
 import { RemoteFileEditorPanel } from './RocalFileEditor'
 import { NativeFileEditorPanel } from './nativeFileEditor'
@@ -19,6 +20,7 @@ class PanelsManager {
     new SearchPanel(),
     new AboutPanel(),
     new SettingsPanel(),
+    new ThemePanel(),
     new LocalFileEditorPanel(),
     new RemoteFileEditorPanel(),
     new NativeFileEditorPanel(),

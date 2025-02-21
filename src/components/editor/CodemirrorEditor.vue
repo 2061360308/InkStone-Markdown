@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { watchOnce } from '@vueuse/core'
-import { EditorState, Transaction } from '@codemirror/state'
+import { useDark, watchOnce } from '@vueuse/core'
+import { EditorState, Transaction, Compartment } from '@codemirror/state'
 import type { Extension } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
 import {
@@ -19,6 +19,7 @@ import {
   syntaxHighlighting,
   bracketMatching,
   foldKeymap,
+  HighlightStyle,
 } from '@codemirror/language'
 import {
   history,
@@ -38,8 +39,14 @@ import {
 import { lintKeymap } from '@codemirror/lint'
 
 import { defaultHighlightStyle } from '@codemirror/language'
-import { ref, defineProps, defineExpose, onMounted, onBeforeUnmount, VNode, computed } from 'vue'
+import { ref, defineProps, defineExpose, onMounted, onBeforeUnmount, VNode, computed, watch } from 'vue'
 import ContextMenu from '@imengyu/vue3-context-menu'
+import { getCodemirrorTheme } from '@/utils/theme'
+import { tags } from '@lezer/highlight'
+import { storeToRefs } from 'pinia'
+import { useSettingsStore } from '@/stores'
+
+const settingsStore = useSettingsStore()
 
 const editorContainer = ref<HTMLElement | null>(null) // 编辑器容器
 
@@ -71,6 +78,7 @@ let fistChangeContent = true // 是否第一次更改内容
 const isAllSaved = defineModel() // 是否全部保存
 
 let editorView: EditorView | null = null
+const compartment = new Compartment()
 
 const setContent = async (content: string, replace: boolean = false) => {
   if (editorView) {
@@ -121,6 +129,37 @@ watchOnce(
   },
   { immediate: true },
 )
+
+const dark = useDark()
+const { themeName } = storeToRefs(settingsStore)
+
+watch([dark, themeName], () => {
+  changeTheme()
+})
+
+const changeTheme = async () => {
+  if (!editorView) return
+  const codemirrorTheme = await getCodemirrorTheme(dark.value)
+  const extensions = [] // 收集所有需要配置的扩展
+
+  if (codemirrorTheme.theme) {
+    const cm6Theme = EditorView.theme(codemirrorTheme.theme, {
+      dark: codemirrorTheme.dark || false,
+    })
+    extensions.push(cm6Theme)
+  }
+
+  if (codemirrorTheme.highlightStyleGender) {
+    const cm6Style = HighlightStyle.define(codemirrorTheme.highlightStyleGender(tags))
+    extensions.push(syntaxHighlighting(cm6Style))
+  }
+
+  if (extensions.length > 0) {
+    editorView.dispatch({
+      effects: compartment.reconfigure(extensions), // 一次性配置所有扩展
+    })
+  }
+}
 
 const initEditor = async () => {
   const suffix = props.fileName.split('.').pop()?.toLowerCase()
@@ -216,7 +255,8 @@ const initEditor = async () => {
     dropCursor(),
     EditorState.allowMultipleSelections.of(true),
     indentOnInput(),
-    syntaxHighlighting(defaultHighlightStyle),
+    // syntaxHighlighting(defaultHighlightStyle),
+    // syntaxHighlighting(gruvboxStyle),
     bracketMatching(),
     closeBrackets(),
     autocompletion(),
@@ -240,6 +280,15 @@ const initEditor = async () => {
         handelChange()
       }
     }),
+    compartment.of([
+      EditorView.theme({
+        '&': {
+          color: 'var(--el-color-primary-text)',
+          backgroundColor: 'var(--el-color-primary-background)',
+        },
+      }),
+      syntaxHighlighting(defaultHighlightStyle),
+    ]),
   ]
 
   if (languageExtension) {
@@ -248,7 +297,7 @@ const initEditor = async () => {
 
   const state = EditorState.create({
     doc: '',
-    extensions: extensions,
+    extensions,
   })
 
   editorView = new EditorView({
@@ -257,6 +306,8 @@ const initEditor = async () => {
   })
 
   props.editorReady()
+
+  changeTheme()
 }
 
 const handleKeyDown = (event: KeyboardEvent) => {

@@ -7,15 +7,17 @@ import { Splitpanes, Pane } from 'splitpanes'
 import { PanelIconPosition } from '@/panels/base'
 import panelsManager from '@/panels'
 import SidebarPanel from '@/components/SidebarPanel.vue'
-import { useDark, useMediaQuery } from '@vueuse/core'
+import { useDark } from '@vueuse/core'
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
 import { createNativeFile, openNativeFile } from '@/utils/filePanelOperation'
 import { backendTasks } from '@/utils/backendLaunchTasks'
+import { watchGlobalTheme } from '@/utils/theme'
 
 const contexStore = useContexStore()
 const route = useRoute()
 const router = useRouter()
+watchGlobalTheme()
 
 const titleBarVisible = ref(false)
 
@@ -35,7 +37,7 @@ declare global {
   }
 }
 
-const isNarrowscreen = useMediaQuery('(max-width: 650px)')
+const isNarrowscreen = storeToRefs(contexStore).isNarrowscreen
 
 const titleBarCheck = () => {
   // 防止标题栏覆盖检测函数频繁触发
