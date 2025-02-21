@@ -684,7 +684,7 @@ onMounted(async () => {
         <el-anchor-link
           :href="'#category-' + category.id"
           @click="
-            (event) => {
+            (event: MouseEvent) => {
               event.preventDefault()
               const anchor = document.getElementById('category-' + category.id)
               if (anchor) {
