@@ -13,6 +13,7 @@ import FileTypeIcon from '@/components/file/FileTypeIcon.vue'
 import { createNativeFile, openNativeFile } from '@/utils/filePanelOperation'
 import { backendTasks } from '@/utils/backendLaunchTasks'
 import { watchGlobalTheme } from '@/utils/theme'
+import CommandPalette from '@/components/CommandPalette.vue'
 
 const contexStore = useContexStore()
 const route = useRoute()
@@ -586,6 +587,9 @@ const getTabItemTitle = (item: TabItem): string => {
         </splitpanes>
       </div>
     </div>
+    <div class="command-palette">
+      <CommandPalette />
+    </div>
   </div>
 </template>
 
@@ -771,4 +775,6 @@ const getTabItemTitle = (item: TabItem): string => {
     height: 100%;
   }
 }
+
+
 </style>

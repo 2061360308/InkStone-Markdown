@@ -7,8 +7,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    __FilePanel: typeof import('./src/components/file/__FilePanel.vue')['default']
     AboutPanel: typeof import('./src/components/AboutPanel.vue')['default']
     CodemirrorEditor: typeof import('./src/components/editor/CodemirrorEditor.vue')['default']
+    CommandPalette: typeof import('./src/components/CommandPalette.vue')['default']
     CommitHistory: typeof import('./src/components/editor/CommitHistory.vue')['default']
     DifferencesPanel: typeof import('./src/components/DifferencesPanel.vue')['default']
     ElAnchor: typeof import('element-plus/es')['ElAnchor']
