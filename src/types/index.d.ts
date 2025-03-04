@@ -39,6 +39,7 @@ declare interface treeItemObject {
 declare interface Window {
   showOpenFilePicker: (opstions: Record<string, unknown>) => Promise<FileSystemFileHandle[]>
   showSaveFilePicker: (opstions: Record<string, unknown>) => Promise<FileSystemFileHandle>
+  showDirectoryPicker: (opstions: Record<string, unknown>) => Promise<FileSystemDirectoryHandle>
 }
 
 declare interface TabItem {
