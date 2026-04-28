@@ -8,7 +8,7 @@
 - 离线使用，原生应用体验
 
 [GitHub](https://github.com/2061360308/inkstone/)
-[在线Demo](https://app.inkstone.work/)
+[在线Demo](https://inkstone.oilu.cn/)
 [快速开始](getting-started)
 
 <!-- background image -->
